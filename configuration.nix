@@ -22,9 +22,13 @@
   };
 
   environment.systemPackages = with pkgs; [
+    bind #nslookup
+    curl
+    git
+    gnumake
+    ping
     vim 
     wget
-    git
   ];
 
   # Make network interfaces use predictable names (e.g. eth0, wlan0) instead of the default (e.g. enp1s0).

@@ -1,4 +1,5 @@
-DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST)))) # get directory of the Makefile
+# get directory of the Makefile
+DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 FLAKE = $(DIR)\#$(HOST)
 NIX_FLAGS += --extra-experimental-features "nix-command flakes"
 
