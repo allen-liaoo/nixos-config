@@ -1,0 +1,4 @@
+# in virt-viewer nixos
+sudo systemctl enable --start serial-getty@ttyS0.service
+
+virsh console nixos
