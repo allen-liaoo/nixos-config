@@ -31,7 +31,9 @@ disko: env
 
 os-install: env
 	sudo nixos-install --no-channel-copy --no-root-password --flake $(FLAKE) --root /mnt
-	@sudo ln -s $(DIR) /mnt/etc/nixos
+	@echo "Cloning configuration repository to /mnt$(DIR) and linking it to /mnt/etc/nixos..."
+	@git clone https://github.com/allen-liaoo/nixos-config.git /mnt$(DIR)
+	@sudo ln -s /mnt$(DIR) /mnt/etc/nixos
 	@echo "NixOS installed. Please reboot and run 'make os-rebuild' to switch to the new configuration."
 
 os-rebuild: env
