@@ -1,10 +1,31 @@
+# Install (without secure boot)
+virt-install --name nixos \
+         --connect qemu:///session \
+         --ram 8192 \
+         --vcpus 2 \
+         --disk path=$HOME/.local/share/libvirt/images/NixOS-25.11/nixos.x86_64.qcow2,size=20 \
+         --network bridge=virbr0 \
+         --graphics spice \
+         --boot uefi \
+         --cdrom $HOME/.local/share/libvirt/images/nixos-minimal-25.11.7346.44bae273f9f8-x86_64-linux.iso
+
+# to reset
+virsh destroy nixos || virsh undefine nixos --remove-all-storage --nvram
+
+# to open virt-viewer
+virt-viewer nixos
+
 # in virt-viewer nixos
 sudo systemctl enable --start serial-getty@ttyS0.service
 
+# open console
 virsh console nixos
 
-# solve text misalignment
-# on host
-echo $LINES $COLUMNS
-# on vm
-stty rows LINE cols COL
+# in vm console
+git clone https://github.com/allen-liaoo/nixos-config.git ; stty rows 40 cols 181 ; export host=vm 
+
+# partition disk
+sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount --flake ./nixos-config#${host} && lsblk
+
+# install nixos
+sudo nixos-install --no-channel-copy --no-root-password --flake ./nixos-config#${host} --root /mnt

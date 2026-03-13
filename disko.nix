@@ -42,10 +42,6 @@
                   mountpoint = "/.snapshots";
                   mountOptions = [ "compress=zstd" "noatime" ];
                 };
-                "@logs" = {
-                  mountpoint = "/var/logs";
-                  mountOptions = [ "compress=zstd" "noatime" ];
-                };
               };
             };
           };

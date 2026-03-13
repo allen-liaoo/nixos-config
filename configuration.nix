@@ -20,7 +20,7 @@
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
   };
-  
+
   environment.systemPackages = with pkgs; [
     vim 
     wget
@@ -33,6 +33,7 @@
     packages = with pkgs; [
       cowsay
     ];
+    password = "";
   };
 
   # This option defines the first version of NixOS you have installed on this particular machine,
