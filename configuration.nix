@@ -27,13 +27,26 @@
     git
   ];
 
+  services.openssh = {
+    enable = true;
+    ports = [ 22 ];
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = true;
+      AllowUsers = [ "tester" ];
+    };
+  };
+
   users.users.tester = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
       cowsay
     ];
-    password = "";
+    password = "123";
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPevSDBLs3jQWYE8sq2Dx6S2qQ4VzpKn5RvS1zXkGfiW wcliaw610@gmail.com"
+    ];
   };
 
   # This option defines the first version of NixOS you have installed on this particular machine,

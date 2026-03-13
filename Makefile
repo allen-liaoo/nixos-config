@@ -21,7 +21,7 @@ env:
 
 setup: env
 	@export EDITOR=vim
-	@nix-shell -p vim
+	@nix shell nixpkgs#vim
 
 disko: env
 	sudo nix $(NIX_FLAGS) run github:nix-community/disko/latest -- --mode destroy,format,mount --flake $(FLAKE)
@@ -39,7 +39,7 @@ nix-gc: env
 	@sudo nix-collect-garbage -d
 
 flake-update: env
-	@sudo nix $(NIX_FLAGS) flake update
+	@nix $(NIX_FLAGS) flake update
 
 flake-check: env
-	@sudo nix $(NIX_FLAGS) flake check
+	@nix $(NIX_FLAGS) flake check
