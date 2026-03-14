@@ -27,9 +27,9 @@
     curl
     dig             # in: dnsutils or bind 
     git
-    gnumake
     iproute2        # ip, ss
     iputils         # ping, tracepath
+    just
     lsof
     nmap
     procps          # ps, top
