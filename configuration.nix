@@ -42,10 +42,10 @@
     zip
   ];
 
-  # Make network interfaces use predictable names (e.g. eth0, wlan0) instead of the default (e.g. enp1s0).
+  # Make network interfaces use predictable names (e.g. eth0, wlan0) instead of the default (e.g. enp1s0)
   boot.kernelParams = [ "net.ifnames=0" "biosdevname=0" ];
 
-  # Make VM IP predictable\
+  # Make VM IP predictable
   networking.useDHCP = false;
   networking.useNetworkd = true;
   systemd.network = {
@@ -67,8 +67,17 @@
       PasswordAuthentication = true;
       AllowUsers = [ "tester" ];
     };
+
+    # Necessary for SOPS
+    hostKeys = [
+      {
+        path = "/etc/ssh/ssh_host_ed25519_key";
+        type = "ed25519";
+      }
+    ];
   };
 
+  users.mutableUsers = false;
   users.users.tester = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
