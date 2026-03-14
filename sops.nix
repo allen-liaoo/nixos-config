@@ -10,9 +10,9 @@
     # age.keyFile = "/persist/sops/age/keys.txt";
 
     secrets = {
-      "github_ssh_key" = {
-        owner = "root";
-        group = "root";
+      "ssh/github_personal" = {
+        owner = "pig";# TODO: Change
+        #group = "root";
         mode = "0400";
         neededForUsers = true;
       };
