@@ -18,17 +18,18 @@ This disables secure boot and pins VM mac addr. I use sudo to skip manual setup 
 sudo virsh destroy guinea ; sudo virsh undefine guinea --remove-all-storage --nvram
 ```
 
-3. Make VM console accessible in host (run in VM console):
+3. Make VM console temporarily accessible in host (run in VM console):
 ```
-sudo systemctl enable --start serial-getty@ttyS0.service
+sudo systemctl start serial-getty@ttyS0.service
 ```
 4. Open console in host:
 ```
 virsh console guinea
 ```
-5. Manual setup
+5. Manual setup 
 ```
 git clone https://github.com/allen-liaoo/nixos-config.git ; stty rows 40 cols 181 ; export host=guinea 
 ```
-6. Use Makefile (one-time use) targets
-7. SSH into VM once OS is installed (statically set to `192.168.122.100`)
+6. Install gnumake (`nix-shell -p gnumake`)
+7. Use Makefile (one-time use) targets
+8. SSH into VM once OS is installed (statically set to `192.168.122.100`)

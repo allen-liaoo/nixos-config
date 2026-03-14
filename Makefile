@@ -22,6 +22,9 @@ env:
 	@if [ -z "$(HOST)" ]; then \
 		echo "HOST is not set"; \
 		exit 1; \
+	elif [ -z "$(CONFUSER)" ]; then \
+		echo "CONFUSER is not set, setting to current user: $(USER)"; \
+		export CONFUSER=$(USER); \
 	fi
 
 os-rebuild: env
@@ -44,9 +47,9 @@ disko: env
 os-install: env
 	sudo nixos-install --no-channel-copy --no-root-password --flake $(FLAKE) --root /mnt
 	@echo "Cloning configuration repository to /mnt$(DIR) and linking it to /mnt/etc/nixos..."
-	@git clone $(GIT_REPO) /mnt$(DIR)
+	@sudo -u $(CONFUSER) git clone $(GIT_REPO) /mnt$(DIR)
 	@sudo ln -s /mnt$(DIR) /mnt/etc/nixos
-	@echo "NixOS installed. Please reboot and run 'make os-rebuild' to switch to the new configuration."
+	@echo "NixOS installed. Please reboot and run 'make os-setup' to use new configuration."
 
 gen-host-key:
 	nix shell nixpkgs#ssh-to-age --run 'cat $(HOST_KEY_PATH).pub | ssh-to-age'
