@@ -17,18 +17,26 @@
     };
   };
 
-  outputs = { nixpkgs, ... } @ inputs: {
-    nixosConfigurations = {
-      "guinea" = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        system = "x86_64-linux";
-        modules = [
-          ./configuration.nix
-
-          inputs.disko.nixosModules.disko
-          inputs.sops-nix.nixosModules.sops
-        ];
-      };
+  outputs = { nixpkgs, ... } @ inputs: 
+    let 
+      hostList = [
+        "guinea"
+      ];
+      lib = nixpkgs.lib;
+    in
+    {
+      nixosConfigurations = lib.genAttrs hostList (
+        hostName:
+        lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          system = "x86_64-linux";
+          modules = [
+            ./host/${hostName}/configuration.nix
+  
+            inputs.disko.nixosModules.disko
+            inputs.sops-nix.nixosModules.sops
+          ];
+        }
+      );
     };
-  };
 }
