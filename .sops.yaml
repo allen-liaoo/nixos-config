@@ -1,9 +1,12 @@
 keys:
 - &users:
   - &global: age1w4vzylklxkw07e0n86sz5yf7ug9akpq93z8uqwm83v4rvg7hhutqh05mgc
+- &hosts:
+  - &guinea: age1y8ew5vxt7j27tgy76fjyf757vzllwvesnnzsdqfjnjxecxgc2gwszxwl8y
 
 creation_rules:
 # Path relative to location of .sops.yaml
 - path_regex: secrets/.*\.yaml$
   age:
     - *global
+    - *guinea

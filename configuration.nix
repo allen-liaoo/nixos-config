@@ -59,6 +59,7 @@
       linkConfig.RequiredForOnline = "routable";
     };
   };
+  # TODO: Hostname
 
   services.openssh = {
     enable = true;
