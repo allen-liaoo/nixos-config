@@ -2,8 +2,8 @@
 
 {
   imports = [
-    ./hardware-configuration.nix
     ./disko.nix
+    ./hardware-configuration.nix
     ./sops.nix
   ];
 
@@ -79,7 +79,7 @@
   };
 
   users.mutableUsers = false;
-  users.users.tester = {
+  users.users."pig" = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [

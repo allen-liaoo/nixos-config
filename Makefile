@@ -41,14 +41,15 @@ gc: env
 
 disko: env
 	sudo nix $(NIX_FLAGS) run github:nix-community/disko/latest -- --mode destroy,format,mount --flake $(FLAKE)
-	sudo nixos-generate-config --no-filesystems --root /mnt --dir $(DIR)
 	@lsblk
 
 os-install: env
 	sudo nixos-install --no-channel-copy --no-root-password --flake $(FLAKE) --root /mnt
-	@echo "Cloning configuration repository to /mnt$(DIR) and linking it to /mnt/etc/nixos..."
+	@echo "Cloning configuration repository to /mnt$(DIR), and linking it to /mnt/etc/nixos..."
 	@sudo -u $(CONFUSER) git clone $(GIT_REPO) /mnt$(DIR)
 	@sudo ln -s /mnt$(DIR) /mnt/etc/nixos
+	@echo "Adding hardware-configuration.nix... remember to commit it"
+	sudo nixos-generate-config --no-filesystems --root /mnt --dir $(DIR)
 	@echo "NixOS installed. Please reboot and run 'make os-setup' to use new configuration."
 
 gen-host-key:
