@@ -24,12 +24,15 @@ sudo systemctl start serial-getty@ttyS0.service
 ```
 4. Open console in host:
 ```
-virsh console guinea
+sudo virsh console guinea
 ```
 5. Manual setup 
 ```
 git clone https://github.com/allen-liaoo/nixos-config.git ; stty rows 40 cols 181 ; export host=guinea 
 ```
-6. Install gnumake (`nix-shell -p gnumake`)
+6. Install gnumake
+```
+nix-shell -p gnumake
+```
 7. Use Makefile (one-time use) targets
 8. SSH into VM once OS is installed (statically set to `192.168.122.100`)

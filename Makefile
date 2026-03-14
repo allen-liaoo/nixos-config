@@ -45,13 +45,14 @@ disko: env
 
 os-install: env
 	sudo nixos-install --no-channel-copy --no-root-password --flake $(FLAKE) --root /mnt
-	@echo "Cloning configuration repository to /mnt$(DIR), and linking it to /mnt/etc/nixos..."
-	@sudo -u $(CONFUSER) git clone $(GIT_REPO) /mnt$(DIR)
-	@sudo ln -s /mnt$(DIR) /mnt/etc/nixos
+	@echo "NixOS installed. Please reboot, clone repository, and run 'make os-setup' to use new configuration."
+
+os-setup: env
+	@echo "Linking $(DIR) to /etc/nixos..."
+	@sudo ln -s $(DIR) /etc/nixos
 	@echo "Adding hardware-configuration.nix... remember to commit it"
 	sudo nixos-generate-config --no-filesystems --root /mnt --dir $(DIR)
-	@echo "NixOS installed. Please reboot and run 'make os-setup' to use new configuration."
 
 gen-host-key:
-	nix shell nixpkgs#ssh-to-age --run 'cat $(HOST_KEY_PATH).pub | ssh-to-age'
+	nix-shell -p ssh-to-age --run 'cat $(HOST_KEY_PATH).pub | ssh-to-age'
 	@echo "Add the above output .sops.yaml under the 'keys' section, under '&hosts'."
