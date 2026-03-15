@@ -10,7 +10,7 @@
 
     secrets = {
       "nixos_config_deploy" = {
-        key = "ssh/nixos_config_deploy";
+        key = "nixos_config_deploy";
         owner = "root";
         group = "root";
         mode = "0400";
