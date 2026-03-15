@@ -14,5 +14,7 @@ creation_rules:
   age: *users # potentially need to restrict users
 - path_regex: secrets/common.yaml
   age: *hosts
+- path_regex: secrets/host/guinea.yaml
+  age: [*guinea]
 - path_regex: secrets/user/pig.yaml
   age: [*pig]

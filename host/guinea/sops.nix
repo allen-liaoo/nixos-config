@@ -17,8 +17,8 @@
       };
 
       "age_key_pig" = {
-        sopsFile = secrets_dir + /user/pig.yaml;
-        key = "age_key";
+        sopsFile = secrets_dir + /host/guinea.yaml;
+        key = "age_key/pig";
         owner = config.users.users."pig".name;
         mode = "0400";
         path = "/home/pig/age_key";
