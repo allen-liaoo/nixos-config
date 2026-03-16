@@ -21,21 +21,6 @@ hm-switch user="$USER":
     @echo "Running for user: {{user}}"
     home-manager switch --flake {{dir}}#{{user}}
 
-# Rebuild all Home Manager configs for host
-[group("update")]
-hm-switch-all host="$HOSTNAME":
-    @echo "Running for host: {{host}}"
-    nix {{nix_flags}} eval .#homeConfigurations --apply 'builtins.attrNames' --json \
-        | tr -d '[]"' | tr ',' '\n' \
-        | grep '@{{host}}$' \
-        | sed 's/@{{host}}$//' \
-        | xargs -I{} just home-switch {{host}} {}
-
-# Rebuild both NixOS and HomeManager configs
-switch-all host="$HOSTNAME":
-    just os-switch {{host}}
-    just hm-switch-all {{host}}
-
 # Update flake inputs
 [group("update")]
 fl-update:
@@ -44,9 +29,6 @@ fl-update:
 # Check the flake for errors
 fl-check:
     nix {{nix_flags}} flake check
-
-hm-check user="$USER":
-    home-manager -n switch --flake {{dir}}#{{user}}
 
 # Collect Nix garbage
 gc:

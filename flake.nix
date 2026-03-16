@@ -27,13 +27,18 @@
       hostList = [
         "guinea"
       ];
+      userList = [
+        "pig"
+      ];
       lib = nixpkgs.lib;
     in
     {
       nixosConfigurations = lib.genAttrs hostList (
         hostName:
         lib.nixosSystem {
-          specialArgs = { inherit inputs; inherit lib; };
+          specialArgs = { 
+            inherit inputs lib hostName;
+          };
           system = "x86_64-linux";
           modules = [
             ./host/${hostName}/configuration.nix
@@ -45,20 +50,21 @@
         }
       );
 
-      homeConfigurations = {
-        "pig" = inputs.home-manager.lib.homeManagerConfiguration {
+      homeConfigurations = lib.genAttrs userList (
+        userName:
+        inputs.home-manager.lib.homeManagerConfiguration {
           # legacy packaging (flat) instead of nested (import nixpkgs)
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           # pull inputs into args of home submodules (if needed)
           extraSpecialArgs = { 
-            inherit inputs;
+            inherit inputs userName;
             customLib = import ./lib { inherit (nixpkgs) lib; };
           };
           modules = [
             ./home/pig/default.nix
             inputs.sops-nix.homeManagerModules.sops
           ];
-        };
-      };
+        }
+      );
     };
 }

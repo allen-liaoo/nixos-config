@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, hostName, ... }:
 
 {
   imports = [
@@ -64,10 +64,10 @@
     };
   };
 
-  networking.hostName = "guinea";
+  networking.hostName = hostName;
 
   users.mutableUsers = false;
-  users.users."pig" = {
+  users.users."pig" = { # TODO: pass in users attr per host?
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     linger = true;

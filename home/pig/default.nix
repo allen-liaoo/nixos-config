@@ -1,12 +1,12 @@
-{ config, pkgs, lib, customLib, ... }:
+{ config, pkgs, lib, customLib, userName, ... }:
 
 {
   imports = customLib.importDir ./. ++ [
     ./../common/default.nix
   ];
 
-  home.username = "pig";
-  home.homeDirectory = "/home/pig";
+  home.username = userName;
+  home.homeDirectory = "/home/${userName}";
 
   home.packages = with pkgs; [
   ];
