@@ -1,8 +1,8 @@
-{ config, lib, pkgs, hostName, ... }:
+{ config, lib, pkgs, customLib, hostName, ... }:
 
 {
-  imports = [
-    ./../common/configuration.nix
+  imports = customLib.importDir ./. ++ [
+    ./../common/default.nix
 
     ./disko.nix
     ./hardware-configuration.nix

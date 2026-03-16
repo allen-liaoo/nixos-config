@@ -31,20 +31,21 @@
         "pig"
       ];
       lib = nixpkgs.lib;
+      customLib = import ./lib { inherit (nixpkgs) lib; };
     in
     {
       nixosConfigurations = lib.genAttrs hostList (
         hostName:
         lib.nixosSystem {
           specialArgs = { 
-            inherit inputs lib hostName;
+            inherit inputs lib customLib hostName;
           };
           system = "x86_64-linux";
           modules = [
-            ./host/${hostName}/configuration.nix
+            ./host/${hostName}/default.nix
   
             inputs.disko.nixosModules.disko
-            inputs.home-manager.nixosModules.home-manager
+            #inputs.home-manager.nixosModules.home-manager
             inputs.sops-nix.nixosModules.sops
           ];
         }
@@ -57,8 +58,7 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           # pull inputs into args of home submodules (if needed)
           extraSpecialArgs = { 
-            inherit inputs userName;
-            customLib = import ./lib { inherit (nixpkgs) lib; };
+            inherit inputs customLib userName;
           };
           modules = [
             ./home/pig/default.nix

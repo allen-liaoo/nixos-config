@@ -1,22 +1,6 @@
-{ ... }:
+{ pkgs, customLib, ... }:
 {
-  services.openssh = {
-    enable = true;
-    ports = [ 22 ];
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-    };
-
-    # Must generate host ssh key for sops
-    # host will be able to decrypt user age keys and other host-level secrets
-    hostKeys = [
-      {
-        path = "/etc/ssh/ssh_host_ed25519_key";
-        type = "ed25519";
-      }
-    ];
-  };
+  imports = customLib.importDir ./.;
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
