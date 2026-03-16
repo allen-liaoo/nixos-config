@@ -33,7 +33,7 @@
       nixosConfigurations = lib.genAttrs hostList (
         hostName:
         lib.nixosSystem {
-          specialArgs = { inherit inputs; };
+          specialArgs = { inherit inputs; inherit lib; };
           system = "x86_64-linux";
           modules = [
             ./host/${hostName}/configuration.nix
@@ -50,9 +50,12 @@
           # legacy packaging (flat) instead of nested (import nixpkgs)
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           # pull inputs into args of home submodules (if needed)
-          extraSpecialArgs = { inherit inputs; };
+          extraSpecialArgs = { 
+            inherit inputs;
+            customLib = import ./lib { inherit (nixpkgs) lib; };
+          };
           modules = [
-            ./home/pig/home.nix
+            ./home/pig/default.nix
             inputs.sops-nix.homeManagerModules.sops
           ];
         };

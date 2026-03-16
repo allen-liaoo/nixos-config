@@ -1,28 +1,18 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, customLib, ... }:
 
 {
-  imports = [
-    ./../modules/home.nix
-
-    ./sops.nix
+  imports = customLib.importDir ./. ++ [
+    ./../common/default.nix
   ];
 
   home.username = "pig";
   home.homeDirectory = "/home/pig";
 
   home.packages = with pkgs; [
-    cowsay
   ];
 
   programs.home-manager.enable = true;
 
-  programs.git = {
-    enable = true;
-    settings.user = {
-      name = "Allen Liao (from VM)";
-      email = "wcliaw610@gmail.com";
-    };
-  };
 
   programs.ssh = {
     enable = true;

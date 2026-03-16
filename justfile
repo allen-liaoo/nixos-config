@@ -11,19 +11,19 @@ default:
 
 # Rebuild the NixOS config
 [group("update")]
-os-switch host=env("HOSTNAME", host):
+os-switch host="$HOSTNAME":
     @echo "Running for host: {{host}}"
     sudo nixos-rebuild switch --flake {{dir}}#{{host}}
 
 # Rebuild a Home Manager config
 [group("update")]
-home-switch user=env("user", user):
-    @echo "Running for user: {{host}}"
+hm-switch user="$USER":
+    @echo "Running for user: {{user}}"
     home-manager switch --flake {{dir}}#{{user}}
 
 # Rebuild all Home Manager configs for host
 [group("update")]
-home-switch-all host=("HOSTNAME", host):
+hm-switch-all host="$HOSTNAME":
     @echo "Running for host: {{host}}"
     nix {{nix_flags}} eval .#homeConfigurations --apply 'builtins.attrNames' --json \
         | tr -d '[]"' | tr ',' '\n' \
@@ -32,7 +32,7 @@ home-switch-all host=("HOSTNAME", host):
         | xargs -I{} just home-switch {{host}} {}
 
 # Rebuild both NixOS and HomeManager configs
-switch-all host=("HOSTNAME", host):
+switch-all host="$HOSTNAME":
     just os-switch {{host}}
     just home-switch-all {{host}}
 
@@ -45,7 +45,7 @@ fl-update:
 fl-check:
     nix {{nix_flags}} flake check
 
-hm-check user:
+hm-check user="$USER":
     home-manager -n switch --flake {{dir}}#{{user}}
 
 # Collect Nix garbage
@@ -87,6 +87,6 @@ gen-host-key:
     @echo "Add the above output to .sops.yaml under 'keys' > '&hosts'."
 
 [group("initial")]
-secrets-setup host=env("HOSTNAME",host):
+secrets-setup host="$HOSTNAME":
     just switch-all {{host}}
     git remote set-url origin {{git_repo}}
