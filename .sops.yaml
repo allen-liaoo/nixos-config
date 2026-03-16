@@ -1,20 +1,21 @@
 keys:
-- users: &users
-  - &sops_admin age1w4vzylklxkw07e0n86sz5yf7ug9akpq93z8uqwm83v4rvg7hhutqh05mgc
-  - &pig age1ewpj6kgpathtfc5rzkswpjag6rn9p8qscwxuhye69v4ca4707eeqt0mzl6
 - hosts: &hosts
   - &guinea age1nm2yd7wed6gauzjyqca6e8ng45njcan0q2yfqaahjqsjurh2h5us6wjmw0
+- users: &users
+  - &sops_admin age1w4vzylklxkw07e0n86sz5yf7ug9akpq93z8uqwm83v4rvg7hhutqh05mgc
+  - &pig age1ypf3q60pdwtj3j5c2zmd79z6ukwzlknm268gdkh3uj5mj89qyq7qw3pgmx
+- all: &all
+  - *sops_admin
+  - *pig 
+  - *guinea
 
 creation_rules:
-# Path relative to location of .sops.yaml
-- path_regex: secrets/.*\.(yaml|json|env|ini)$
-  age:
-    - *sops_admin
+# IMPORTANT: ORDER MATTERS
+# sops matches a file only; subsequent matches do not contribute to who can read a file
+# Path relative to location of this file
 - path_regex: secrets/common.yaml
-  age: *users # potentially need to restrict users
-- path_regex: secrets/common.yaml
-  age: *hosts
-- path_regex: secrets/host/guinea.yaml
-  age: [*guinea]
-- path_regex: secrets/user/pig.yaml
-  age: [*pig]
+  age: *all # potentially need to restrict users
+- path_regex: secrets/host/guinea.+
+  age: [*guinea, *sops_admin]
+- path_regex: secrets/user/pig.+
+  age: [*pig, *sops_admin ]
