@@ -2,7 +2,7 @@
 
 {
   imports = customLib.importDir ./. ++ [
-    ./../common/default.nix
+    ./../modules/common.nix
   ];
 
   home.username = userName;
@@ -12,7 +12,6 @@
   ];
 
   programs.home-manager.enable = true;
-
 
   programs.ssh = {
     enable = true;

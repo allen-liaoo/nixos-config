@@ -1,7 +1,10 @@
 { lib, customLib, ... }:
 
 {
-  imports = customLib.importDir ./. ++ customLib.importSubdirs ./.;
+  imports = [
+    ./shell
+    ./term
+  ];
 
   programs.home-manager.enable = true;
 

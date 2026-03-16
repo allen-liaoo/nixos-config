@@ -11,9 +11,9 @@
       #shellInit = builtins.readFile ./config.fish;
 
       shellAbbrs = {
-	      ll = "ls -lah";
+        ll = "ls -lAh";
 	      
-	      # programs that are only pkgs or should be systemwide
+        # programs that are only pkgs or should be systemwide
         js = "just";
         v = "vim";
 
