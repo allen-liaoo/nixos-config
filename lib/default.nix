@@ -1,11 +1,11 @@
 { ... }:
 {
-  # Import all files in a directory, excluding default.nix. Non-recurive
-  importDir = (dir:
+  # Import all files in a directory, excluding a list of ignored files. Non-recurive
+  importDir = ({ dir, ignores ? [ "default.nix" ] }:
     let
       files = builtins.readDir dir;
       nixFiles = builtins.filter
-        (name: name != "default.nix" && builtins.match ".*\\.nix" name != null)
+        (name: !(builtins.elem name ignores) && builtins.match ".*\\.nix" name != null)
         (builtins.attrNames files);
     in map (name: dir + "/${name}") nixFiles
   );

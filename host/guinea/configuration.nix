@@ -1,43 +1,12 @@
-{ config, lib, pkgs, hostName, ... }:
+{ config, lib, pkgs, ... }:
 
 {
-  nix.settings = {
-    experimental-features = [
-      "flakes"
-      "nix-command"
-    ];
-  };
-
   time.timeZone = "US/Chicago";
 
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
   };
-
-  environment.systemPackages = with pkgs; [
-    age
-    btop
-    curl
-    dig             # in: dnsutils or bind 
-    git
-    home-manager
-    iproute2        # ip, ss
-    iputils         # ping, tracepath
-    just
-    lsof
-    nmap
-    procps          # ps, top
-    sops
-    tcpdump
-    traceroute
-    vim
-    wget
-    whois
-    unzip
-    util-linux
-    zip
-  ];
 
   # Make network interfaces use predictable names (e.g. eth0, wlan0) instead of the default (e.g. enp1s0)
   boot.kernelParams = [ "net.ifnames=0" "biosdevname=0" ];
@@ -55,8 +24,6 @@
       linkConfig.RequiredForOnline = "routable";
     };
   };
-
-  networking.hostName = hostName;
 
   users.mutableUsers = false;
   users.users."pig" = { # TODO: pass in users attr per host?

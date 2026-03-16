@@ -1,4 +1,4 @@
-{ lib, customLib, config, ... }:
+{ lib, config, customLib, isNixOS, ... }:
 {
   programs.starship = {
     enable = true;
@@ -10,6 +10,7 @@
     settings = {
       format = lib.concatStrings [
         "$shell"
+        "$nix_shell"
         "$username"
         "$directory"
         "$character"
@@ -59,6 +60,14 @@
         bash_indicator = "bsh ";
         zsh_indicator = "zsh ";
         unknown_indicator = "unknown shell ";
+      };
+
+      nix_shell = {
+        disabled = false;
+        format = "[$symbol]($style) ";
+        symbol = if isNixOS 
+          then "\udb84\udd05" # nix nerd-font
+          else "❄️";
       };
     };
   };

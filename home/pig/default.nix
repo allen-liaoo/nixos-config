@@ -1,7 +1,7 @@
 { config, pkgs, lib, customLib, userName, ... }:
 
 {
-  imports = customLib.importDir ./. ++ [
+  imports = customLib.importDir { dir = ./.; } ++ [
     ./../modules/common.nix
   ];
 

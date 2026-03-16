@@ -1,7 +1,7 @@
 { customLib, ... }:
 
 {
-  imports = customLib.importDir ./. ++ customLib.importSubdirs ./. ++ [
-    ../modules
+  imports = customLib.importDir { dir = ./.; } ++ customLib.importSubdirs ./. ++ [
+    ../modules/common.nix
   ];
 }

@@ -59,6 +59,7 @@
           # pull inputs into args of home submodules (if needed)
           extraSpecialArgs = { 
             inherit inputs customLib userName;
+            isNixOS = builtins.pathExists /etc/NIXOS;
           };
           modules = [
             ./home/${userName}

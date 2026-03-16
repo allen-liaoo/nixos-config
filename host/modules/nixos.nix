@@ -1,6 +1,40 @@
-{ pkgs, customLib, ... }:
+{ pkgs, hostName, ... }:
+
 {
-  imports = customLib.importDir ./. ++ customLib.importSubdirs ./.;
+  nix.settings = {
+    experimental-features = [
+      "flakes"
+      "nix-command"
+    ];
+  };
+
+  environment.systemPackages = with pkgs; [
+    curl
+    dig             # in: dnsutils or bind 
+    git
+    home-manager
+    iproute2        # ip, ss
+    iputils         # ping, tracepath
+    just
+    lsof
+    nmap
+    procps          # ps, top
+    tcpdump
+    traceroute
+    vim
+    wget
+    whois
+    unzip
+    util-linux
+    zip
+  ];
+
+  networking.hostName = hostName;
+
+  security.sudo.extraConfig = ''
+    Defaults pwfeedback # password input feedback - makes typed password visible as asterisks
+    Defaults timestamp_timeout=15 # only ask for password every 15min
+  '';
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
