@@ -7,14 +7,13 @@ rec {
   relToRoot = lib.path.append ../.;
 
   # Import all files in a directory, excluding a list of ignored files. Non-recurive
-  importDir = ({ dir, ignores ? [ "default.nix" ] }:
+  importDir = (dir:
     let
       files = builtins.readDir dir;
       nixFiles = builtins.filter
-        (name: !(builtins.elem name ignores) && builtins.match ".*\\.nix" name != null)
+        (name: name != "default.nix" && builtins.match ".*\\.nix" name != null)
         (builtins.attrNames files);
-    in map (name: dir + "/${name}") nixFiles
-  );
+    in map (name: dir + "/${name}") nixFiles);
 
   # Import all immediate subdirectory of current directory
   importSubdirs = (dir:
@@ -23,8 +22,7 @@ rec {
       subdirs = builtins.filter
         (name: entries.${name} == "directory")
         (builtins.attrNames entries);
-    in map (name: dir + "/${name}") subdirs
-  );
+    in map (name: dir + "/${name}") subdirs);
     
   isNixOS = builtins.pathExists /etc/NIXOS;
 
@@ -51,6 +49,5 @@ rec {
       relPathStr = toString relPath;
     in
       assert lib.hasPrefix flakePath relPathStr;
-      homeDir + NIX_CONFIG_REL_HOME + (lib.removePrefix flakePath relPathStr)
-  ); 
+      homeDir + NIX_CONFIG_REL_HOME + (lib.removePrefix flakePath relPathStr)); 
 }

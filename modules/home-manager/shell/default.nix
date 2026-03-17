@@ -1,5 +1,5 @@
 { pkgs, customLib, ... }:
 
 {
-  imports = customLib.importDir { dir = ./.; };
+  imports = customLib.importDir ./. ++ customLib.importSubdirs ./.;
 }

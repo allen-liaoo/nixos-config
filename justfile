@@ -28,11 +28,18 @@ hm-switch user=current_user:
 fl-update:
     nix {{nix_flags}} flake update
 
-# Check the flake for errors
+# check the flake for errors
+[group("utility")]
+fl-meta:
+    nix {{nix_flags}} flake metadata .
+
+# check the flake for errors
+[group("utility")]
 fl-check:
     nix {{nix_flags}} flake check
 
 # Collect Nix garbage
+[group("utility")]
 gc:
     sudo nix-collect-garbage -d
 
