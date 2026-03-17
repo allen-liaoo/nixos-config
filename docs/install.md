@@ -25,5 +25,5 @@ just gen-host-key
 # then, git pull in host, and
 just os-switch
 just hm-switch
-git remote set-url origin git@github.com:allen-liaoo/nix-config.git
+just repo-switch-ssh
 ```

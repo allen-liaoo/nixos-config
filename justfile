@@ -1,3 +1,6 @@
+current_hostname := `hostname -s`
+current_user := `whoami`
+nix_config_path := "$HOME/nix-config"
 host_key_path := env_var_or_default("HOST_KEY_PATH", "/etc/ssh/ssh_host_ed25519_key")
 nix_flags := "--extra-experimental-features 'nix-command flakes'"
 
@@ -10,13 +13,13 @@ default:
 
 # Rebuild the NixOS config
 [group("update")]
-os-switch host="$HOSTNAME":
+os-switch host=current_hostname:
     @echo "Running for host: {{host}}"
     sudo nixos-rebuild switch --flake {{dir}}#{{host}}
 
 # Rebuild a Home Manager config
 [group("update")]
-hm-switch user="$USER":
+hm-switch user=current_user:
     @echo "Running for user: {{user}}"
     home-manager switch --flake {{dir}}#{{user}}
 
@@ -66,3 +69,9 @@ os-setup host:
 gen-host-key:
     nix-shell -p ssh-to-age --run 'cat {{host_key_path}}.pub | ssh-to-age'
     @echo "Add the above output to .sops.yaml under 'keys' > '&hosts'."
+
+# Switch current repository remote url (Only run after home-manager setup)
+[group("initial")]
+repo-switch-ssh:
+    git --git-dir {{nix_config_path}}/.git remote set-url origin git@gh_nix_config:allen-liaoo/nix-config.git
+# Note: See hm module ssh.nix for host name gh_nix_config
