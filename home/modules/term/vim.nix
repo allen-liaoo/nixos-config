@@ -27,4 +27,8 @@
       autocmd ModeChanged [vV\x16]*:* set number
     '';
   };
+
+  home.sessionVariables = {
+    EDITOR = "vim";
+  };
 }

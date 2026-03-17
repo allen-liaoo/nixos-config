@@ -31,6 +31,8 @@
         gm = "git merge";
         gl = "git log";
 
+      } // lib.optionalAttrs config.programs.yazi.enable {
+        y = "yazi";
       } // lib.optionalAttrs config.programs.zellij.enable {
         zj = "zellij";
       };
