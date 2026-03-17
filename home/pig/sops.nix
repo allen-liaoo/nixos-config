@@ -6,10 +6,10 @@
     age.keyFile = "/home/pig/age_key";
 
     secrets = {
-      "nixos_config_deploy" = {
+      "nix_config_deploy" = {
         sopsFile = ./../../secrets/common.yaml;
         mode = "0400";
-        path = "${config.home.homeDirectory}" + "/.ssh/nixos_config_deploy";
+        path = "${config.home.homeDirectory}" + "/.ssh/nix_config_deploy";
       };
     };
   };

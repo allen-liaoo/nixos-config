@@ -9,9 +9,9 @@
     ];
 
     secrets = {
-      "nixos_config_deploy" = {
+      "nix_config_deploy" = {
         sopsFile = secrets_dir + /common.yaml;
-        key = "nixos_config_deploy";
+        key = "nix_config_deploy";
         owner = "root";
         group = "root";
         mode = "0400";
