@@ -1,7 +1,7 @@
 { pkgs, aln, ... }:
 {
   imports = [
-    ./common.nix
-    ./modules/font.nix
+    ./core.nix
+    ./_modules/font.nix
   ];
 }

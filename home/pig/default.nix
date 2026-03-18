@@ -2,8 +2,8 @@
 
 {
   imports = aln.lib.listDirFiles ./. ++ [
-    ../common.nix
-    ../sops_nix_config_deploy.nix
-    ../modules/services
+    ../core.nix
+    ../_modules/sops_nix_config_deploy.nix
+    ../_modules/services
   ];
 }

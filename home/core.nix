@@ -2,12 +2,12 @@
 
 {
   imports = [
-    ./modules/sops.nix
-    ./modules/ssh.nix
-    ./modules/xdg.nix
+    ./_modules/sops.nix
+    ./_modules/ssh.nix
+    ./_modules/xdg.nix
 
-    ./modules/term
-    ./modules/shell
+    ./_modules/term
+    ./_modules/shell
   ];
 
   programs.home-manager.enable = true;

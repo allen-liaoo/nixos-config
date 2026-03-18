@@ -2,6 +2,6 @@
 
 {
   imports = aln.lib.listDirFiles ./. ++ aln.lib.listSubdirs ./. ++ [
-    ../common.nix
+    ../core.nix
   ];
 }

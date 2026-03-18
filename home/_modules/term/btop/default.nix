@@ -4,7 +4,7 @@
   programs.btop = {
     enable = true;
 
-    themes.elementarish = builtins.readFile ./btop_elementarish.theme;
+    themes.elementarish = builtins.readFile ./elementarish.theme;
 
     settings = {
       color_theme = "elementarish";

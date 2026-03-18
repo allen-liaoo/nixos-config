@@ -1,3 +1,4 @@
+# Secret for deploying to this repo; import per user
 { config, aln, ... }: {
   sops.secrets = {
     "nix_config_deploy" = {
