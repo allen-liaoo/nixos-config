@@ -1,10 +1,13 @@
 { lib, ... }:
 
-rec {
+let
+  rootPath = ../.; # project root path; resolves in nix store
+in rec
+{
   # use path relative to the root of this project
   # note that this will resolve to be a path within /nix/store
   # to refer to a path outside of /nix/store, use outOfStoreRelToRoot
-  relToRoot = lib.path.append ../../.;
+  relToRoot = lib.path.append rootPath;
 
   # List all files in a directory, excluding "default.nix". Non-recurive
   listDirFiles = (dir:
@@ -43,7 +46,7 @@ rec {
   # Note that ./config.kdl is a relative path that resolves in /nix/store, which is fine
   outOfStoreRelToRoot = (homeDir: relPath:
     let 
-      flakePath = toString ../../.; 
+      flakePath = toString rootPath; 
       relPathStr = toString relPath;
     in
       assert lib.hasPrefix flakePath relPathStr;

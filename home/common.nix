@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ./modules/shell.nix
+    ./modules/ssh.nix
     ./modules/xdg.nix
 
     ./modules/term

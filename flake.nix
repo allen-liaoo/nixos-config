@@ -25,11 +25,11 @@
   outputs = { nixpkgs, ... } @ inputs: 
     let 
       lib = nixpkgs.lib;
-      # my namespace
-      meta = import ./aln/meta.nix { inherit lib; };
+      meta = import ./meta.nix { inherit lib; };
+      # my namespace; everything I define will be accessible in "aln" attr of module inputs
       mkAln = ctx: {
         inherit meta;
-        lib = import ./aln/lib { inherit lib; };
+        lib = import ./lib { inherit lib; };
         ctx = ctx // {
           hostName = ctx.hostName or "default";  # default for non-nixos
           userName = ctx.userName or null;
