@@ -17,6 +17,7 @@
   networking.useNetworkd = true;
   systemd.network = {
     enable = true;
+    wait-online.enable = true;
     networks."10-eth0" = {
       matchConfig.Name = "eth0";
       address = [ "192.168.122.100/24" ];
@@ -25,6 +26,8 @@
       linkConfig.RequiredForOnline = "routable";
     };
   };
+  # Need network-online for podman-user-wait-network-online.service
+  systemd.targets.network-online.wantedBy = [ "multi-user.target" ];
 
   users.mutableUsers = false;
 
@@ -36,5 +39,11 @@
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPevSDBLs3jQWYE8sq2Dx6S2qQ4VzpKn5RvS1zXkGfiW wcliaw610@gmail.com"
     ];
+
+    # required for rootless container w multiple users
+    autoSubUidGidRange = true;
   };
+
+  # to enable podman & podman systemd generator
+  # virtualisation.quadlet.enable = true;
 }
