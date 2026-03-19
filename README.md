@@ -17,10 +17,10 @@ My NixOS and Home-Manager Configs
 ## Hosts
 | Name    | Hardware   | Type | Status | Note |
 |-----|----|----|----|---|
-|guinea|QEMU/KVM|VM|🚧|Used to build this config.|
-|barrybenson|Beelink Mini PC|server|📝|Homeserver, headless and mostly running containers.|
-|??|Framework Laptop 13 (Ryzen AI 5 340)|laptop|📝|Plan to run hyprland. Currently running Fedora Gnome.|
-|louisxvi|Macbook Air M1|laptop|📝|Broke the screen so now it's running "headless". Plan to test Asahi with NixOSl
+|guinea|QEMU/KVM|VM|🚧|Used to build this config. Currently on theseus.|
+|barrybenson|Beelink Mini PC (Ryzen 7 5700U)|server|📝|Homeserver, headless and mostly running containers.|
+|theseus|Framework Laptop 13 (Ryzen AI 5 340)|laptop|📝|Plan to run hyprland. Currently running Fedora Gnome.|
+|louisxvi|Macbook Air M1|laptop|📝|Broke the screen so now it's running "headless". Plan to test Asahi with NixOS.|
 
 ## Project Location in System
 For each user of NixOS/non-NixOS machines who can edit this repository, it is required that the project is cloned to `~/nix-config`. This allows symlinking out of store files in home-manager modules to work correctly, and sidestep file permission issues.
