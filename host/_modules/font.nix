@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ lib, pkgs, aln, ... }:
 
-{
+lib.optionalAttrs (aln.ctx.host.is.gui) {
   fonts = {
     # enable if needing other languages
     #enableDefaultPackages = true;
