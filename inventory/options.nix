@@ -17,6 +17,12 @@ let
         type = lib.types.listOf lib.types.str;
         default = [ ];
       };
+      can = {
+        deploy_nix_config = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+        };
+      };
     };
   });
 in 

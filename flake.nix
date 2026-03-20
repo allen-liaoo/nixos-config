@@ -52,6 +52,7 @@
 
             quadlet-nix.homeManagerModules.quadlet
             sops-nix.homeManagerModules.sops
+            vscode-server.nixosModules.home
           ];
         };
       }) inventory.userHostPairs
@@ -97,5 +98,8 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
+    vscode-server.inputs.nixpkgs.follows = "nixpkgs";
   };
 }

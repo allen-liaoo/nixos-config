@@ -1,15 +1,6 @@
 { lib, pkgs, aln, ... }:
 
 {
-  imports = [
-    ./_modules/sops.nix
-    ./_modules/ssh.nix
-    ./_modules/xdg.nix
-
-    ./_modules/term
-    ./_modules/shell
-  ];
-
   programs.home-manager.enable = true;
 
   home.username = aln.ctx.user.name;

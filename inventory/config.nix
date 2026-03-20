@@ -16,6 +16,7 @@
     # vm user
     pig = {
       name = "pig";
+      can.deploy_nix_config = true;
     };
   };
 }
