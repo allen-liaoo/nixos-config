@@ -38,6 +38,11 @@ fl-meta:
 fl-check:
     nix {{nix_flags}} flake check
 
+# Enter dev shell
+[group("utility")]
+dev:
+    nix {{nix_flags}} develop
+
 # Collect Nix garbage
 [group("utility")]
 gc:
