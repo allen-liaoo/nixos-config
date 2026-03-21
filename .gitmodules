@@ -1,0 +1,3 @@
+[submodule "home/_modules/services/nginx/blog"]
+	path = home/_modules/services/nginx/blog
+	url = https://github.com/allen-liaoo/alsblog.git

@@ -3,6 +3,7 @@
 let
   name = "nginx";
   volume_name = name + "_logs";
+  pwdOutOfStore = aln.lib.outOfStoreRelToRoot config.home.homeDirectory ./.;
   cert_dir = "/var/tmp/cert";
   reload_cert_name = "${name}_reload_cert";
 in
@@ -26,6 +27,7 @@ in
           "${sites}:/etc/nginx/sites:ro"
           "${snippets}:/etc/nginx/snippets:ro"
           "${cert_dir}:/etc/letsencrypt:ro"
+          "${pwdOutOfStore}/blog_build:/usr/share/nginx/blog:ro"
           "${volumes.${volume_name}.ref}:/var/logs/nginx:rw"
         ];
   
@@ -34,6 +36,19 @@ in
         healthStartPeriod = "1m";
       };
       serviceConfig = {
+        # Check if blog files exists, if not, build it
+        ExecStartPre = let
+          buildBlog = pkgs.writeShellApplication {
+            name = "build-alsblog";
+            runtimeInputs = [ pkgs.git pkgs.hugo ];
+            text = ''
+              if [ ! -d ${pwdOutOfStore}/blog_build ]; then
+                git -C ${pwdOutOfStore}/blog pull
+                hugo --source=${pwdOutOfStore}/blog --destination=${pwdOutOfStore}/blog_build --gc
+              fi
+            '';
+          };
+        in "${buildBlog}/bin/${buildBlog.name}";
         # Check nginx config then reload
         ExecReload = "podman exec nginx sh -c 'nginx -t && nginx -s reload'";
       };
