@@ -1,6 +1,6 @@
 current_hostname := `hostname -s`
 current_user := `whoami`
-nix_config_path := "$HOME/nix-config"
+nix_config_path := justfile_directory()
 host_key_path := env_var_or_default("HOST_KEY_PATH", "/etc/ssh/ssh_host_ed25519_key")
 nix_flags := "--extra-experimental-features 'nix-command flakes pipe-operators'"
 
@@ -27,6 +27,13 @@ hm-switch user=current_user host=current_hostname:
 [group("update")]
 fl-update:
     nix {{nix_flags}} flake update
+
+[group("update")]
+sops-rekey:
+    cd {{nix_config_path}}/secrets && nix {{nix_flags}} develop --command bash -c \
+    'for file in $(find . \( -name "*.yaml" -o -name "*.json" -o -name "*.env" \)); do \
+      sops updatekeys $file; \
+    done'
 
 # check the flake for errors
 [group("utility")]
