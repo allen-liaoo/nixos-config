@@ -28,6 +28,13 @@
         # default_open = [{ run = "xdg-open \"$@\""; orphan = true; }];
       #};
     };
+
+    theme = {
+      flavor.dark = "tokyo-night";
+    };
+    flavors = {
+      tokyo-night = ./tokyo-night.yazi;
+    };
   };
   # TODO: for wayland with alacritty, need ueberzugpp installed
 }
