@@ -9,7 +9,10 @@
   fileSystems."/mnt/btrfsroot" = {
     device = "/dev/disk/by-label/btrfsroot"; # stable across reboots/renames
     fsType = "btrfs";
-    options = [ "subvol=/" "noatime" "compress=zstd" ];
+    options = [ 
+      "subvol=/" "noatime" "compress=zstd"
+      "nofail" # dont block boot if this fails
+    ];
   };
 
   # automatic snapshots
