@@ -23,5 +23,5 @@ creation_rules:
   age: [*sops_admin]
 - path_regex: secrets/user/pig+
   age: [*pig, *sops_admin]
-- path_regex: secrets/authelia_users.yaml
+- path_regex: secrets/services/+
   age: [*pig, *sops_admin]
