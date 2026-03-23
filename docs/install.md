@@ -1,5 +1,6 @@
 Assuming that the host machine is booted with NixOS minimal ISO, and an admin machine with access to this repository and can edit secrets is accompanying the host. Essentially, what is needed to bootstrap a host is (a) a local copy of this repository with host-specific configs, and (b) host ssh keys, which are used to decrypt secrets.
 
+## NixOS Install
 1. (admin) Setup configs by creating `/host/<hostname>/{disko,configuration,default}.nix`
 2. Gain SSH access to host from admin machine  
     a. (host) Check ip with `ip a`  
@@ -7,7 +8,7 @@ Assuming that the host machine is booted with NixOS minimal ISO, and an admin ma
     c. SSH in: `ssh nixos@<ip>`
 3. (host) Setup temporary git repository
 ```
-git clone https://github.com/allen-liaoo/nix-config.git
+git clone --recurse-submodules https://github.com/allen-liaoo/nix-config.git
 cd nix-config
 nix-shell -p just
 ```
@@ -43,3 +44,14 @@ just os-install <hostname>
 sudo reboot now
 ```
 
+## Home Manger Install (On NixOS)
+After reboot, the users with password should be created. We just need to install their home manager modules
+1. Clone repository
+2. Switch home manager
+```
+just hm-switch
+```
+3. Switch repository to ssh
+```
+just repo-switch-ssh
+```

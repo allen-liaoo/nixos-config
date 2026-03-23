@@ -52,7 +52,6 @@
           modules = with inputs; [
             ./home/${userName}
 
-            impermanence.homeManagerModules.impermanence
             quadlet-nix.homeManagerModules.quadlet
             sops-nix.homeManagerModules.sops
             vscode-server.nixosModules.home
