@@ -1,14 +1,17 @@
 { lib, aln, ... }:
 
-let 
+# NOTE:
+# Impermanence only wipes the root subvolume on boot,
+# any other top level subvolumes (declared in disko.nix) will persist
+# - If data is large and noisy, put it in its own subvolume (i.e. @containers, @snapshots)
+# - Otherwise, if it is meaningful for system state, put in root volume and persist (i.e. /etc/ssh, /var/lib/nixos)
+let
   disk_root = "btrfsroot";
 in 
 lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
   # Need to mark all btrfs subvolumes who are source or target of persistence bind mounts as neededForBoot
   # Otherwiswe there will be no subvolume to bind mount from/to
   fileSystems."/persist".neededForBoot = true;
-  fileSystems."/var/lib/containers".neededForBoot = true;
-  fileSystems."/home".neededForBoot = true;
 
   #  Reset root subvolume on boot
   boot.initrd.postResumeCommands = lib.mkAfter ''
@@ -43,6 +46,7 @@ lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
     # Now NixOS mounts this fresh /root subvolume as /
   '';
 
+  # below paths shoud only contain data that are under root subvolume
   environment.persistence."/persist" = {
     enable = true;
     hideMounts = true;
@@ -56,7 +60,7 @@ lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
 
       "/home" # TODO: REMOVE
     ] ++ lib.optionals (aln.ctx.host.is.server) [
-      "/var/lib/containers" # podman
+      #"/var/lib/containers" # since this is on separate subvolume, no need to explicitly persist it as it wont be wiped
       "/var/lib/systemd/network" 
     ] ++ lib.optionals (!aln.ctx.host.is.server) [
       "/var/lib/bluetooth"

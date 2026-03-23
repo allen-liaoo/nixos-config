@@ -26,16 +26,12 @@
               type = "btrfs";
               extraArgs = [ 
                 "-f" # force overwrite
-                "-L" "btrfsroot" # btrfs partition label used by btrbk
+                "-L" "btrfsroot" # btrfs partition label used by impermanence and btrbk
               ];
               subvolumes = {
                 "@" = {
                   mountpoint = "/";
                   mountOptions = [ "compress=zstd" "noatime" ]; 
-                };
-                "@home" = {
-                  mountpoint = "/home";
-                  mountOptions = [ "compress=zstd" "noatime" ];
                 };
                 "@nix" = {
                   mountpoint = "/nix";

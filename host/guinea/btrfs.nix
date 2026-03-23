@@ -1,6 +1,9 @@
 # For btrfs subvolume declarations, see disko.nix
 { lib, aln, ... }:
 
+let
+  disk_root = "btrfsroot";
+in 
 {
   boot.tmp.useTmpfs = true;
   zramSwap = {
@@ -10,8 +13,8 @@
   };
 
   # mount bbtrfs partition for btrbk
-  fileSystems."/mnt/btrfsroot" = {
-    device = "/dev/disk/by-label/btrfsroot"; # stable across reboots/renames
+  fileSystems."/mnt/${disk_root}" = {
+    device = "/dev/disk/by-label/${disk_root}"; # stable across reboots/renames
     fsType = "btrfs";
     options = [ 
       "subvol=/" "noatime" "compress=zstd"
@@ -26,7 +29,7 @@
       snapshot_preserve_min = "2d"; # preserve all snapshots within this period no matter the amount
       snapshot_preserve = "7d 4w 6m"; # keep 7 daily, 4 weekly, 6 monthly
 
-      volume."/mnt/btrfsroot" = {
+      volume."/mnt/${disk_root}" = {
         snapshot_dir = "@snapshots";
         subvolume = {
           "@" = {};
