@@ -78,20 +78,21 @@ disko host:
 # Generate SSH host key, install to /mnt (and /mnt/persist if persist=true), and print age key
 [group("initial")]
 gen-install-host-key host persist:
-    @echo "Generating SSH host key..."
+    #!/usr/bin/env bash
+    set -euxo pipefail
+    echo "Generating SSH host key..."
     ssh-keygen -t ed25519 -f /tmp/ssh_host_ed25519_key -N "" -C "" -q
 
-    @echo "Installing key to /mnt/etc/ssh..."
-    mkdir -p /mnt/etc/ssh
-    install -m 600 /tmp/ssh_host_ed25519_key     /mnt/etc/ssh/ssh_host_ed25519_key
-    install -m 644 /tmp/ssh_host_ed25519_key.pub /mnt/etc/ssh/ssh_host_ed25519_key.pub
+    echo "Installing key to /mnt/etc/ssh..."
+    sudo mkdir -p /mnt/etc/ssh
+    sudo install -m 600 /tmp/ssh_host_ed25519_key     /mnt/etc/ssh/ssh_host_ed25519_key
+    sudo install -m 644 /tmp/ssh_host_ed25519_key.pub /mnt/etc/ssh/ssh_host_ed25519_key.pub
 
-    #!/usr/bin/env bash
     if [ "{{persist}}" = "true" ]; then
         echo "Installing key to /mnt/persist/etc/ssh..."
-        mkdir -p /mnt/persist/etc/ssh
-        install -m 600 /tmp/ssh_host_ed25519_key     /mnt/persist/etc/ssh/ssh_host_ed25519_key
-        install -m 644 /tmp/ssh_host_ed25519_key.pub /mnt/persist/etc/ssh/ssh_host_ed25519_key.pub
+        sudo mkdir -p /mnt/persist/etc/ssh
+        sudo install -m 600 /tmp/ssh_host_ed25519_key     /mnt/persist/etc/ssh/ssh_host_ed25519_key
+        sudo install -m 644 /tmp/ssh_host_ed25519_key.pub /mnt/persist/etc/ssh/ssh_host_ed25519_key.pub
     fi
 
     @echo "\nAge public key (add to .sops.yaml in machine with sops admin key):"
