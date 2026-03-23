@@ -78,8 +78,8 @@ lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
 
     # persist specific directories of users using impermanence
     users = lib.mergeAttrsList (map (user: {
-      ${user.name} = {
-        directories = lib.optionals (user.hasTags [ "impermanent" ]) [
+      ${user.name} = lib.optionalAttrs (user.hasTags [ "impermanent" ]) {
+        directories = [
             { directory = ".ssh"; mode = "0700"; }
             { directory = ".config/sops"; mode = "0700"; }
             "nix-config"
