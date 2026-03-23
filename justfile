@@ -98,6 +98,12 @@ gen-install-host-key host persist:
     echo "\nAge public key (add to .sops.yaml in machine with sops admin key):"
     nix-shell -p ssh-to-age --run 'cat /tmp/ssh_host_ed25519_key.pub | ssh-to-age'
 
+# Generate hardware configuration
+[group("initial")]
+gen-hardware-config:
+    sudo nixos-generate-config --no-filesystems --root /mnt --dir {{dir}}
+    @echo "Hardware configuration generated at {{dir}}/hardware-configuration.nix. Copy it to remote, commit, and push to apply it to the flake."
+
 # Install NixOS using the specified hostname
 [group("initial")]
 os-install host:
@@ -106,15 +112,6 @@ os-install host:
         --flake "{{dir}}#{{host}}" \
         --root /mnt
     @echo "NixOS installed. Please reboot, clone repository, and run 'just os-setup' to use new configuration."
-
-# Link config, generate hardware-configuration.nix, and apply configs 
-[group("initial")]
-os-setup host:
-    @echo "Linking {{dir}} to /etc/nixos..."
-    sudo ln -s {{dir}} /etc/nixos
-    @echo "Adding hardware-configuration.nix... remember to commit it"
-    sudo nixos-generate-config --no-filesystems --root /mnt --dir {{dir}}
-    just os-switch {{host}}
 
 # Switch current repository remote url (Only run after home-manager setup)
 [group("initial")]

@@ -33,7 +33,11 @@ just sops-rekey
 git push
 ```
 7. (host) Pull secret changes
-8. Install and reboot
+8. Generate hardware configuration on host, copy it to admin, push on admin, and pull on host
+```
+just gen-hardware-config
+```
+9. Install and reboot
 ```
 just os-install <hostname>
 sudo reboot now
