@@ -1,4 +1,4 @@
-{...}:
+{ aln, ...}:
 {
   services.openssh = {
     enable = true;
@@ -12,7 +12,7 @@
     # host will be able to decrypt user age keys and other host-level secrets
     hostKeys = [
       {
-        path = "/etc/ssh/ssh_host_ed25519_key";
+        path = if aln.ctx.host.hasTags [ "impermanent" ] then "/persist/etc/ssh/ssh_host_ed25519_key" else "/etc/ssh/ssh_host_ed25519_key";
         type = "ed25519";
       }
     ];

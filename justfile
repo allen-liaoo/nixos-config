@@ -16,7 +16,7 @@ default:
 [group("update")]
 os-switch host=current_hostname:
     @echo "Running for host: {{host}}"
-    sudo {{nix_config}}
+    sudo {{nix_config}} \
     nixos-rebuild switch --flake {{dir}}{{nix_query_param}}#{{host}}
 
 # Rebuild a Home Manager config
