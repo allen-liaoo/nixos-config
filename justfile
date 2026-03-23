@@ -1,8 +1,7 @@
 current_hostname := `hostname -s`
 current_user := `whoami`
-nix_config_path := justfile_directory() 
-host_key_path := env_var_or_default("HOST_KEY_PATH", "/etc/ssh/ssh_host_ed25519_key")
 nix_config := "NIX_CONFIG=\"extra-experimental-features = nix-command flakes pipe-operators\"" # setting this as merely a flag does not work; need the config to persist on child processes
+host_key_path := env_var_or_default("HOST_KEY_PATH", "/etc/ssh/ssh_host_ed25519_key")
 nix_query_param := "?submodules=1"
 
 dir := justfile_directory()
@@ -32,14 +31,21 @@ fl-update:
     {{nix_config}} \
     nix flake update
 
+# Reencrypt sops secrets with new age keys
 [group("update")]
 sops-rekey:
-    cd {{nix_config_path}}/secrets && \
+    cd {{dir}}/secrets && \
     {{nix_config}} \
     nix develop --command bash -c \
     'for file in $(find . \( -name "*.yaml" -o -name "*.json" -o -name "*.env" \)); do \
       sops updatekeys $file; \
     done'
+
+# run nix command with experimental features enabled
+[group("utility")]
+nix +cmd:
+    {{nix_config}} \
+    nix {{cmd}}
 
 # check the flake for errors
 [group("utility")]
@@ -85,14 +91,14 @@ gen-install-host-key host persist:
 
     echo "Installing key to /mnt/etc/ssh..."
     sudo mkdir -p /mnt/etc/ssh
-    sudo install -m 600 /tmp/ssh_host_ed25519_key     /mnt/etc/ssh/ssh_host_ed25519_key
-    sudo install -m 644 /tmp/ssh_host_ed25519_key.pub /mnt/etc/ssh/ssh_host_ed25519_key.pub
+    sudo install -m 600 /tmp/ssh_host_ed25519_key     /mnt/{{host_key_path}}
+    sudo install -m 644 /tmp/ssh_host_ed25519_key.pub /mnt/{{host_key_path}}.pub
 
     if [ "{{persist}}" = "true" ]; then
         echo "Installing key to /mnt/persist/etc/ssh..."
         sudo mkdir -p /mnt/persist/etc/ssh
-        sudo install -m 600 /tmp/ssh_host_ed25519_key     /mnt/persist/etc/ssh/ssh_host_ed25519_key
-        sudo install -m 644 /tmp/ssh_host_ed25519_key.pub /mnt/persist/etc/ssh/ssh_host_ed25519_key.pub
+        sudo install -m 600 /tmp/ssh_host_ed25519_key     /mnt/persist/{{host_key_path}}
+        sudo install -m 644 /tmp/ssh_host_ed25519_key.pub /mnt/persist/{{host_key_path}}.pub
     fi
 
     echo "\nAge public key (add to .sops.yaml in machine with sops admin key):"
@@ -117,5 +123,5 @@ os-install host:
 # Switch current repository remote url (Only run after home-manager setup)
 [group("initial")]
 repo-switch-ssh:
-    git --git-dir {{nix_config_path}}/.git remote set-url origin git@gh_nix_config:allen-liaoo/nix-config.git
+    git --git-dir {{dir}}/.git remote set-url origin git@gh_nix_config:allen-liaoo/nix-config.git
 # Note: See hm module ssh.nix for host name gh_nix_config

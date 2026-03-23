@@ -90,8 +90,8 @@
 
     impermanence = {
       url = "github:nix-community/impermanence";
-      inputs.nixpkgs.follows = ""; # dependency not needed for use
-      inputs.home-manager.follows = "";
+      inputs.nixpkgs.follows = "home-manager"; # dependency not needed for use
+      inputs.home-manager.follows = "nixpkgs";
     };
 
     nixpkgs = {

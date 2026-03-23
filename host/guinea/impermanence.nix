@@ -7,6 +7,7 @@
 # - Otherwise, if it is meaningful for system state, put in root volume and persist (i.e. /etc/ssh, /var/lib/nixos)
 let
   disk_root = "btrfsroot";
+  root_subvol = "@";
 in 
 lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
   # Need to mark all btrfs subvolumes who are source or target of persistence bind mounts as neededForBoot
@@ -17,13 +18,13 @@ lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
   boot.initrd.postResumeCommands = lib.mkAfter ''
     # Mount the raw btrfs top-level somewhere temporary
     mkdir /btrfs_tmp
-    mount /dev/disk/by-partlabel/${disk_root} /btrfs_tmp
+    mount /dev/disk/by-label/${disk_root} /btrfs_tmp
 
     # If a previous root subvolume exists, archive it with a timestamp
-    if [[ -e /btrfs_tmp/root ]]; then
+    if [[ -e /btrfs_tmp/${root_subvol} ]]; then
       mkdir -p /btrfs_tmp/old_roots
-      timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
-      mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
+      timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/${root_subvol})" "+%Y-%m-%-d_%H:%M:%S")
+      mv /btrfs_tmp/${root_subvol} "/btrfs_tmp/old_roots/$timestamp"
     fi
 
     # Delete archived roots older than 30 days
@@ -41,7 +42,7 @@ lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
     done
 
     # Create a fresh empty root subvolume for this boot
-    btrfs subvolume create /btrfs_tmp/root
+    btrfs subvolume create /btrfs_tmp/${root_subvol}
     umount /btrfs_tmp
     # Now NixOS mounts this fresh /root subvolume as /
   '';
