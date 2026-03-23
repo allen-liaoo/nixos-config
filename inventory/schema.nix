@@ -20,7 +20,7 @@ let
         default = "nobody";
       };
       tags = lib.mkOption {
-        type = lib.types.listOf (lib.types.enum userTags);
+        type = lib.types.listOf userTags;
         default = [ ];
       };
       hasTags = lib.mkOption {
