@@ -17,7 +17,10 @@ This disables secure boot and pins VM mac addr. I use sudo to skip manual setup 
 ```
 sudo virsh destroy guinea ; sudo virsh undefine guinea --remove-all-storage --nvram
 ```
+3. Install OS and reboot (see install doc)
+4. SSH into VM once OS is installed (statically set to `192.168.122.100`)
 
+If SSH is not working:
 3. Make VM console temporarily accessible in host (run in VM console):
 ```
 sudo systemctl start serial-getty@ttyS0.service
@@ -26,9 +29,7 @@ sudo systemctl start serial-getty@ttyS0.service
 ```
 sudo virsh console guinea
 ```
-5. Manual setup (I have to set stty dimensions to prevent vanishing lines)
+I have to set stty dimensions to prevent vanishing lines:
 ```
-git clone https://github.com/allen-liaoo/nix-config.git ; stty rows 40 cols 181 ; export host=guinea 
+stty rows 40 cols 181
 ```
-6. Install OS and reboot (see install doc)
-7. SSH into VM once OS is installed (statically set to `192.168.122.100`)

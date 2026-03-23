@@ -64,9 +64,11 @@ lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
       "/var/lib/bluetooth"
       "/etc/NetworkManager/system-connections"
       "/var/lib/cups" # printer
-
-    # always persist these user dir
-    ] ;
+    ] ++
+    # for each user NOT using impermanence, persist their home directory
+    lib.concatMap (user: lib.optionals (!user.hasTags [ "impermanent" ]) [
+      { directory = "/home/${user.name}"; user = user.name; mode = "0755"; }
+    ]) aln.ctx.host.users;
 
     files = [
       "/etc/machine-id"  # stable machine identity
@@ -74,14 +76,13 @@ lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
       "/etc/ssh/ssh_host_ed25519_key.pub" # these are the only files necessary to persist on initial install, the rest of the system can be generated from the config with these keys
     ];
 
+    # persist specific directories of users using impermanence
     users = lib.mergeAttrsList (map (user: {
       ${user.name} = {
-        directories = if (!user.hasTags [ "impermanent" ]) then [
-          "/home/${user.name}"
-          ] else [
-            { directory = "/home/${user.name}/.ssh"; mode = "0700"; }
-            { directory = "/home/${user.name}/.config/sops"; mode = "0700"; }
-            "/home/${user.name}/nix-config"
+        directories = lib.optionals (user.hasTags [ "impermanent" ]) [
+            { directory = ".ssh"; mode = "0700"; }
+            { directory = ".config/sops"; mode = "0700"; }
+            "nix-config"
           ];
         files = [];
       };
