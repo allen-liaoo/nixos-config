@@ -1,5 +1,5 @@
 [submodule "home/_modules/services/nginx/blog"]
-	path = home/_modules/services/nginx/blog
+	path = host/_modules/services/nginx/blog
 	url = https://github.com/allen-liaoo/alsblog.git
 [submodule "home/_modules/term/yazi/tokyo-night.yazi"]
 	path = home/_modules/term/yazi/tokyo-night.yazi

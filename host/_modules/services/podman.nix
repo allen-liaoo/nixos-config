@@ -1,6 +1,13 @@
 { ... }:
 
 {
+  users.groups.containers = {};
+  users.users.containers = {
+    isSystemUser = true;
+    group = "containers";
+    autoSubUidGidRange = true;
+  };
+
   # quadlet-nix package
   virtualisation.quadlet = {
     enable = true;
