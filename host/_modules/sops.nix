@@ -42,4 +42,14 @@
       }) aln.ctx.host.users)
     );
   };
+
+  # when sops-nix creates the user age key file along with its parent dirs on first boot,
+  # it acts as root, so the parent dirs are owned by root even if secret is owned by user
+  # to curcumvent that, we create directories if it is missing (d flag), and set correct file perms
+  systemd.tmpfiles.rules = lib.concatMap (user: [
+    "d /home/${user.name}/.config          0755 ${user.name} users -"
+    "d /home/${user.name}/.config/sops     0700 ${user.name} users -"
+    "d /home/${user.name}/.config/sops/age 0700 ${user.name} users -"
+  ]) aln.ctx.host.users;
+
 }
