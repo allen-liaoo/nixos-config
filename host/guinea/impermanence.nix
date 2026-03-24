@@ -13,6 +13,7 @@
 
 # sops-nix
 # sops-nix requires the ssh host keys to exist at boot to work. 
+# See end of this file
 let
   disk_root = "btrfsroot";
   root_subvol = "@";
@@ -66,10 +67,12 @@ lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
       "/var/log" # system logs
       "/var/lib/systemd/coredump" # crash dumps
       "/var/lib/systemd/timers"
-    ] ++ lib.optionals (aln.ctx.host.is.server) [
+    ] ++ 
+    lib.optionals (aln.ctx.host.is.server) [
       "/var/lib/systemd/network" 
       #"/var/lib/containers" # since this is on separate subvolume, no need to persist it as it wont be wiped
-    ] ++ lib.optionals (!aln.ctx.host.is.server) [
+    ] ++
+    lib.optionals (!aln.ctx.host.is.server) [
       "/var/lib/bluetooth"
       "/etc/NetworkManager/system-connections"
       "/var/lib/cups" # printer
@@ -85,7 +88,8 @@ lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
       # these are the only files necessary to persist on initial install,
       # the rest of the configs can be generated from the config with these keys
       "/etc/ssh/ssh_host_ed25519_key"
-      "/etc/ssh/ssh_host_ed25519_key.pub"     ];
+      "/etc/ssh/ssh_host_ed25519_key.pub"
+    ];
 
     # persist specific directories of users using impermanence
     users = lib.mergeAttrsList (map (user: {
@@ -99,4 +103,13 @@ lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
       };
     }) aln.ctx.host.users);
   };
+
+  # When using impermanence, the host key is stored in the persist volume
+  # when sops-nix tries to read it, so we need to point it to the new location
+  sops.age.sshKeyPaths = [
+    "/persist/etc/ssh/ssh_host_ed25519_key" 
+  ];
+  # We don't need to add /persist path to sshd's hostKeys generation because initial install
+  # takes care of generating the host keys in persist volume
+  # subsequent generation in /etc will be wiped and replaced by the one in persist on each boot
 }
