@@ -6,6 +6,7 @@ keys:
   - &allenl age16cn0jup2jdfejqxm0l60tkvtnd43t8aaqvs39qpy5q2nruvzu4jqvr8d7u
   - &pig age1ypf3q60pdwtj3j5c2zmd79z6ukwzlknm268gdkh3uj5mj89qyq7qw3pgmx
 - all: &all
+  - *allenl
   - *pig 
   - *guinea
   - *barrybenson
