@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ lib, config, pkgs, ... }:
 
 {
   networking.useNetworkd = true;
@@ -17,6 +17,7 @@
   systemd.targets.network-online.wantedBy = [ "multi-user.target" ];
 
   # wireguard tunnel to vps
+  environment.systemPackages = with pkgs; [ wireguard-tools ];
   systemd.network.networks."20-wg_vps" = {
     matchConfig.Name = "wg_vps";
     address = [ "10.0.0.2/24" ]; # this server's wg ip
@@ -49,5 +50,7 @@
 
   sops.secrets.wg_privkey = {
     key = "wg_privkey";
+    group = "systemd-network"; # ensure privkey readable by systemd-network
+    mode = "0440";
   };
 }
