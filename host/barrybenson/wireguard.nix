@@ -13,7 +13,8 @@
           endpoint = "74.208.158.11:51820";
           # set allowed ip to anything so any dst ip can be routed through tunnel
           # with Table = off, what is routed through is what is marked 51820
-          allowedIPs = [ "0.0.0.0/0" ];
+          #allowedIPs = [ "0.0.0.0/0" ];
+          allowedIPs = [ "10.0.0.1/32" ];
         }
       ];
     };
