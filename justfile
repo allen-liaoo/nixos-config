@@ -81,11 +81,11 @@ disko host:
         --flake "{{dir}}#{{host}}"
     @lsblk
 
-# Generate SSH host key, install to /mnt (and /mnt/persist if persist=true), and print age key
+# Generate SSH host key, install to /mnt (and /mnt/persist if impermanent=true), and print age key
 [group("initial")]
-gen-install-host-key host persist:
+gen-install-host-key host impermanent:
     #!/usr/bin/env bash
-    set -euxo pipefail
+    set -euo pipefail
     echo "Generating SSH host key..."
     ssh-keygen -t ed25519 -f /tmp/ssh_host_ed25519_key -N "" -C "" -q
 
@@ -94,7 +94,7 @@ gen-install-host-key host persist:
     sudo install -m 600 /tmp/ssh_host_ed25519_key     /mnt/{{host_key_path}}
     sudo install -m 644 /tmp/ssh_host_ed25519_key.pub /mnt/{{host_key_path}}.pub
 
-    if [ "{{persist}}" = "true" ]; then
+    if [ "{{impermanent}}" = "true" ]; then
         echo "Installing key to /mnt/persist/etc/ssh..."
         sudo mkdir -p /mnt/persist/etc/ssh
         sudo install -m 600 /tmp/ssh_host_ed25519_key     /mnt/persist/{{host_key_path}}
