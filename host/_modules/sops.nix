@@ -8,7 +8,7 @@
     # USE STRINGS, DONT NOT USE PATHS (otherwise it gets written to nix store unencrypted)
     age.sshKeyPaths = [
       "/etc/ssh/ssh_host_ed25519_key" 
-    ];
+    ]; # see impermanence.nix for override
 
     secrets = {
       "nix_config_deploy" = {
@@ -29,7 +29,7 @@
           owner = user.name;
           mode = "0400";
           path = "/home/${user.name}/.config/sops/age/keys.txt";
-        };
+        }; # see impermanence.nix for overriding path
 
         # Add user password
         "passwd_${user.name}" = {

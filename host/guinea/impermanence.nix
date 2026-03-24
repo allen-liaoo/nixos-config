@@ -1,28 +1,21 @@
 { lib, aln, ... }:
 
+# CRITICAL ASSUMPTIONS OF THIS MODULE:
+# - Root of btrfs partition (not OS root) is labeled "btrfsroot"
+# - Root subvolume (mapped to /) is named "@"
+
+# Note:
 # Impermanence only wipes the root subvolume on boot,
 # any other top level subvolumes (declared in disko.nix) will persist
 # - If data is large and noisy, put it in its own subvolume (i.e. @containers, @snapshots)
 # - Otherwise, if it is meaningful for system state, put in root volume and persist (i.e. /etc/ssh, /var/lib/nixos)
-
-# BTRFS:
-# Impermanence assumes the btrfs structure:
-# - Root btrfs volume (not OS root) is labeled "btrfsroot"
-# - Root subvolume (mapped to /) is named "@"
-# - All subvolumes one wants to persist does not have the root subvolume @ as its parent (ok: another top level subvolume)
-
-# sops-nix
-# sops-nix requires the ssh host keys to exist at boot to work. 
-# See end of this file
+# In other words, all subvolumes one wants to persist does not have the root subvolume @ as its parent (ok: another top level subvolume)
+# Special handling of sops-nix: See end of file
 let
   disk_root = "btrfsroot";
   root_subvol = "@";
 in 
 lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
-  # Need to mark all btrfs subvolumes who are source or target of persistence bind mounts as neededForBoot
-  # Otherwiswe there will be no subvolume to bind mount from/to
-  fileSystems."/persist".neededForBoot = true;
-
   #  Reset root subvolume on boot
   boot.initrd.postResumeCommands = lib.mkAfter ''
     # Mount the raw btrfs top-level somewhere temporary
@@ -104,12 +97,27 @@ lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
     }) aln.ctx.host.users);
   };
 
-  # When using impermanence, the host key is stored in the persist volume
-  # when sops-nix tries to read it, so we need to point it to the new location
+  # Need to mark all btrfs subvolumes who are source or target of persistence bind mounts as neededForBoot
+  # Otherwiswe there will be no subvolume to bind mount from/to
+  fileSystems."/persist".neededForBoot = true;
+
+  # when sops-nix tries to read the host key, it is still stored in the persist volume
+  # so we need to point it to the new location
   sops.age.sshKeyPaths = [
     "/persist/etc/ssh/ssh_host_ed25519_key" 
   ];
-  # We don't need to add /persist path to sshd's hostKeys generation because initial install
-  # takes care of generating the host keys in persist volume
+  # However: We don't need to add /persist path to ssh's hostKeys generation (sshd.nix) 
+  # because initial install takes care of generating the host keys in persist volume
   # subsequent generation in /etc will be wiped and replaced by the one in persist on each boot
+  
+  # user age keys was decrypted then wiped if stored in home dir, I think?
+  # so we explicitly point to persist location, then have impermanence mount the age key
+  sops.secrets = lib.mergeAttrsList (map (user: {
+    "age_key_${user.name}" = {
+      # key = "age/${user.name}";
+      # owner = user.name;
+      # mode = "0400";
+      path = lib.mkForce "/persist/home/${user.name}/.config/sops/age/keys.txt";
+    };
+  }) aln.ctx.host.users);
 }
