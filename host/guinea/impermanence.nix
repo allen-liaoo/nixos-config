@@ -1,10 +1,18 @@
 { lib, aln, ... }:
 
-# NOTE:
 # Impermanence only wipes the root subvolume on boot,
 # any other top level subvolumes (declared in disko.nix) will persist
 # - If data is large and noisy, put it in its own subvolume (i.e. @containers, @snapshots)
 # - Otherwise, if it is meaningful for system state, put in root volume and persist (i.e. /etc/ssh, /var/lib/nixos)
+
+# BTRFS:
+# Impermanence assumes the btrfs structure:
+# - Root btrfs volume (not OS root) is labeled "btrfsroot"
+# - Root subvolume (mapped to /) is named "@"
+# - All subvolumes one wants to persist does not have the root subvolume @ as its parent (ok: another top level subvolume)
+
+# sops-nix
+# sops-nix requires the ssh host keys to exist at boot to work. 
 let
   disk_root = "btrfsroot";
   root_subvol = "@";
@@ -73,9 +81,11 @@ lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
 
     files = [
       "/etc/machine-id"  # stable machine identity
-      "/etc/ssh/ssh_host_ed25519_key" # necessary for sops
-      "/etc/ssh/ssh_host_ed25519_key.pub" # these are the only files necessary to persist on initial install, the rest of the system can be generated from the config with these keys
-    ];
+
+      # these are the only files necessary to persist on initial install,
+      # the rest of the configs can be generated from the config with these keys
+      "/etc/ssh/ssh_host_ed25519_key"
+      "/etc/ssh/ssh_host_ed25519_key.pub"     ];
 
     # persist specific directories of users using impermanence
     users = lib.mergeAttrsList (map (user: {
