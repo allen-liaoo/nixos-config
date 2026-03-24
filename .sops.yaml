@@ -1,6 +1,6 @@
 keys:
 - hosts: &hosts
-  - &guinea age1cypnm827hs9xfwtv8l0r6qf0em94z7r7kdlnn779p0p9ke20894q37e7mu
+  - &guinea age1jjxwahpdshs7qvdhtc9dtkyvt99nxldc09zk8ykzf2yh4avu5qgq99t7x9
 - users: &users
   - &pig age1ypf3q60pdwtj3j5c2zmd79z6ukwzlknm268gdkh3uj5mj89qyq7qw3pgmx
 - all: &all
