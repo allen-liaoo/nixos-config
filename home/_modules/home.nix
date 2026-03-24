@@ -6,9 +6,7 @@
   home.username = aln.ctx.user.name;
   home.homeDirectory = "/home/${aln.ctx.user.name}";
 
-  home.packages = with pkgs; [
-    fastfetch
-  ];
+  home.packages = with pkgs; [ ];
 
   nixpkgs.config.allowUnfree = true;
 
