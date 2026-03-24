@@ -18,14 +18,6 @@
     # memoryPercent defaults to 50
   };
 
-  networking.useNetworkd = true;
-  systemd.network = {
-    enable = true;
-    wait-online.enable = true;
-  };
-  # Need network-online for podman-user-wait-network-online.service
-  systemd.targets.network-online.wantedBy = [ "multi-user.target" ];
-
   users.users.${aln.inventory.users.allenl.name} = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
