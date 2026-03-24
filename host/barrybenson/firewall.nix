@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 
 # TODO: enable
 lib.optionalAttrs false {
