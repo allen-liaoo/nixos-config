@@ -63,8 +63,8 @@ lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
             "nix-config"
 
             # Supposedly these saves home manger state
-            ".local/share/state/nix"
-            ".local/share/state/home-manager"
+            ".local/state/nix"
+            ".local/state/home-manager"
           ];
         files = [];
       };
