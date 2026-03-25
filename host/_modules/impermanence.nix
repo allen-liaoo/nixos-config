@@ -3,11 +3,12 @@
 # CRITICAL ASSUMPTIONS OF THIS MODULE:
 # - Root of btrfs partition (not OS root) is labeled "btrfsroot"
 # - Root subvolume (mapped to /) is named "@"
+# - /nix is in a toplevel subvolume
 
 # Note:
 # Impermanence only wipes the root subvolume on boot,
 # any other top level subvolumes (declared in disko.nix) will persist
-# - If data is large and noisy, put it in its own subvolume (i.e. @containers, @snapshots)
+# - If data is large and noisy, put it in its own top level subvolume (i.e. @containers, @snapshots)
 # - Otherwise, if it is meaningful for system state, put in root volume and persist (i.e. /etc/ssh, /var/lib/nixos)
 # In other words, all subvolumes one wants to persist does not have the root subvolume @ as its parent (ok: another top level subvolume)
 # Special handling of sops-nix: See end of file
