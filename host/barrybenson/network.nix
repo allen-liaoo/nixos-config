@@ -81,7 +81,7 @@ in
     content = ''
       chain prerouting {
         type filter hook prerouting priority -150; policy accept;
-        iifname "wg0" ct state new ct mark set ${toString wg_mark} # mark conn if conn new
+        iifname "${wg_intf}" ct state new ct mark set ${toString wg_mark} # mark conn if conn new
       }
 
       chain output {
@@ -99,7 +99,7 @@ in
     wireguardConfig = {
       PrivateKeyFile = config.sops.secrets.wg_privkey.path;
       RouteTable = "off"; # dont configure route for outgoing packets destined for AllowedIPs
-      # Don't configure FirewallMark (mark out outgoing packets) 
+      # Don't configure FirewallMark (which marks out outgoing packets) 
     };
     wireguardPeers = [{
       # vps

@@ -28,7 +28,7 @@ in
         subvolume = lib.optionalAttrs aln.ctx.host.is.server {
           # servers use impermance, only need to snapshot containers
           "@containers" = {};
-        } // (lib.optionalAttrs aln.ctx.host.is.server) {
+        } // (lib.optionalAttrs (!aln.ctx.host.is.server)) {
           # nonservers - no impermanence 
           "@" = {};
           "@home" = {};
