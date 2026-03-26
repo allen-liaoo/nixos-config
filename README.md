@@ -45,6 +45,7 @@ This allows symlinking out of store files in home-manager modules to work correc
 |barrybenson|Beelink Mini PC (Ryzen 7 5700U)|server|Headless homeserver mostly running containers. Installed NixOS, setup in progress.|🚧|
 |theseus|Framework Laptop 13 (Ryzen AI 5 340)|laptop|Plan to run hyprland. Currently on Fedora Gnome.|📝|
 |louisxvi|Macbook Air M1|laptop|Broke the screen so now it's running "headless". Plan to test Asahi with NixOS. Currently retired.|📝|
+|ionobro|IONOS VPS (1G RAM, 10G Storage)|VM|Acts as the router for barrybenson who is behind CGNAT. I need a minimal NixOS install to run wireguard + nftables.|📝|
 |guinea|QEMU/KVM|VM|Used to build this config. Currently on theseus.|🚧|
 
 🚧 - In progress
