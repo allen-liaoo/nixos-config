@@ -11,7 +11,6 @@ let
   ];
   userTags = lib.types.enum [
     "sudoer"
-    "impermanent"
   ];
   userType = lib.types.submodule ({config,...}: {
     options = {

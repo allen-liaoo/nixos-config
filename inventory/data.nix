@@ -12,7 +12,7 @@ let
     # vm user
     pig = {
       name = "pig";
-      tags = [ "sudoer" "impermanent" ];
+      tags = [ "sudoer" ];
       can.deployNixConfig = true;
     };
   };
