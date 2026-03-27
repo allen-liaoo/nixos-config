@@ -31,7 +31,7 @@ fl-update:
     {{nix_config}} \
     nix flake update
 
-# Reencrypt sops secrets with new age keys
+# Re-encrypt sops secrets with new age keys
 [group("update")]
 sops-rekey:
     cd {{dir}}/secrets && \
@@ -41,18 +41,18 @@ sops-rekey:
       sops updatekeys $file; \
     done'
 
-# run nix command with experimental features enabled
+# Run nix command with experimental features enabled
 [group("utility")]
 nix +cmd:
     {{nix_config}} \
     nix {{cmd}}
 
-# check the flake for errors
+# Check the flake's metadata
 [group("utility")]
 fl-meta:
     nix flake metadata .
 
-# check the flake for errors
+# Check the flake for errors
 [group("utility")]
 fl-check: 
     {{nix_config}} \
@@ -77,7 +77,7 @@ hm-gc:
 # Initial targets
 # Dont infer host/user when config has not been applied
 
-# Run disko to format and mount disks
+# Format, partition, and mount disks
 [group("initial")]
 disko host:
     sudo {{nix_config}} \
@@ -86,7 +86,7 @@ disko host:
         --flake "{{dir}}#{{host}}"
     @lsblk
 
-# Generate SSH host key, install to /mnt, and print age key
+# Generate SSH host key, install them, and print host age key (for secrets encryption)
 [group("initial")]
 gen-install-host-key host:
     #!/usr/bin/env bash
@@ -125,7 +125,7 @@ os-install host impermanent:
     nixos-install --no-channel-copy --no-root-password \
         --flake "{{dir}}#{{host}}" \
         --root /mnt
-    echo "NixOS installed. Please reboot, clone repository, and run 'just os-setup' to use new configuration."
+    echo "NixOS installed. Please reboot."
 
 # Switch current repository remote url (Only run after home-manager setup)
 [group("initial")]
