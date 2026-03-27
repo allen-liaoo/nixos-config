@@ -124,18 +124,18 @@ lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
 
   # when sops-nix tries to read the host key, it is still stored in the persist volume
   # so we need to point it to the new location
-  sops.age.sshKeyPaths = [
-    "/persist/etc/ssh/ssh_host_ed25519_key" 
-  ];
+  #sops.age.sshKeyPaths = [
+    #"/persist/etc/ssh/ssh_host_ed25519_key" 
+  #];
   # However: We don't need to add /persist path to ssh's hostKeys generation (sshd.nix) 
   # because initial install takes care of generating the host keys in persist volume
   # subsequent generation in /etc will be wiped and replaced by the one in persist on each boot
   
   # user age keys was decrypted then wiped if stored in home dir, I think?
   # so we explicitly point to persist location, then have impermanence mount the age key
-  sops.secrets = lib.mergeAttrsList (map (user: {
-    "age_key_${user.name}" = {
-      path = lib.mkForce "/persist/home/${user.name}/.config/sops/age/keys.txt";
-    };
-  }) aln.ctx.host.users);
+  #sops.secrets = lib.mergeAttrsList (map (user: {
+    #"age_key_${user.name}" = {
+      #path = lib.mkForce "/persist/home/${user.name}/.config/sops/age/keys.txt";
+    #};
+  #}) aln.ctx.host.users);
 }
