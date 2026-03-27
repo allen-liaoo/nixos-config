@@ -83,7 +83,9 @@ lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
       wantedBy = [ "initrd.target" ]; # technically unnecessary as this is after sysroot.mount
       before = [
         "sysroot.mount" # before /sysroot is mounted so we can wipe
-        "sops-install-secrets.service" # technically unncessary as sops runs after sysinit.target, after initrd
+         # for some reason these are still necessary
+        "sops-install-secrets.service"
+        "sops-install-secrets-for-users.service"
       ];
       # need btrfs partition to be mounted
       after = [
