@@ -1,7 +1,7 @@
 keys:
 - hosts: &hosts
   - &barrybenson age1vp49j2ldya959hu5xvxl2j0sdwtduazhzm7naylkxvvc9ywth93s7h9zux
-  - &guinea age1jjxwahpdshs7qvdhtc9dtkyvt99nxldc09zk8ykzf2yh4avu5qgq99t7x9
+  - &guinea age1hwdz0a8uc6un69ratp3eed9z4xd5c7279khpy66d7tcw8nlpfpgs8wkp2r
 - users: &users
   - &allenl age16cn0jup2jdfejqxm0l60tkvtnd43t8aaqvs39qpy5q2nruvzu4jqvr8d7u
   - &pig age1ypf3q60pdwtj3j5c2zmd79z6ukwzlknm268gdkh3uj5mj89qyq7qw3pgmx
@@ -28,4 +28,4 @@ creation_rules:
 - path_regex: secrets/user/pig+
   age: [*pig, *sops_admin]
 - path_regex: secrets/services/+
-  age: [*barrybenson, *guinea, *sops_admin]
+  age: [*barrybenson, *sops_admin]
