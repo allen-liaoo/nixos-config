@@ -1,6 +1,6 @@
 { lib, aln, ... }:
 
-# Only run services on guinea
+# Only run services on barrybenson
 lib.optionalAttrs (builtins.elem aln.ctx.host.name [
   aln.inventory.hosts.barrybenson.name
 ]) {
