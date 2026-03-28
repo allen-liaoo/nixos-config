@@ -3,6 +3,7 @@
 let
   eth_intf = "enp1s0";
   wg_intf = "wg_vps";
+  podman_intf = "podman0";
   wg_mark = 51820;
   wg_table = 1000;
 in
@@ -22,52 +23,51 @@ in
   # Need network-online for podman-user-wait-network-online.service
   systemd.targets.network-online.wantedBy = [ "multi-user.target" ];
 
-  # firewall
+  # Firewall
   networking.firewall.enable = false; # use our own fw
   networking.nftables = {
     enable = true;
     checkRuleset = true;
     #flushRuleset = true; # do not flush, or podman's fw get flushed
-    tables = {
-      global = {
-        family = "inet";
-        content = ''
-          set WG_SUBNETS { # trusted ips
-              type ipv4_addr
-              flags interval;
-              elements = { 10.0.0.0/24, 10.0.10.0/24 }
-          }
-          chain wg_input {
-            tcp dport { 8080, 8443 } accept
-          }
-          chain input {
-            type filter hook input priority 0; policy drop;
-            ct state { established, related } accept
-            iif "lo" accept
-            ip protocol icmp limit rate 10/second accept
-            ip6 nexthdr icmpv6 limit rate 10/second accept
-            tcp dport 22 accept # ssh
-            iifname "${wg_intf}" ip saddr @WG_SUBNETS jump wg_input
-          }
-          chain forward {
-            type filter hook forward priority 0; policy drop;
-          }
-          chain output {
-            type filter hook output priority 0; policy accept;
-          }
-        '';
-      };
-      internal_redirect = {
-        family = "inet";
-        content = ''
-          chain prerouting {
-            type nat hook prerouting priority -100; policy accept;
-            tcp dport 80 counter dnat to :8080
-            tcp dport 443 counter dnat to :8443
-          };
-        '';
-      };
-    };
+  };
+  networking.nftables.tables.global = { # table for global firewall no matter the interface
+    family = "inet";
+    content = ''
+      chain input {
+        type filter hook input priority 30; policy drop;
+        ct state { established, related } accept
+        iif "lo" accept
+        ip protocol icmp limit rate 10/second accept
+        ip6 nexthdr icmpv6 limit rate 10/second accept
+        tcp dport 22 accept # ssh
+      }
+    '';
+  };
+
+  # Podman default bridge behavior with published port:
+  # - Ingress: in prerouting, dnat to podman0 interface and container ip based on port, hence packets go through forward hook
+  # - Egress: from podman0, masqueraded for egress traffic, or simply accepted for inter-container traffic
+  # So both inbound/outbound goes through prerouting -> forward -> postrouting
+  networking.nftables.tables.podman_global = {
+    family = "inet";
+    content = ''
+      set WG_SUBNETS { # trusted ips
+        type ipv4_addr
+        flags interval;
+        elements = { 10.0.0.0/24, 10.0.10.0/24 }
+      }
+      chain wg_input {
+        tcp dport { 80, 443 } accept
+      }
+      chain forward {
+        type filter hook forward priority 30; policy drop;
+        ct state { established, related } accept
+        # Allow wg inbound traffic to access containers at specific ports
+        iifname "${wg_intf}" oifname "${podman_intf}" jump wg_input
+        # Allow traffic from podman bridge outbound (to internet, tunnel, or inter-container)
+        iifname "${podman_intf}" accept
+      }
+    '';
   };
 
   # Wireguard
@@ -81,16 +81,13 @@ in
     content = ''
       chain prerouting {
         type filter hook prerouting priority -150; policy accept;
+        # mark conn from wg if conn new
         iifname "${wg_intf}" ct state new ct mark set ${toString wg_mark} # mark conn if conn new
-      }
-
-      chain output {
-        type route hook output priority -150; policy accept;
-        ct mark ${toString wg_mark} meta mark set ${toString wg_mark} # mark outgoing packet based on conn mark
+        # mark meta of packet outgoing from podman in if conn marked (note: doing this in output will be useless in bridge mode)
+        iifname "${podman_intf}" ct mark ${toString wg_mark} meta mark set ${toString wg_mark}
       }
     '';
   };
-  # Wireguard conf
   systemd.network.netdevs."20-${wg_intf}" = {
     netdevConfig = {
       Name = wg_intf;
@@ -120,7 +117,8 @@ in
     }];
     routes = [{
       Table = wg_table; # route traffic of this table
-      Destination = "10.0.0.1"; # to vps ip
+      Destination = "0.0.0.0/0"; # default route for any traffic
+      Gateway = "10.0.0.1"; # go to vps ip
     }];
   };
   environment.systemPackages = with pkgs; [ wireguard-tools ];
