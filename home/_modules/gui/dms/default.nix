@@ -3,7 +3,7 @@
 {
   imports = aln.lib.listDirFiles ./.;
 
-  #stylix.targets.dank-material-shell.enable = true;
+  stylix.targets.dank-material-shell.enable = true;
 
   programs.dank-material-shell = {
     enable = true;

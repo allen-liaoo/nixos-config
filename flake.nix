@@ -1,7 +1,7 @@
 {
   description = "NixOS Multi-Host & Multi-User Configuration";
 
-  outputs = { nixpkgs, ... } @ inputs: 
+  outputs = { nixpkgs, nixpkgs-unstable, ... } @ inputs: 
   let 
     lib = nixpkgs.lib;
     alnLib = import ./lib { inherit nixpkgs; };
@@ -41,14 +41,15 @@
     homeConfigurations = lib.listToAttrs (
       map ({ userName, hostName }: {
         name = "${userName}@${hostName}";
-        value = inputs.home-manager.lib.homeManagerConfiguration {
-          # legacy packaging (flat) instead of nested (import nixpkgs)
-          pkgs = let
+        value = let
             system = inventory.hosts.${hostName}.system or inventory.systems.x86_linux;
-          in nixpkgs.legacyPackages.${system};
+          in inputs.home-manager.lib.homeManagerConfiguration {
+          # legacy packaging (flat) instead of nested (import nixpkgs)
+          pkgs = nixpkgs.legacyPackages.${system};
           extraSpecialArgs = {
             # pull inputs into args of home submodules
             inherit inputs;
+            pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
             aln = mkAln { inherit hostName; inherit userName; };
           };
           modules = with inputs; [
@@ -112,6 +113,10 @@
       url = "github:NixOS/nixpkgs/nixos-25.11";
     };
 
+    nixpkgs-unstable = {
+      url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    };
+
     quadlet-nix = {
       url = "github:SEIAROTg/quadlet-nix";
     };
@@ -122,8 +127,8 @@
     };
 
     stylix = {
-      url = "github:nix-community/stylix/release-25.11";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/stylix"; #/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     vscode-server = {
