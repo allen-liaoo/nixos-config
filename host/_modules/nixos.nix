@@ -2,11 +2,14 @@
 
 {
   nix = {
-    settings.experimental-features = [
-      "flakes"
-      "nix-command"
-      "pipe-operators"
-    ];
+    settings = {
+      experimental-features = [
+        "flakes"
+        "nix-command"
+        "pipe-operators"
+      ];
+      trusted-users = [ "root" "@wheel" ];
+    };
     gc = {
       automatic = lib.mkDefault true;
       options = lib.mkDefault "--delete-older-than 14d";

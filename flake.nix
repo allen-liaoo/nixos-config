@@ -26,6 +26,7 @@
         modules = with inputs; [
           ./host/${hostName}
 
+          dms.nixosModules.greeter
           disko.nixosModules.disko
           impermanence.nixosModules.impermanence
           sops-nix.nixosModules.sops
@@ -52,6 +53,7 @@
           modules = with inputs; [
             ./home/${userName}
 
+            dms.homeModules.dank-material-shell
             quadlet-nix.homeManagerModules.quadlet
             sops-nix.homeManagerModules.sops
             vscode-server.nixosModules.home
@@ -78,6 +80,16 @@
   };
 
   inputs = {
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell/stable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    dgop = { # for dms' system monitor
+      url = "github:AvengeMedia/dgop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
