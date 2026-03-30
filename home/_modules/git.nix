@@ -5,7 +5,13 @@
     settings= {
       push.autoSetupRemote = true;
     };
-    attributes = [ "*.pdf binary" ];
+    attributes = [
+      "*.pdf binary"
+      "*.png binary"
+      "*.jpg binary"
+      "*.jpeg binary"
+      "*.webp binary"
+    ];
   };
 }
 
