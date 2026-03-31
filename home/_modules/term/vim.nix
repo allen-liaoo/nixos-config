@@ -1,8 +1,9 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   programs.vim = {
     enable = true;
+    defaultEditor = true;
   
     settings = {
       number = true;
@@ -11,6 +12,15 @@
       copyindent = true;
       expandtab = true;
     };
+
+    plugins = with pkgs.vimPlugins; [
+      commentary          # gcc to comment
+      indentLine
+      surround            # motion + s + char, i.e. cs" = change surrounding to "
+      vim-airline
+      vim-airline-themes
+      vim-gitgutter
+    ];
   
     extraConfig = ''
       set backupcopy=yes
@@ -25,10 +35,12 @@
       " hide lineno for mouse selection during visual mode
       autocmd ModeChanged *:[vV\x16]* set nonumber
       autocmd ModeChanged [vV\x16]*:* set number
-    '';
-  };
 
-  home.sessionVariables = {
-    EDITOR = "vim";
+      " vim airline themes
+      let g:airline_theme='base16'
+
+      " configure char to display for indent
+      let g:indentLine_char = '¦'
+    '';
   };
 }
