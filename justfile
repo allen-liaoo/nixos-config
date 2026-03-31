@@ -16,14 +16,14 @@ default:
 os-switch host=current_hostname:
     @echo "Running for host: {{host}}"
     sudo {{nix_config}} \
-    nixos-rebuild switch --flake {{dir}}{{nix_query_param}}#{{host}}
+    nixos-rebuild switch --flake {{dir}}{{nix_query_param}}#{{host}} --accept-flake-config
 
 # Rebuild a Home Manager config
 [group("update")]
 hm-switch user=current_user host=current_hostname:
     @echo "Running for user: {{user}}"
     {{nix_config}} \
-    home-manager switch --flake {{dir}}{{nix_query_param}}#{{user}}@{{host}}
+    home-manager switch --flake {{dir}}{{nix_query_param}}#{{user}}@{{host}} --accept-flake-config
 
 # Update flake inputs
 [group("update")]
