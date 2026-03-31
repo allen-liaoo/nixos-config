@@ -3,22 +3,22 @@ My NixOS and Home-Manager Configs
 
 ## Features
 ### Nix-Specific
-- Declarative disks partitioning via `disko` ([plain btrfs config](host/barrybenson/disko.nix))
-- Secrets management via `sops-nix` ([host config](host/_modules/sops.nix), [home config](home/_modules/sops.nix)) 
-- Wipe storage on boot via `impermanence` ([config](host/_modules/impermanence.nix))
-- Podman containers via `quadlet-nix` ([config](host/_modules/services)). Rootful, `userns=auto`.
+- [Declarative disks partitioning](host/barrybenson/disko.nix) via `disko`
+- Secrets management via `sops-nix` (configs: [host](host/_modules/sops.nix), [home](home/_modules/sops.nix)) 
+- [Wipe storage on boot](host/_modules/impermanence.nix) via `impermanence`
+- [Podman containers](host/_modules/services) via `quadlet-nix` (Rootful, `userns=auto`)
 
 ### Dots
-| Feature | Component | Notes |
-|---|---|---|
-| Shell | Fish, Starship | [config](/home/_modules/shell) |
-| Editor | Vim | Minimal for now, might switch to neovim. [config](/home/_modules/term/vim.nix) |
-| WM | Niri | TODO: Use niri-flake. [config](/home/_modules/gui/niri) |
-| Desktop Shell | DankMaterialShell | [config](/home/_modules/gui/dms) |
-| Theming | Stylix | [config](/home/_modules/stylix.nix) |
-| Terminal | Foot | [config](/home/_modules/program/foot.nix) |
-| Launcher | Vicinae | TODO |
-| Browser | Firefox | [config](/home/_modules/program/firefox) |
+| Feature | Component |
+|---|---|
+| Shell | [Fish](/home/_modules/shell/fish.nix), [Starship](/home/_modules/shell/starship.nix) |
+| Editor | [Vim](/home/_modules/term/vim.nix) |
+| WM | [Niri](/home/_modules/gui/niri) |
+| Desktop Shell | [DankMaterialShell](/home/_modules/gui/dms) |
+| Theming | [Stylix](/home/_modules/stylix.nix) |
+| Terminal | [Foot](/home/_modules/program/foot.nix) |
+| Launcher | [Vicinae](/home/_modules/program/vicinae.nix) |
+| Browser | [Firefox](/home/_modules/program/firefox) |
 
 ## Structure
 - `hosts` - NixOS host configurations, including hardware, system configs and host-specific user configs
@@ -69,5 +69,5 @@ This allows symlinking out of store files to work correctly, and sidesteps file 
 - Each NixOS host should have access to the secret `nix_config_deploy` which is used to push to this repository. Additionally, each authorized user should have this secret under `~/.ssh` as well.
 
 ### Networking
-nftables for policy based routing of Wireguard and containers (TODO) ([config](/host/barrybenson/network.nix))
+`barrybenson` hosts services and lives behind CGNAT. It connects via a wireguard tunnel to `ionobro`, who forwards packets destined to the right port to `barrybenson` without source nat. Then `barrybenson` replies through tunnel. On the `barrybenson` side, its outgoing traffic goes through wireguard if it is a response from some incoming traffic from the tunnel, otherwise it goes through the normal internet. This is achieved via nftables for policy based routing of Wireguard ([barrybenson config](/host/barrybenson/network.nix)).
 
