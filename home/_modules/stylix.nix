@@ -5,16 +5,17 @@
     enable = true;
     autoEnable = true; # auto enable targets
     base16Scheme = "${pkgs.base16-schemes}/share/themes/snazzy.yaml";
-    image = aln.lib.relToRoot "assets/wallpaper/wallpaper-night.jpg";
-    imageScalingMode = "fill";
     polarity = "dark";
 
     #base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-city-light.yaml";
     #image = aln.lib.relToRoot "assets/wallpaper/wallpaper-light.jpeg";
+  } // lib.optionalAttrs aln.ctx.host.is.gui {
+    image = aln.lib.relToRoot "assets/wallpaper/wallpaper-night.jpg";
+    imageScalingMode = "fill";
 
     # stylix adds fonts to certain programs who don't read from fontconfig
     # but doesnt support fallbacks (for now)
-    fonts = lib.mkIf aln.ctx.host.is.gui {
+    fonts = {
       serif = {
         package = pkgs.dejavu_fonts;
         name = "Dejavu Serif";
