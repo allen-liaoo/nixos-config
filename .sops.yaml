@@ -15,10 +15,16 @@ keys:
 
 creation_rules:
 # IMPORTANT: ORDER MATTERS
-# sops matches a file only; subsequent matches do not contribute to who can read a file
-# Path relative to location of this file
-- path_regex: secrets/common.yaml
-  age: *all # potentially need to restrict users
+# once a file is matched by regex, subsequent matches do not contribute to who can read a file. specific rules first
+# Paths should be relative to location of this file
+#
+# User secrets to be used by hosts
+- path_regex: secrets/user/allenl/for_hosts.yaml
+  age: [*allenl, *barrybenson, *sops_admin]
+- path_regex: secrets/user/pig/for_hosts.yaml
+  age: [*pig, *guinea, *sops_admin]
+
+# host/user can read
 - path_regex: secrets/host/barrybenson+
   age: [*barrybenson, *sops_admin]
 - path_regex: secrets/host/guinea+
@@ -27,5 +33,7 @@ creation_rules:
   age: [*allenl, *sops_admin]
 - path_regex: secrets/user/pig+
   age: [*pig, *sops_admin]
-- path_regex: secrets/services/+
-  age: [*allenl, *barrybenson, *sops_admin]
+
+# common
+- path_regex: secrets/common.yaml
+  age: *all # potentially need to restrict users
