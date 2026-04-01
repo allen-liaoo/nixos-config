@@ -2,7 +2,7 @@
 
 let 
   osKinds = [
-    "darwin"
+    "darwin" # unused
     "generic-linux"
     "nixos"
   ];
@@ -18,8 +18,8 @@ let
   ];
   userTags = [
     # Tags for users in nixos systems
-    "system-user" # for normal users, ommit this
-    "linger"
+    "system-user" # for normal users, ommit this # unused
+    "linger" # unused
   ];
   userType = lib.types.submodule ({config,...}: {
     options = {

@@ -28,6 +28,14 @@ in
       tags = [ "impermanent" ];
       users = with users; [ allenl ];
     };
+    # laptop (TODO: switch to nixos)
+    theseus = {
+      name = "theseus";
+      os = "generic-linux";
+      system = "x86_64-linux";
+      kind = "laptop";
+      users = with users; [ allenl ];
+    };
     # vm
     guinea = {
       name = "guinea";
