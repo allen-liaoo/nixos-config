@@ -43,6 +43,7 @@
       blurredWallpaperLayer = false;
       blurredWallpaperOnOverview = true;
 
+      niriOverviewOverlayEnabled = false; # disable dms launcher
       appIdSubstitutions = [];
 
       # Cannot figure out how to set position and interval of this widget

@@ -60,14 +60,16 @@
         { id = "privacyIndicator"; }
         { id = "systemTray"; }
         { id = "keyboard_layout_name"; keyboardLayoutNameCompactMode = true; }
+        { id = "battery"; }
         {
           id = "controlCenterButton";
-          showNetworkIcon = true;
-          showBluetoothIcon = true;
           showAudioIcon = true;
           showAudioPercent = false;
+          showBatteryIcon = false;
+          showBluetoothIcon = true;
           showBrightnessIcon = true;
           showBrightnessPercent = false;
+          showNetworkIcon = true;
           showMicIcon = false;
           showMicPercent = false;
         }

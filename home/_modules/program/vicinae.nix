@@ -1,6 +1,14 @@
 { lib, inputs, pkgs, config, ... }:
 
 {
+  # vicinae is ride or die for niri
+  systemd.user.services.vicinae = {
+    Unit = {
+      After = [ "niri.service" ];
+      BindsTo = [ "niri.service" ];
+    };
+  };
+
   services.vicinae = {
     enable = true;
     #package = vicinaePatched;

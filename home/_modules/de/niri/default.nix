@@ -7,6 +7,8 @@
   niri-wrapped = config.lib.nixGL.wrap pkgs.niri; # wrap in nixGL to fix OpenGL under nix in non-Nixos systems
 in lib.optionalAttrs aln.ctx.host.is.generic-linux { # no need to install on nixos (we do so system wide)
   home.packages = [ niri-wrapped ];
+})
+
 # NOTE: Assuming user does not have sudo priviledges,
 # to get niri to start, log in via TTY and run niri-session
 # This will start a "niri" as a systemd service in the TTY
@@ -19,4 +21,3 @@ Exec=niri-session
 Type=Application
 DesktopNames=niri
 */
-})

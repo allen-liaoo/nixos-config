@@ -1,19 +1,23 @@
-spawn-at-startup "vicinae" "server"
+// Let DMS manage 
+include "dms/alttab.kdl"
+include "dms/outputs.kdl" // displays
+include "dms/wpblur.kdl"  // blurring wallpaper settings
 
 window-rule {
-  geometry-corner-radius 6
+  geometry-corner-radius 1
   clip-to-geometry true
   open-maximized-to-edges true
 }
 
 window-rule {
   match is-active=false
-  opacity 0.9
+  opacity 0.85
 }
 
 // Open DMS windows as floating by default
 window-rule {
   match app-id=r#"org.quickshell$"#
+  match app-id=r#"vicinae"#
   open-floating true
 }
 
@@ -28,22 +32,18 @@ window-rule {
 prefer-no-csd
 
 layout {
-  // Set gaps around windows in logical pixels.
-  gaps 4
+  gaps 0
   background-color "transparent"
 
-  // You can customize the widths that "switch-preset-column-width" toggles between.
+  empty-workspace-above-first
+
   preset-column-widths {
-    // Proportion sets the width as a fraction of the output width, taking gaps into account.
-    // For example, you can perfectly fit four windows sized "proportion 0.25" on an output.
-    // The default preset widths are 1/3, 1/2 and 2/3 of the output.
     proportion 0.33333
     proportion 0.5
     // proportion 0.66667
     proportion 1.0
   }
 
-  // You can also customize the heights that "switch-preset-window-height" toggles between.
   preset-window-heights {
     proportion 0.33333
     proportion 0.5
@@ -51,17 +51,14 @@ layout {
   }
   
   focus-ring {
-    // How many logical pixels the ring extends out from the windows.
+    off
     width 1
+  }
 
-    // Colors can be set in a variety of ways:
-    // - CSS named colors: "red"
-    // - RGB hex: "#rgb", "#rgba", "#rrggbb", "#rrggbbaa"
-    // - CSS-like notation: "rgb(255, 127, 0)", rgba(), hsl() and a few others.
-    // Color of the ring on the active monitor.
-    //active-color "#7fc8ff"
-    //active-gradient from="#7fc8ff" to="#c7ff7f" angle=45
-    }
+  tab-indicator {
+    width 3
+    gap -2
+  }
 }
 
 // Put wallpaper in overview
@@ -92,6 +89,17 @@ environment {
 
 hotkey-overlay {
     skip-at-startup
+}
+
+input {
+  touchpad {
+    tap // tap for left click (instead of needing to physically click trackpad)
+    dwt // disable when typing
+    drag false // disable tap-and-drap
+    tap-button-map "left-right-middle" // (1-finger)-(2-finger)-(3-finger) tap corresponds to mouse buttons
+    natural-scroll
+  }
+  workspace-auto-back-and-forth // switching to same workspace twice will switch back to original workspace
 }
 
 binds {
