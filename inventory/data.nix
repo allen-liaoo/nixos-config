@@ -22,26 +22,29 @@ in
     # homeserver
     barrybenson = {
       name = "barrybenson";
+      kind = "server";
       os = "nixos";
       system = "x86_64-linux";
-      kind = "server";
+      gpu = "amd";
       tags = [ "impermanent" ];
       users = with users; [ allenl ];
     };
     # laptop (TODO: switch to nixos)
     theseus = {
       name = "theseus";
+      kind = "laptop";
       os = "generic-linux";
       system = "x86_64-linux";
-      kind = "laptop";
+      gpu = "amd";
       users = with users; [ allenl ];
     };
     # vm
     guinea = {
       name = "guinea";
+      kind = "laptop";
       os = "nixos";
       system = "x86_64-linux";
-      kind = "laptop";
+      gpu = "amd";
       tags = [ "impermanent" ];
       users = with users; [ pig ];
     };

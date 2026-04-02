@@ -1,17 +1,21 @@
 { lib, config, options, alnLib, ... }:
 
 let 
-  osKinds = [
+  hostKinds = [
+    "server"
+    "laptop"
+  ];
+  oses = [
     "darwin" # unused
     "generic-linux"
     "nixos"
   ];
-  systemsList = [
+  systems = [
     "x86_64-linux"
   ];
-  hostKinds = [
-    "server"
-    "laptop"
+  gpus = [
+    "amd"
+    "nvidia"
   ];
   hostTags = [
     "impermanent"
@@ -58,16 +62,19 @@ in
           name   = lib.mkOption {
             type = lib.types.str;
           };
-          os = lib.mkOption {
-            type = lib.types.enum osKinds;
-          };
-          system = lib.mkOption {
-            type = lib.types.enum systemsList;
-            default = "x86_64-linux";
-          };
           kind = lib.mkOption {
             type = lib.types.enum hostKinds;
             description = "Categorized by function";
+          };
+          os = lib.mkOption {
+            type = lib.types.enum oses;
+          };
+          system = lib.mkOption {
+            type = lib.types.enum systems;
+            default = "x86_64-linux";
+          };
+          gpu = lib.mkOption {
+            type = lib.types.enum gpus;
           };
           users = lib.mkOption {
             type    = lib.types.listOf userType;
@@ -95,20 +102,27 @@ in
               readOnly = true;
             };
           }
+          // (lib.mergeAttrsList (map (kind: {
+            ${kind} = lib.mkOption {
+              type = lib.types.bool;
+              default = config.kind == kind;
+              readOnly = true;
+            };
+          }) hostKinds))
           // (lib.mergeAttrsList (map (os: {
             ${os} = lib.mkOption {
               type = lib.types.bool;
               default = config.os == os;
               readOnly = true;
             };
-          }) osKinds))
-          // (lib.mergeAttrsList (map (kind: {
-            ${kind} = lib.mkOption {
+          }) oses))
+          // (lib.mergeAttrsList (map (gpu: {
+            ${gpu} = lib.mkOption {
               type = lib.types.bool;
-              default = config.os == kind;
+              default = config.gpu == gpu;
               readOnly = true;
             };
-          }) hostKinds));
+          }) gpus));
         };
       }));
     };
@@ -119,9 +133,9 @@ in
 
     # derived / read-only
 
-    systemsList = lib.mkOption {
+    systems = lib.mkOption {
       type     = lib.types.listOf lib.types.str;
-      default = systemsList;
+      default = systems;
       readOnly = true;
     };
 

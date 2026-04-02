@@ -1,7 +1,5 @@
 { config, lib, aln, ... }: {
   sops = {
-    defaultSopsFile = aln.ctx.user.sopsFilePath;
-    
     # User expects host to decrypt and store its age key for use with sops-nix in home-manager
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
 

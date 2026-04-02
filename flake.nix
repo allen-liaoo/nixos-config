@@ -113,6 +113,11 @@
       inputs.home-manager.follows = "nixpkgs";
     };
 
+    nixgl = {
+      url = "github:guibou/nixGL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixpkgs = {
       url = "github:NixOS/nixpkgs/nixos-25.11";
     };

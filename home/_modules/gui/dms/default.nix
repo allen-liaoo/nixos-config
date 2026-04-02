@@ -1,13 +1,25 @@
-{ lib, inputs, pkgs, aln, ... }:
+{ lib, config, inputs, pkgs, aln, ... }:
 
 {
   imports = aln.lib.listDirFiles ./.;
 
-  # stylix styling for dms does not exist for stable version of home manager  
+  # WARNING: stylix styling for dms does not exist for stable version of home manager  
   stylix.targets.dank-material-shell.enable = true;
+
+  # dms is ride or die for niri
+  systemd.user.services.dms = {
+    Unit = {
+      After = [ "niri.service" ];
+      BindsTo = [ "niri.service" ];
+    };
+  };
 
   programs.dank-material-shell = {
     enable = true;
+
+    # wrap in nixGL to fix OpenGL under nix in non-Nixos systems
+    package = config.lib.nixGL.wrap inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
     systemd = {
       enable = true;
       restartIfChanged = true;
@@ -27,6 +39,8 @@
     settings = {
       dynamicTheming = true;
       clipboardSettings.disabled = true;
+      blurredWallpaperLayer = false;
+      blurredWallpaperOnOverview = true;
 
       # Cannot figure out how to set position and interval of this widget
       # Bugged: need to set its instance?
@@ -51,4 +65,5 @@
     };
   };
 }
-  # :%s/"\([a-zA-z]\+\)": \([^,]\+\),/\1 = \2;/
+# convert json kv row to nix
+# :%s/"\([a-zA-z]\+\)": \([^,]\+\),/\1 = \2;/

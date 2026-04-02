@@ -1,38 +1,35 @@
 spawn-at-startup "vicinae" "server"
 
 window-rule {
-  geometry-corner-radius 5
+  geometry-corner-radius 6
   clip-to-geometry true
+  open-maximized-to-edges true
 }
 
 window-rule {
-    match app-id=r#"^org\.gnome\."#
-    draw-border-with-background false
-    geometry-corner-radius 12
-    clip-to-geometry true
-}
-
-window-rule {
-    match is-active=false
-    opacity 0.9
+  match is-active=false
+  opacity 0.9
 }
 
 // Open DMS windows as floating by default
 window-rule {
-    match app-id=r#"org.quickshell$"#
-    open-floating true
+  match app-id=r#"org.quickshell$"#
+  open-floating true
+}
+
+// Open terminal in single column
+window-rule {
+  match app-id=r#"foot"#
+  open-maximized false
+  open-maximized-to-edges false
 }
 
 // No client side decorations
 prefer-no-csd
 
-input {
-  focus-follows-mouse max-scroll-amount="0%"
-}
-
 layout {
   // Set gaps around windows in logical pixels.
-  gaps 8
+  gaps 4
   background-color "transparent"
 
   // You can customize the widths that "switch-preset-column-width" toggles between.
