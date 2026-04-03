@@ -21,104 +21,124 @@ let
     "impermanent"
   ];
   userTags = [
+  ];
+  hostUserTags = [
     # Tags for users in nixos systems
     "system-user" # for normal users, ommit this # unused
     "linger" # unused
   ];
-  userType = lib.types.submodule ({config,...}: {
+  groups = [
+    "wheel"
+    "input"
+  ];
+  # Type of users
+  userOpts = with lib.types; ({config,...}: {
     options = {
       name = lib.mkOption {
-        type = lib.types.str;
+        type = str;
         default = "nobody";
       };
-      groups = lib.mkOption {
-        type = lib.types.listOf lib.types.str;
-        default = [ ];
-      };
       tags = lib.mkOption {
-        type = lib.types.listOf (lib.types.enum userTags);
+        type = listOf (enum userTags);
         default = [ ];
-      };
-      hasTags = lib.mkOption {
-        type = lib.types.functionTo lib.types.bool;
-        default = tags:
-          lib.all (tag: builtins.elem tag config.tags) tags;
-        readOnly = true;
       };
       can = {
         deployNixConfig = lib.mkOption {
-          type = lib.types.bool;
+          type = bool;
           default = false;
         };
       };
     };
   });
-in 
-{
+  # Type of user tied to specific host
+  hostUserOpts = with lib.types; ({config,...}@args: {
+    options = (userOpts args).options // {
+      htags = lib.mkOption {
+        type = listOf (enum (userTags ++ hostUserTags));
+        default = [ ];
+      };
+      hasTags = lib.mkOption {
+        type = functionTo bool;
+        default = tags: lib.all (tag: builtins.elem tag (config.tags ++ config.htags)) tags;
+        readOnly = true;
+      };
+      groups = lib.mkOption {
+        type = listOf (enum groups);
+        default = [ ];
+      };
+      inGroup = lib.mergeAttrsList (map (group: {
+        ${group} = lib.mlOption {
+          type = lib.type.bool;
+          default = builtins.elem group config.user.groups;
+          sreadOnly = true;
+        };
+      }) config.groups);
+    };
+  });
+in with lib.types; {
   options = {
     hosts = lib.mkOption {
-      type = lib.types.attrsOf (lib.types.submodule ({config,...}: {
+      type = attrsOf (submodule ({config,...}: {
         options = {
           name   = lib.mkOption {
-            type = lib.types.str;
+            type = str;
           };
           kind = lib.mkOption {
-            type = lib.types.enum hostKinds;
+            type = enum hostKinds;
             description = "Categorized by function";
           };
           os = lib.mkOption {
-            type = lib.types.enum oses;
+            type = enum oses;
           };
           system = lib.mkOption {
-            type = lib.types.enum systems;
+            type = enum systems;
             default = "x86_64-linux";
           };
           gpu = lib.mkOption {
-            type = lib.types.enum gpus;
+            type = enum gpus;
           };
           users = lib.mkOption {
-            type    = lib.types.listOf userType;
+            type = listOf (submodule hostUserOpts);
             default = [];
           };
           tags = lib.mkOption {
-            type = lib.types.listOf (lib.types.enum hostTags);
+            type = listOf (enum hostTags);
             default = [ ];
           };
           hasTags = lib.mkOption {
-            type = lib.types.functionTo lib.types.bool;
-            default = tags:
-              lib.all (tag: builtins.elem tag config.tags) tags;
+            type = functionTo bool;
+            default = tags: lib.all (tag: builtins.elem tag config.tags) tags;
             readOnly = true;
           };
           is = {
             headless = lib.mkOption {
-              type = lib.types.bool;
+              type = bool;
               default = config.kind == "server";
               readOnly = true;
             };
             gui = lib.mkOption {
-              type = lib.types.bool;
+              type = bool;
               default = config.kind != "server";
               readOnly = true;
             };
-          }
-          // (lib.mergeAttrsList (map (kind: {
+          } //
+          (lib.mergeAttrsList (map (kind: {
             ${kind} = lib.mkOption {
-              type = lib.types.bool;
+              type = bool;
               default = config.kind == kind;
               readOnly = true;
             };
-          }) hostKinds))
-          // (lib.mergeAttrsList (map (os: {
+          }) hostKinds)) //
+          (lib.mergeAttrsList (map (os: {
             ${os} = lib.mkOption {
-              type = lib.types.bool;
+              type = bool;
               default = config.os == os;
               readOnly = true;
             };
-          }) oses))
-          // (lib.mergeAttrsList (map (gpu: {
+          }) oses)) //
+          (lib.mergeAttrsList (map (gpu: {
             ${gpu} = lib.mkOption {
-              type = lib.types.bool;
+              type = bool;
               default = config.gpu == gpu;
               readOnly = true;
             };
@@ -128,40 +148,40 @@ in
     };
 
     users = lib.mkOption {
-      type = lib.types.attrsOf userType;
+      type = attrsOf (submodule userOpts);
     };
 
     # derived / read-only
 
     systems = lib.mkOption {
-      type     = lib.types.listOf lib.types.str;
+      type     = listOf str;
       default = systems;
       readOnly = true;
     };
 
     hostNames = lib.mkOption {
-      type     = lib.types.listOf lib.types.str;
+      type     = listOf str;
       default = builtins.attrNames config.hosts;
       readOnly = true;
     };
 
     nixosHostNames = lib.mkOption {
-      type     = lib.types.listOf lib.types.str;
+      type     = listOf str;
       default = config.hosts |> lib.filterAttrs (_: h: h.is.nixos) |> builtins.attrNames;
       readOnly = true;
     };
 
     userNames = lib.mkOption {
-      type     = lib.types.listOf lib.types.str;
+      type     = listOf str;
       default = builtins.attrNames config.users;
       readOnly = true;
     };
 
     userHostPairs = lib.mkOption {
-      type = lib.types.listOf (lib.types.submodule {
+      type = listOf (submodule {
         options = {
-          userName = lib.mkOption { type = lib.types.str; };
-          hostName = lib.mkOption { type = lib.types.str; };
+          userName = lib.mkOption { type = str; };
+          hostName = lib.mkOption { type = str; };
         };
       });
       default = lib.flatten (

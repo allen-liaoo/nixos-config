@@ -64,7 +64,7 @@
       }) inventory.userHostPairs
     );
 
-    devShells = lib.genAttrs inventory.systemsList (
+    devShells = lib.genAttrs inventory.systems (
       (system: {
         default = let 
           pkgs = nixpkgs.legacyPackages.${system};

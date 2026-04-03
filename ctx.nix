@@ -1,11 +1,11 @@
 {
   lib,
   inventory,
-  hostName ? "",
+  hostName,
   userName ? ""
 }:
 
-{
-  host = inventory.hosts.${hostName} or null;
-  user = inventory.users.${userName} or null;
+rec {
+  host = inventory.hosts.${hostName};
+  user = lib.findFirst (u: u.name == userName) null host.users; # use hostUsers, not users
 }

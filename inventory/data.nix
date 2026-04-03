@@ -6,13 +6,11 @@ let
     # me
     allenl = {
       name = "allenl";
-      groups = [ "wheel" "input" ];
       can.deployNixConfig = true;
     };
     # vm user
     pig = {
       name = "pig";
-      groups = [ "wheel" "input" ];
       can.deployNixConfig = true;
     };
   };
@@ -27,7 +25,9 @@ in
       system = "x86_64-linux";
       gpu = "amd";
       tags = [ "impermanent" ];
-      users = with users; [ allenl ];
+      users = with users; [ 
+        (allenl // { groups = [ "wheel" "input" ]; })
+      ];
     };
     # laptop (TODO: switch to nixos)
     theseus = {
@@ -36,7 +36,9 @@ in
       os = "generic-linux";
       system = "x86_64-linux";
       gpu = "amd";
-      users = with users; [ allenl ];
+      users = with users; [
+        (allenl // { groups = [ "wheel" "input" ]; })
+      ];
     };
     # vm
     guinea = {
@@ -46,7 +48,9 @@ in
       system = "x86_64-linux";
       gpu = "amd";
       tags = [ "impermanent" ];
-      users = with users; [ pig ];
+      users = with users; [
+        (pig // { groups = [ "wheel" "input" ]; })
+      ];
     };
   };
   inherit users;
