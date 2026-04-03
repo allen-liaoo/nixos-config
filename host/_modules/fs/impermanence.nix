@@ -15,7 +15,7 @@ let
   disk_root = "btrfsroot";
   root_subvol = "@";
 in 
-lib.optionalAttrs (aln.ctx.host.hasTags [ "impermanent" ]) {
+lib.optionalAttrs (aln.ctx.host.hasTag.impermanent) {
   # below paths shoud only contain data that are under root subvolume
   # NOTE: do not persist both a file and its parent directory
   environment.persistence."/persist" = {

@@ -53,15 +53,17 @@ let
   # Type of user tied to specific host
   hostUserOpts = with lib.types; ({config,...}@args: {
     options = (userOpts args).options // {
-      htags = lib.mkOption {
+      utags = lib.mkOption {
         type = listOf (enum (userTags ++ hostUserTags));
         default = [ ];
       };
-      hasTags = lib.mkOption {
-        type = functionTo bool;
-        default = tags: lib.all (tag: builtins.elem tag (config.tags ++ config.htags)) tags;
-        readOnly = true;
-      };
+      hasTag = lib.mergeAttrsList (map (tag: {
+        ${tag} = lib.mkOption {
+          type = bool;
+          default = builtins.elem tag (config.tags ++ config.utags);
+          readOnly = true;
+        };
+      }) (userTags ++ hostUserTags));
       groups = lib.mkOption {
         type = listOf (enum groups);
         default = [ ];
@@ -72,7 +74,7 @@ let
           default = builtins.elem group config.groups;
           readOnly = true;
         };
-      }) config.groups);
+      }) groups);
     };
   });
 in with lib.types; {
@@ -105,11 +107,13 @@ in with lib.types; {
             type = listOf (enum hostTags);
             default = [ ];
           };
-          hasTags = lib.mkOption {
-            type = functionTo bool;
-            default = tags: lib.all (tag: builtins.elem tag config.tags) tags;
-            readOnly = true;
-          };
+          hasTag = lib.mergeAttrsList (map (tag: {
+            ${tag} = lib.mkOption {
+              type = bool;
+              default = builtins.elem tag config.tags;
+              readOnly = true;
+            };
+          }) hostTags);
           equals = lib.mkOption {
             type = functionTo bool;
             default = host: host.name == config.name;

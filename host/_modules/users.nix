@@ -7,9 +7,9 @@
   
   users.users = lib.mergeAttrsList (map (user: {
     ${user.name} = {
-      isNormalUser = !(user.hasTags [ "system-user" ]);
+      isNormalUser = !(user.hasTag.system-user);
       extraGroups = user.groups;
-      linger = user.hasTags [ "linger" ];
+      linger = user.hasTag.linger;
       hashedPasswordFile = config.sops.secrets."passwd_${user.name}".path;
     };
   }) aln.ctx.host.users);
