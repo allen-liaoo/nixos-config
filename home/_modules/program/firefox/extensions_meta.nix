@@ -15,6 +15,10 @@
     name = "ublock-origin";
   }
   {
+    id = "{d7742d87-e61d-4b78-b8a1-b469842139fa}";
+    name = "vimium-ff";
+  }
+  {
     id = "{446900e4-71c2-419f-a6a7-df9c091e268b}";
     name = "bitwarden-password-manager";
   }

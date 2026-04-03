@@ -2,7 +2,8 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     Mod+T hotkey-overlay-title="Open a Terminal" { spawn "~/.nix-profile/bin/alacritty"; }
-    // Super+Alt+L hotkey-overlay-title="Lock the Screen" { spawn "swaylock"; }
+    Mod+X repeat=false { spawn "vicinae" "toggle"; }
+    Mod+G repeat=false { spawn "firefox" "--browser"; }
 
     Mod+O repeat=false { toggle-overview; }
 
@@ -207,8 +208,6 @@ binds {
     // Mod+Space       { switch-layout "next"; }
     // Mod+Shift+Space { switch-layout "prev"; }
 
-    Mod+Space repeat=false { spawn "vicinae" "toggle"; }
-
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
@@ -231,17 +230,12 @@ binds {
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
 
-    // Security
-    Mod+Alt+L hotkey-overlay-title="Lock Screen" {
-      spawn "dms" "ipc" "call" "lock" "lock";
-    }
-
     // DMS
     Mod+Slash hotkey-overlay-title="Settings" {
-        spawn "dms" "ipc" "call" "settings" "focusOrToggle";
+      spawn "dms" "ipc" "call" "settings" "focusOrToggle";
     }
     Mod+N hotkey-overlay-title="Notification Center" {
-        spawn "dms" "ipc" "call" "notifications" "toggle";
+      spawn "dms" "ipc" "call" "notifications" "toggle";
     }
 
     // Player

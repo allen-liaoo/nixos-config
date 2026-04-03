@@ -39,6 +39,7 @@
       innerPadding = -5;
       bottomGap = 0;
       transparency = 0;
+      fontScale = 1.20;
       squareCorners = true;
       noBackground = true;
       maximizeWidgetIcons = true;
