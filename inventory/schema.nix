@@ -110,6 +110,11 @@ in with lib.types; {
             default = tags: lib.all (tag: builtins.elem tag config.tags) tags;
             readOnly = true;
           };
+          equals = lib.mkOption {
+            type = functionTo bool;
+            default = host: host.name == config.name;
+            readOnly = true;
+          };
           is = {
             headless = lib.mkOption {
               type = bool;
