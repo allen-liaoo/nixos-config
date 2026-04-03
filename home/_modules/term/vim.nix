@@ -20,7 +20,7 @@
       vim-airline         # bottom bar
       vim-airline-themes
       vim-cool            # disable search highlight after search
-      vim-gitgutter       # git diff on the left
+      vim-signify         # git diff on the left
       vim-peekaboo        # show contents of registers when pressing "
     ];
   
@@ -46,6 +46,14 @@
 
       " show git diff relative to head (dont ignore staged changes)
       let g:gitgutter_diff_base = 'HEAD'
+
+      "remove indent line and signify in visual mode
+      augroup IndentLineVisualToggle
+        autocmd!
+        autocmd ModeChanged *:[vV\x16]* IndentLinesDisable | SignifyDisable
+        autocmd ModeChanged [vV\x16]*:* IndentLinesEnable | SignifyEnable
+      augroup END
+
     '';
   };
 }

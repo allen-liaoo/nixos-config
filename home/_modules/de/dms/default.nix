@@ -1,5 +1,9 @@
 { lib, config, inputs, pkgs, aln, ... }:
 
+let
+  # wrap in nixGL to fix OpenGL under nix in non-Nixos systems
+  dms-pkg = config.lib.nixGL.wrap inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
+in
 {
   imports = aln.lib.listDirFiles ./.;
 
@@ -17,8 +21,7 @@
   programs.dank-material-shell = {
     enable = true;
 
-    # wrap in nixGL to fix OpenGL under nix in non-Nixos systems
-    package = config.lib.nixGL.wrap inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    package = dms-pkg;
 
     systemd = {
       enable = true;
