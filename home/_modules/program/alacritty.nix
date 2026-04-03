@@ -1,8 +1,9 @@
-{ ... }:
+{ config, pkgs, ... }:
 
 {
   programs.alacritty = {
     enable = true;
+    package = config.lib.nixGL.wrap pkgs.alacritty;
     settings = {
       general.live_config_reload = true;
       window = {

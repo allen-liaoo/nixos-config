@@ -67,10 +67,10 @@ let
         default = [ ];
       };
       inGroup = lib.mergeAttrsList (map (group: {
-        ${group} = lib.mlOption {
-          type = lib.type.bool;
-          default = builtins.elem group config.user.groups;
-          sreadOnly = true;
+        ${group} = lib.mkOption {
+          type = bool;
+          default = builtins.elem group config.groups;
+          readOnly = true;
         };
       }) config.groups);
     };
