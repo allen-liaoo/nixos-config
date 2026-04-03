@@ -59,6 +59,7 @@
             stylix.homeModules.stylix
             vicinae.homeManagerModules.default
             vscode-server.nixosModules.home
+            xremap.homeManagerModules.default
           ];
         };
       }) inventory.userHostPairs
@@ -161,5 +162,7 @@
       url = "github:nix-community/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    xremap.url = "github:xremap/nix-flake";
   };
 }

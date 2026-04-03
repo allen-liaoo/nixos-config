@@ -70,3 +70,11 @@ just repo-switch-ssh
 2. Drop age (private) key in `~/.config/sops/age/key.txt`
 3. Switch home manager
 4. Switch repository to ssh
+
+#### xremap
+Need to have sudo priviledge, or user is in `input` group, uinput kernel module is loaded, and `input` group has `uaccess`
+```
+sudo gpasswd -a YOUR_USER input
+echo 'KERNEL=="uinput", GROUP="input", TAG+="uaccess", MODE:="0660", OPTIONS+="static_node=uinput"' | sudo tee /etc/udev/rules.d/99-input.rules
+```
+Otherwise there is no way to use it.
