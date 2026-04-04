@@ -17,7 +17,13 @@
       ImproveSuggest = false;
       Locked = true;
     };
-    GenerativeAI.Enabled = false;
+    GenerativeAI = {
+      Enabled = false;
+      Chatbot = false;
+      LinkPreviews = false;
+      TabGroups = false;
+      Locked = true;
+    };
 
     HardwareAcceleration = true;
 

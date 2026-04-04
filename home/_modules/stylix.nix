@@ -12,8 +12,21 @@
     image = aln.lib.relToRoot "assets/wallpaper/wallpaper-night.jpg";
     imageScalingMode = "fill";
 
-    # stylix adds fonts to certain programs who don't read from fontconfig
-    # but doesnt support fallbacks (for now)
+    cursor = {
+      package = pkgs.vimix-cursors;
+      name = "Vimix-cursors";
+      size = 14;
+    };
+
+    icons = {
+      enable = true;
+      package = pkgs.whitesur-icon-theme;
+      dark = "Whitesur";
+      light = "Whitesur";
+    };
+
+    # stylix also adds fonts to certain programs who don't read from fontconfig
+    # but stylix doesnt support fallbacks (for now)
     fonts = {
       serif = {
         package = pkgs.dejavu_fonts;
@@ -26,6 +39,10 @@
       monospace = {
         package = pkgs.nerd-fonts.commit-mono;
         name = "Commit Mono Nerd Font";
+      };
+      emoji = {
+        package = pkgs.noto-fonts-color-emoji;
+        name = "Noto Color Emoji";
       };
     };
   };

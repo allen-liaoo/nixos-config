@@ -37,6 +37,7 @@ layout {
   gaps 0
   background-color "transparent"
 
+  always-center-single-column
   empty-workspace-above-first
 
   preset-column-widths {
@@ -54,7 +55,6 @@ layout {
   
   focus-ring {
     off
-    width 1
   }
 
   tab-indicator {

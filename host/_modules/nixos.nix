@@ -12,8 +12,9 @@
     };
     gc = {
       automatic = lib.mkDefault true;
-      options = lib.mkDefault "--delete-older-than 14d";
-      dates = lib.mkDefault "daily";
+      options = lib.mkDefault "--delete-older-than 7d";
+      dates = lib.mkDefault "weekly";
+      persistent = true;
     };
     # Below snippets make channels use flake inputs
     registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
