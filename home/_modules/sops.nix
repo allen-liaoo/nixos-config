@@ -6,7 +6,7 @@
     # Secret for deploying to this repo
     secrets = lib.optionalAttrs (aln.ctx.user.can.deployNixConfig) {
       "nix_config_deploy" = {
-        sopsFile = aln.lib.relToRoot "secrets/common.yaml";
+        sopsFile = aln.lib.relToRoot "secrets/user/common.yaml";
         mode = "0400";
         path = "${config.home.homeDirectory}" + "/.ssh/nix_config_deploy";
       };

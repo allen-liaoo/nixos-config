@@ -1,17 +1,12 @@
 keys:
-- hosts: &hosts
+- hosts:
   - &barrybenson age1vp49j2ldya959hu5xvxl2j0sdwtduazhzm7naylkxvvc9ywth93s7h9zux
   - &guinea age1hwdz0a8uc6un69ratp3eed9z4xd5c7279khpy66d7tcw8nlpfpgs8wkp2r
-- users: &users
+- users:
   - &allenl age16cn0jup2jdfejqxm0l60tkvtnd43t8aaqvs39qpy5q2nruvzu4jqvr8d7u
   - &pig age1ypf3q60pdwtj3j5c2zmd79z6ukwzlknm268gdkh3uj5mj89qyq7qw3pgmx
-- all: &all
-  - *allenl
-  - *pig 
-  - *guinea
-  - *barrybenson
-  # ALWAYS add this key to secrets
-  - &sops_admin age1w4vzylklxkw07e0n86sz5yf7ug9akpq93z8uqwm83v4rvg7hhutqh05mgc
+# ALWAYS add this key to secrets
+- &sops_admin age1w4vzylklxkw07e0n86sz5yf7ug9akpq93z8uqwm83v4rvg7hhutqh05mgc
 
 creation_rules:
 # IMPORTANT: ORDER MATTERS
@@ -35,5 +30,8 @@ creation_rules:
   age: [*pig, *sops_admin]
 
 # common
-- path_regex: secrets/common.yaml
-  age: *all # potentially need to restrict users
+- path_regex: secrets/user/common.yaml
+  age:
+  - *allenl
+  - *pig
+  - *sops_admin

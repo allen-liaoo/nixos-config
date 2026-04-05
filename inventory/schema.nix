@@ -42,17 +42,17 @@ let
         type = listOf (enum userTags);
         default = [ ];
       };
+    };
+  });
+  # Type of user tied to specific host
+  hostUserOpts = with lib.types; ({config,...}@args: {
+    options = (userOpts args).options // {
       can = {
         deployNixConfig = lib.mkOption {
           type = bool;
           default = false;
         };
       };
-    };
-  });
-  # Type of user tied to specific host
-  hostUserOpts = with lib.types; ({config,...}@args: {
-    options = (userOpts args).options // {
       utags = lib.mkOption {
         type = listOf (enum (userTags ++ hostUserTags));
         default = [ ];

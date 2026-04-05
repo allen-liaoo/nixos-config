@@ -4,7 +4,7 @@
   in {
     useSystemdActivation = true; # required by services that need to be before/after secrets are decrypted (i.e. impermanence)
     # adds "sops-install-secrets.service"
-    # for secrets flagged as neededForUsers, we need to enable userborn (see users.nix)
+    # for secrets flagged as neededForUsers, we also need to enable userborn (see users.nix)
 
     # Host SSH Keys are used to decrypt secrets
     # Each host is guaranteed to have a host key generated when first booted up (see host sshd config)
@@ -13,16 +13,7 @@
       "/etc/ssh/ssh_host_ed25519_key" 
     ]; # see impermanence.nix for override
 
-    secrets = {
-      "nix_config_deploy" = {
-        sopsFile = secretsDir + /common.yaml;
-        key = "nix_config_deploy";
-        owner = "root";
-        group = "root";
-        mode = "0400";
-      };
-
-    } // (lib.mergeAttrsList (
+    secrets = lib.mergeAttrsList (
       map (user: let
         sopsFile = secretsDir + /user/${user.name}/for_hosts.yaml;
       in {
@@ -44,8 +35,7 @@
           mode = "0400";
           neededForUsers = true;
         };
-      }) aln.ctx.host.users)
-    );
+      }) aln.ctx.host.users);
   };
 
   # when sops-nix creates the user age key file along with its parent dirs on first boot,

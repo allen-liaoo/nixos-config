@@ -6,12 +6,10 @@ let
     # me
     allenl = {
       name = "allenl";
-      can.deployNixConfig = true;
     };
     # vm user
     pig = {
       name = "pig";
-      can.deployNixConfig = true;
     };
   };
 in
@@ -26,18 +24,24 @@ in
       gpu = "amd";
       tags = [ "impermanent" ];
       users = with users; [ 
-        (allenl // { groups = [ "wheel" "input" ]; })
+        (allenl // {
+          groups = [ "wheel" "input" ];
+          can.deployNixConfig = true;
+        })
       ];
     };
-    # laptop (TODO: switch to nixos)
+    # laptop
     theseus = {
       name = "theseus";
       kind = "laptop";
-      os = "generic-linux";
+      os = "generic-linux"; # TODO: switch to nixos
       system = "x86_64-linux";
       gpu = "amd";
       users = with users; [
-        (allenl // { groups = [ "wheel" "input" ]; })
+        (allenl // {
+          groups = [ "wheel" "input" ];
+          can.deployNixConfig = true;
+        })
       ];
     };
     # vm
@@ -49,7 +53,10 @@ in
       gpu = "amd";
       tags = [ "impermanent" ];
       users = with users; [
-        (pig // { groups = [ "wheel" "input" ]; })
+        (pig // {
+          groups = [ "wheel" "input" ];
+          can.deployNixConfig = true;
+        })
       ];
     };
   };

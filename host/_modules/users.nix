@@ -2,7 +2,7 @@
 
 {
   # required for sops-nix to use sops-install-secrets-for-users.service instead of an activation script
-  # useful for ordering services (i.e. with impermanence)
+  # which is used for ordering services (i.e. with impermanence)
   services.userborn.enable = true;
   
   users.users = lib.mergeAttrsList (map (user: {
