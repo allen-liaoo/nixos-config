@@ -8,6 +8,7 @@
         "nix-command"
         "pipe-operators"
       ];
+      auto-optimise-store = true;
       trusted-users = [ "root" "@wheel" ];
     };
     gc = {

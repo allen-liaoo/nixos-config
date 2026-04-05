@@ -40,7 +40,8 @@ in
       hiddenTrayIds = [
         "spotify-client"
       ];
-      #wallpaperPath = aln.lib.relToRoot "assets/wallpaper/wallpaper-night.jpg";
+      # TODO: Remove when stylix is updated
+      wallpaperPath = aln.lib.relToRoot "assets/wallpaper/wallpaper-night.jpg";
     };
 
     settings = {
