@@ -3,8 +3,10 @@
 let
   # Raycast Extensions github
   # https://github.com/raycast/extensions
-  rcSha = "sha256-sltBhjniJvRZ6zys1lmKnz9UNfS2AS47uZilV/j6XZY=";
-  rcRev = "3ec994afcd05b2b6258b3b71ab8b19d6b6f1e0e4";
+  # Note: Do not move to flake input, as we want sparse checkout
+  # See: https://github.com/vicinaehq/vicinae/blob/main/nix/mkRayCastExtension.nix
+  rcRev = "3ec994afcd05b2b6258b3b71ab8b19d6b6f1e0e4"; # commit hash
+  rcSha = "sha256-sltBhjniJvRZ6zys1lmKnz9UNfS2AS47uZilV/j6XZY="; # hash of tarball at the rev; to obtain, run flake with rev and dummy sha value
 in
 {
   # vicinae is ride or die for niri
@@ -35,11 +37,11 @@ in
     ([
       "unicode-symbols"
     ] |>
-      map (ext_name: 
+      map (ext: 
         inputs.vicinae.packages.${pkgs.stdenv.hostPlatform.system}.mkRayCastExtension {
-          name = ext_name;
-          sha256 = rcSha;
+          name = ext;
           rev = rcRev;
+          sha256 = rcSha;
         }
       ));
 

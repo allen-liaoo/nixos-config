@@ -119,22 +119,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixos-25.11";
-    };
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
 
-    nixpkgs-unstable = {
-      url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    };
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    quadlet-nix = {
-      url = "github:SEIAROTg/quadlet-nix";
-    };
+    quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
