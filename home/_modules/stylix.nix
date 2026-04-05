@@ -8,6 +8,11 @@
     base16Scheme = "${pkgs.base16-schemes}/share/themes/snazzy.yaml";
     polarity = "dark";
 
+    # Prevent having to pull in dconf to solve
+    # https://github.com/nix-community/stylix/issues/139
+    targets.gtk.enable = aln.ctx.host.is.gui;
+
+
   } // lib.optionalAttrs aln.ctx.host.is.gui {
     image = aln.lib.relToRoot "assets/wallpaper/wallpaper-night.jpg";
     imageScalingMode = "fill";
