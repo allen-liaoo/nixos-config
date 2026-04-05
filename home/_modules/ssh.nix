@@ -11,7 +11,6 @@
       "gh_nix_config" = {
         hostname = "github.com";
         identityFile = config.sops.secrets.nix_config_deploy.path;
-        addKeysToAgent = "yes";
       };
     } // {
       "*" = {

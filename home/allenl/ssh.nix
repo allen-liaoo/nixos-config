@@ -8,19 +8,32 @@ let
   ];
 in
 {
-  programs.ssh.matchBlocks."github.com" = {
-    identityFile = config.sops.secrets.ssh_allenl_personal.path;
-    addKeysToAgent = "yes";
-  };
-  programs.ssh.matchBlocks."umn.edu" = {
-    identityFile = config.sops.secrets.ssh_allenl_liao0144.path;
-    addKeysToAgent = "yes";
+  programs.ssh.matchBlocks = {
+    "vps" = {
+      hostname = "allenl.me";
+      user = "allenliao"; # TODO: Change to al
+    };
+    "homeserver" = {
+      hostname = "10.0.0.2";
+      user = "al";
+      proxyJump = "vps";
+      serverAliveInterval = 60;
+      serverAliveCountMax = 10;
+    };
+    "guinea" = {
+      hostname = "192.168.122.100";
+      user = "pig";
+    };
+    "*".identityFile = (map (key: 
+      config.sops.secrets."ssh_allenl_${key}".path
+    ) keys);
   };
 
   sops.secrets = lib.mergeAttrsList (map (key: {
     "ssh_allenl_${key}" = {
       sopsFile = aln.lib.relToRoot "secrets/user/allenl/ssh.yaml";
       mode = "0400";
+      path = config.home.homeDirectory + "/.ssh/" + key;
       inherit key;
     };
   }) keys);
