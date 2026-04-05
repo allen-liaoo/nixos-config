@@ -28,12 +28,12 @@
       { id = "wifi"; width = 50; }
       { id = "inputVolumeSlider"; width = 50; }
       { id = "bluetooth"; width = 50; }
-      { id = "audioOutput"; width = 25; }
-      { id = "audioInput"; width = 25; }
+      { id = "audioOutput"; width = 50; }
       { id = "builtin_vpn"; width = 50; }
-      { id = "battery"; width = 50; }
+      { id = "audioInput"; width = 50; }
       { id = "doNotDisturb"; width = 50; }
-      { id = "darkMode"; width = 50; }
+      { id = "nightMode"; width = 25; }
+      { id = "darkMode"; width = 25; }
     ];
 
     barConfigs = [{
