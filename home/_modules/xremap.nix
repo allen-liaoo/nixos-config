@@ -5,7 +5,7 @@
 # run as user: programs always launch as one user
 { lib, aln, ... }:
 
-lib.optionalAttrs (with aln.ctx.user.inGroup; input && wheel) {
+lib.optionalAttrs (!aln.ctx.host.is.server && (with aln.ctx.user.inGroup; input && wheel)) {
   services.xremap = {
     enable = true;
     withNiri = true;
