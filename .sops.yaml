@@ -29,7 +29,7 @@ creation_rules:
   age: [*guinea, *sops_admin]
 - path_regex: secrets/user/allenl+
   age: [*allenl, *sops_admin]
-- path_regex: secrets/user/al+
+- path_regex: secrets/user/al/+
   age: [*al, *sops_admin]
 - path_regex: secrets/user/pig+
   age: [*pig, *sops_admin]

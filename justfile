@@ -34,12 +34,7 @@ fl-update:
 # Re-encrypt sops secrets with new age keys
 [group("update")]
 sops-rekey:
-    cd {{dir}}/secrets && \
-    {{nix_config}} \
-    nix develop --command bash -c \
-    'for file in $(find . \( -name "*.yaml" -o -name "*.json" -o -name "*.env" \)); do \
-      sops updatekeys $file; \
-    done'
+	nix-shell -p sops --run 'cd {{dir}}/secrets && find . -type f \( -name "*.yaml" -o -name "*.json" -o -name "*.env" \) -exec sops updatekeys {} \;'
 
 # Run nix command with experimental features enabled
 [group("utility")]
