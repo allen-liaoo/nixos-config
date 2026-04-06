@@ -5,15 +5,15 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   boot.loader = {
-    systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
+    systemd-boot.enable = true;
     systemd-boot.configurationLimit = 10;
   };
 
   # LUKS devices
   boot.initrd.luks.devices = {
     cryptroot = {
-      device = "/dev/disk/by-partlabel/disk-main-luks";
+      device = lib.mkForce "/dev/disk/by-partlabel/disk-main-luks"; # conflicts with disko
       allowDiscards = true;
     };
     cryptswap = {
@@ -29,7 +29,7 @@
     # memoryPercent defaults to 50
   };
 
-  users.users.${aln.inventory.users.allen.name}.openssh.authorizedKeys.keys = [
+  users.users.${aln.inventory.users.allenl.name}.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPevSDBLs3jQWYE8sq2Dx6S2qQ4VzpKn5RvS1    zXkGfiW wcliaw610@gmail.com"
   ];
 }

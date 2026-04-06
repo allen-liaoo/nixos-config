@@ -55,7 +55,7 @@ in
       os = "nixos";
       system = "x86_64-linux";
       gpu = "amd";
-      tags = [ "impermanent" ];
+      tags = [];
       users = with users; [
         (pig // {
           groups = [ "wheel" "input" ];
