@@ -24,31 +24,37 @@
           root = {
             size = "100%";
             content = {
-              type = "btrfs";
-              extraArgs = [ 
-                "-f" # force overwrite
-                "-L" "btrfsroot" # btrfs partition label used by impermanence and btrbk
-              ];
-              subvolumes = {
-                "@" = {
-                  mountpoint = "/";
-                  mountOptions = [ "compress=zstd" "noatime" ]; 
-                };
-                "@nix" = {
-                  mountpoint = "/nix";
-                  mountOptions = [ "compress=zstd" "noatime" ];
-                };
-                "@persist" = {
-                  mountpoint = "/persist";
-                  mountOptions = [ "compress=zstd" "noatime" ];
-                };
-                "@containers" = {
-                  mountpoint = "/var/lib/containers";
-                  mountOptions = [ "compress=zstd" "noatime" ];
-                };
-                "@snapshots" = {
-                  mountpoint = "/.snapshots";
-                  mountOptions = [ "compress=zstd" "noatime" ];
+              type = "luks";
+              name = "cryptroot";
+              settings.allowDiscards = true;
+
+              content = {
+                type = "btrfs";
+                extraArgs = [ 
+                  "-f" # force overwrite
+                  "-L" "btrfsroot" # btrfs partition label used by impermanence and btrbk
+                ];
+                subvolumes = {
+                  "@" = {
+                    mountpoint = "/";
+                    mountOptions = [ "compress=zstd" "noatime" ]; 
+                  };
+                  "@nix" = {
+                    mountpoint = "/nix";
+                    mountOptions = [ "compress=zstd" "noatime" ];
+                  };
+                  "@persist" = {
+                    mountpoint = "/persist";
+                    mountOptions = [ "compress=zstd" "noatime" ];
+                  };
+                  "@containers" = {
+                    mountpoint = "/var/lib/containers";
+                    mountOptions = [ "compress=zstd" "noatime" ];
+                  };
+                  "@snapshots" = {
+                    mountpoint = "/.snapshots";
+                    mountOptions = [ "compress=zstd" "noatime" ];
+                  };
                 };
               };
             };

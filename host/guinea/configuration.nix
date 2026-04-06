@@ -12,6 +12,14 @@
   # Make network interfaces use predictable names (e.g. eth0, wlan0) instead of the default (e.g. enp1s0)
   boot.kernelParams = [ "net.ifnames=0" "biosdevname=0" ];
 
+  # LUKS devices
+  boot.initrd.luks.devices = {
+    cryptroot = {
+      device = "/dev/disk/by-partlabel/disk-main-luks";
+      allowDiscards = true;
+    };
+  };
+
   boot.tmp.useTmpfs = true;
   zramSwap = {
     enable = true;
