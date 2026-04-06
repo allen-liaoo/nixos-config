@@ -1,7 +1,7 @@
 keys:
 - hosts:
   - &barrybenson age1vp49j2ldya959hu5xvxl2j0sdwtduazhzm7naylkxvvc9ywth93s7h9zux
-  - &guinea age1kal9458y0e4mvfw9qth6x0raxul94pl3lqv9qutpjmd2ycv3f5eqrq8lu7
+  - &guinea age1e6pdc4qve40wrpltpc8966c6lljwl2m047vkjz2zh7eyy5sy5caqvy0t60
 - users:
   - &allenl age16cn0jup2jdfejqxm0l60tkvtnd43t8aaqvs39qpy5q2nruvzu4jqvr8d7u
   - &al age1srvnkxt9eekss9wr5n60ftcpxug6yk2rvkzzytf0majvqqys098qgg2645
