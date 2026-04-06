@@ -5,11 +5,10 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   boot.loader = {
-    systemd-booti.enable = true;
+    systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
     systemd-boot.configurationLimit = 10;
   };
-  boot.loader.efi.canTouchEfiVariables = true;
 
   # LUKS devices
   boot.initrd.luks.devices = {

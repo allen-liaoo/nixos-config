@@ -1,10 +1,10 @@
-1. Download NixOS minimal ISO to 
+1. Make directory to store VM:
 ```
-$HOME/.local/share/libvirt/images/
+mkdir -p /var/lib/libvirt/images/NixOS-25.11/
 ```
-2. Make directory to store VM:
+2. Download NixOS minimal ISO to 
 ```
-mkdir -p $HOME/.local/share/libvirt/images/NixOS-25.11/
+/var/lib/libvirt/images/
 ```
 3. Create VM:
 ```
@@ -12,13 +12,13 @@ sudo virt-install --name guinea \
          --connect qemu:///session \
          --ram 8192 \
          --vcpus 2 \
-         --disk path=$HOME/.local/share/libvirt/images/NixOS-25.11/guinea.x86_64.qcow2,size=20 \
+         --disk path=/var/lib/libvirt/images/NixOS-25.11/guinea.x86_64.qcow2,size=20 \
          --network network=default,model=virtio,mac=52:54:00:ab:cd:ef \
          --graphics spice \
          --boot uefi \
          --features smm.state=off \
          --noautoconsole \
-         --cdrom $HOME/.local/share/libvirt/images/nixos-minimal-25.11.7346.44bae273f9f8-x86_64-linux.iso
+         --cdrom /var/lib/libvirt/images/nixos-minimal-x86_64-linux.iso
 ```
 This disables secure boot and pins VM mac addr. I use sudo to skip manual setup of networking. To reset VM:
 ```

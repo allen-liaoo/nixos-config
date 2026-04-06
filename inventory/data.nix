@@ -38,7 +38,7 @@ in
     theseus = {
       name = "theseus";
       kind = "laptop";
-      os = "generic-linux"; # TODO: switch to nixos
+      os = "nixos";
       system = "x86_64-linux";
       gpu = "amd";
       users = with users; [
