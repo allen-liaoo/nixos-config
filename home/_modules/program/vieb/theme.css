@@ -1,0 +1,10 @@
+/* Numbered tabs (built in) */
+#tabs, #navbar {counter-reset: tab-counter -1;}
+#tabs > ::before {counter-increment: tab-counter 1;content: counter(tab-counter) ". ";margin: auto 0;}
+#tabs [media-playing]::before {margin: 0 !important;}
+#tabs .pinned {min-width: 3em !important;}
+
+/* Compact (built in) */
+#app {display: grid;grid-template: "navbar tabbar" 2em "main main" auto;}
+#navbar, #tabs {width: 50vw}
+#page-container {grid-area: main;}

@@ -1,0 +1,14 @@
+set newtaburl="vieb://help"
+
+nmap q <:close>
+
+nmap J <previousTab>
+nmap K <nextTab>
+
+nmap d <scrollPageDownHalf>
+nmap <C-d> <scrollPageDown>
+nmap u <scrollPageUpHalf>
+nmap <C-u> <scrollPageUp>
+
+nmap r <refreshTab>
+nmap <C-r> <:reloadconfig>
