@@ -23,6 +23,8 @@ creation_rules:
   age: [*pig, *guinea, *sops_admin]
 
 # host/user can read
+- path_regex: secrets/host/theseus+
+  age: [*sops_admin]
 - path_regex: secrets/host/barrybenson+
   age: [*barrybenson, *sops_admin]
 - path_regex: secrets/host/guinea+
