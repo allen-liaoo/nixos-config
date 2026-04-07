@@ -5,6 +5,9 @@
     inputs.nixos-hardware.nixosModules.framework-amd-ai-300-series
   ];
 
+  # Since I swapped MediaTek WIFI card with Intel AX210
+  hardware.enableRedistributableFirmware = true;
+
   time.timeZone = "America/Chicago";
   i18n.defaultLocale = "en_US.UTF-8";
 
