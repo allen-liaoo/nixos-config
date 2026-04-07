@@ -61,14 +61,15 @@ This allows symlinking out of store files to work correctly, and sidesteps file 
 ## Hosts
 | Name | Hardware | Type | Note | Status |
 |---|---|---|----|---|
+|theseus|Framework Laptop 13 (Ryzen AI 5 340)|laptop|My daily driver. NixOS + LUKS + everything in dots.|✅|
 |barrybenson|Beelink Mini PC (Ryzen 7 5700U)|server|Headless homeserver with impermanence. Containers setup in progress.|🚧|
-|theseus|Framework Laptop 13 (Ryzen AI 5 340)|laptop|On NixOS with LUKS.|✅|
-|louisxvi|Macbook Air M1|laptop|Broke the screen so now it's running "headless". Plan to test Asahi with NixOS. Currently retired.|📝|
+|louisxvi|Macbook Air M1|laptop|Broke the screen so now it's "headless". Plan to run Asahi with NixOS. Currently retired.|-|
 |ionobro|IONOS VPS (1G RAM, 10G Storage)|server|Acts as the router/firewall for barrybenson who is behind CGNAT. I need a minimal NixOS install to run wireguard + nftables.|📝|
-|guinea|QEMU/KVM|VM|Used to build this config. On theseus.|🚧|
+|guinea|QEMU/KVM|VM|Used to build this config. Need to configure declaratively on theseus.|🚧|
+
 ✅ - Setup completed 
 🚧 - In progress
-📝 - Planing
+📝 - Planning
 
 ## Details
 
