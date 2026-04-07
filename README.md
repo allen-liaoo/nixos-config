@@ -27,9 +27,9 @@ Podman containers via [quadlet-nix](https://seiarotg.github.io/quadlet-nix/) (Ro
 | RSS Aggregator | FreshRSS (TODO) |
 
 ### Nix-Specific
-- Declarative disks partitioning via [disko](https://github.com/nix-community/disko/) with BTRFS and LUKS [⌃](host/theseus/disko.nix).
 - Secrets management via [sops-nix](https://github.com/Mic92/sops-nix) [⌃](host/_modules/sops.nix),[⌃](home/_modules/sops.nix).
-- Wipe storage on boot via [impermanence](https://github.com/nix-community/impermanence) [⌃](host/_modules/impermanence.nix).
+- Declarative disks partitioning via [disko](https://github.com/nix-community/disko/) with BTRFS and LUKS [⌃](host/theseus/disko.nix).
+- Wipe storage on boot via [impermanence](https://github.com/nix-community/impermanence) [⌃](host/_modules/fs/impermanence.nix).
 
 ## Structure
 - `hosts` - NixOS host configurations, including hardware, system configs and host-specific user configs
