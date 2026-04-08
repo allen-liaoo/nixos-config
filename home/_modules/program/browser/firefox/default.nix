@@ -1,6 +1,7 @@
 # thin wrapper around Home-Manager's mkFirefoxModule
 # https://github.com/nix-community/home-manager/blob/master/modules/programs/firefox/mkFirefoxModule.nix
-{ lib, config, pkgs, pkgs-nur, aln, ... }:
+# All settings are under "default" profile
+{ lib, config, pkgs, pkgs-nur, aln, ... }: # same args as home modules
 
 let 
   extensions = import ./extensions_meta.nix;
@@ -48,18 +49,10 @@ in
       ];
     };
 
+    # Wavegox needs to be installed separately (via home.file) 
     extraConfig = ''
       user_pref("WaveFox.Tabs.Shape", 8);
       user_pref("WaveFox.Tabs.Separators", 2);
     '';
-
-    userChrome = ''
-      import url("file://${./WaveFox/chrome/userChrome.css}");
-    '';
-
-    userContent = ''
-      import url("file://${./WaveFox/chrome/userContent.css}");
-    '';
   };
-  #home.file.".mozilla/firefox/default/chrome".source = ./WaveFox/chrome;
 }
