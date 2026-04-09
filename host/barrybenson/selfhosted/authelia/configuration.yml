@@ -743,7 +743,6 @@ access_control:
 
     - domain: 
       - 'dav.allenl.me' # need to use different credentials for the DAVs
-      - 'jackett.allenl.me'
       - 'rss.allenl.me'
       networks: 
         - 'vpn'
@@ -752,6 +751,7 @@ access_control:
     - domain: 
       - 'beszel.allenl.me' # TODO: Behind authelia but not vpn for convenience; cant get it to work rn
       - 'goaccess.allenl.me'
+      - 'jackett.allenl.me'
       - 'pihole.allenl.me'
       subject: 'group:admin'
       policy: 'one_factor'

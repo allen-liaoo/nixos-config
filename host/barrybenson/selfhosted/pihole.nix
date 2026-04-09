@@ -19,6 +19,8 @@ in
           "${volumes.${dataVolumeName}.ref}:/etc/pihole:rw,U"
         ];
         environments = {
+          PIHOLE_UID = "0"; # needed to bind to 53
+          PIHOLE_GID = "0";
           FTLCONF_webserver_api_password = ""; # disable password
           FTLCONF_webserver_port = "8080,[::]:8080";
           FTLCONF_dns_port = "5053";

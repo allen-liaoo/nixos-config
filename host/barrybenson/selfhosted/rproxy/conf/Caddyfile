@@ -111,13 +111,13 @@
 	# 	}
 	# }
 
-	# @jackett host jackett.{$DOMAIN}
-	# handle @jackett {
-	# 	import authelia_protect
-	# 	reverse_proxy http://host.containers.internal:20117 {
-	# 		import proxy_transport
-	# 	}
-	# }
+	@jackett host jackett.{$DOMAIN}
+	handle @jackett {
+		import authelia_protect
+	  reverse_proxy http://host.containers.internal:20117 {
+			import proxy_transport
+		}
+	}
 
 	# @koito host koito.{$DOMAIN}
 	# handle @koito {
