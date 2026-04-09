@@ -1,8 +1,7 @@
-# TODO: Move to NixOS Module
-# It doesnt make sense as a hm module because it remaps keys across user boundaries
+# NOTE: xremaps keys across user boundaries
+# Dont move to system module because system xremap service on Niri is untested
 # SHOULD NOT LAUNCH PROGRAMS with xremap; use WM
-# run as root: programs always launch as root
-# run as user: programs always launch as one user
+# as program launches as same user as xremap (except xremap as system socket service)
 { lib, aln, ... }:
 
 let
@@ -38,7 +37,9 @@ in
       name = "Swap alt and ctrl on fw13 keyboard";
       remap = {
         "LEFTALT" = "LEFTCTRL";
+        "LEFTCTRL" = "LEFTALT";
         "RIGHTALT" = "RIGHTCTRL";
+        "RIGHTCTRL" = "RIGHTALT";
       };
       device.only = "AT Translated Set 2 keyboard";
     }];

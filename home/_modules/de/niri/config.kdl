@@ -13,7 +13,7 @@ window-rule {
 
 window-rule {
   match is-active=false
-  opacity 0.94
+  opacity 0.9
 }
 
 // Open DMS windows as floating by default

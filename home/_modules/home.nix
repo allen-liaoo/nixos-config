@@ -1,10 +1,17 @@
-{ lib, pkgs, inputs, aln, ... }:
+{ lib, pkgs, inputs, config, aln, ... }:
 
 {
   programs.home-manager.enable = true;
 
   home.username = aln.ctx.user.name;
   home.homeDirectory = "/home/${aln.ctx.user.name}";
+  xdg = {
+    enable = true;
+    cacheHome  = config.home.homeDirectory + "/.cache";
+    configHome = config.home.homeDirectory + "/.config";
+    dataHome   = config.home.homeDirectory + "/.local/share";
+    stateHome  = config.home.homeDirectory + "/.local/state";
+  };
 
   nix = {
     package = pkgs.nix;

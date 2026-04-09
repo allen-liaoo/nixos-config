@@ -1,8 +1,7 @@
 # id is name@dev or {uuid}
 # name is name in mozilla store (if not 3rd party)
 [
-  {
-    # Bypass paywall clean
+  { # Bypass paywall clean
     id = "magnolia@12.34";
     name = ""; # third party, no name
   }
@@ -21,6 +20,10 @@
   {
     id = "{446900e4-71c2-419f-a6a7-df9c091e268b}";
     name = "bitwarden-password-manager";
+  }
+  { # nord theme
+    id = "{48899556-1d2f-4de1-8e60-0746fc84c23e}";
+    name = "nord-milav";
   }
 ]
 

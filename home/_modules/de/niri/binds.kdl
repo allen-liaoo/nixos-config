@@ -3,7 +3,6 @@ binds {
 
     Mod+T hotkey-overlay-title="Open a Terminal" { spawn "~/.nix-profile/bin/alacritty"; }
     Mod+X repeat=false { spawn "vicinae" "toggle"; }
-    Mod+G repeat=false { spawn "firefox" "--browser"; }
 
     Mod+O repeat=false { toggle-overview; }
     Mod+Q repeat=false { close-window; }
@@ -32,7 +31,7 @@ binds {
     Mod+Shift+Home { move-column-to-first; }
     Mod+Shift+End  { move-column-to-last; }
 
-    Mod+Ctrl+Left { focus-monitor-left; }
+    Mod+Ctrl+Left  { focus-monitor-left; }
     Mod+Ctrl+Down  { focus-monitor-down; }
     Mod+Ctrl+Up    { focus-monitor-up; }
     Mod+Ctrl+Right { focus-monitor-right; }
@@ -59,7 +58,7 @@ binds {
     Mod+Shift+Alt+Left  { move-workspace-to-monitor-left; }
     Mod+Shift+Alt+Down  { move-workspace-to-monitor-down; }
     Mod+Shift+Alt+Up    { move-workspace-to-monitor-up; }
-    Mod+Shift+Alt+Right  { move-workspace-to-monitor-right; }
+    Mod+Shift+Alt+Right { move-workspace-to-monitor-right; }
     Mod+Shift+Alt+H  { move-workspace-to-monitor-left; }
     Mod+Shift+Alt+J  { move-workspace-to-monitor-down; }
     Mod+Shift+Alt+K  { move-workspace-to-monitor-up; }
