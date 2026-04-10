@@ -42,11 +42,11 @@
             system = inventory.hosts.${hostName}.system or inventory.systems.x86_linux;
           in inputs.home-manager.lib.homeManagerConfiguration {
           # legacy packaging (flat) instead of nested (import nixpkgs)
-          pkgs = nixpkgs.legacyPackages.${system};
+          pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
           extraSpecialArgs = {
             # pull inputs into args of home submodules
             inherit inputs;
-            pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+            pkgs-unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
             pkgs-nur = inputs.nur.legacyPackages.${system};
             aln = mkAln { inherit hostName; inherit userName; };
           };

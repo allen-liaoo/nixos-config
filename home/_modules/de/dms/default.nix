@@ -56,15 +56,14 @@ in
       batteryLockTimeout = 180;
       batterySuspendTimeout = 600;
       batterySuspendBehavior = 0; # 0: suspend, 1: hibernate, 2: suspend then hibernate
-
       acMonitorTimeout = 600;
       acLockTimeout = 300;
       acSuspendTimeout = 1800;
       acSuspendBehavior = 0;
-
       powerMenuDefaultAction = "lock";
 
       clipboardSettings.disabled = true;
+      displayNameMode = "model"; # recognize monitors by model rather than name
 
       currentThemeName = "dynamic";
       currentThemeCategory = "dynamic";
@@ -74,8 +73,6 @@ in
 
       niriOverviewOverlayEnabled = false; # disable dms launcher
       appIdSubstitutions = [];
-
-      waveProgressEnabled = false;
 
       # Cannot figure out how to set position and interval of this widget
       # Bugged: need to set its instance?

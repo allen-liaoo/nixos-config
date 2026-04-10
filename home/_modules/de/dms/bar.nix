@@ -29,6 +29,8 @@
     workspaceFocusedBorderEnabled = true;
     workspaceFocusedBorderColor = "surfaceText";
     workspaceFocusedBorderThickness = 2;
+    waveProgressEnabled = false; # audio player
+
     
     controlCenterWidgets = [
       { id = "brightnessSlider"; width = 50; }
