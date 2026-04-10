@@ -157,17 +157,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    vicinae = {
-      url = "github:vicinaehq/vicinae";
-      # need to follow nixpkgs-unstable
-      # https://github.com/vicinaehq/vicinae/issues/907
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+    # dont set nixpkgs.follows or cachix cache misses
+    vicinae.url = "github:vicinaehq/vicinae";
 
-    vicinae-extensions = {
-      url = "github:vicinaehq/extensions";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+    vicinae-extensions.url = "github:vicinaehq/extensions";
 
     vscode-server = {
       url = "github:nix-community/nixos-vscode-server";
