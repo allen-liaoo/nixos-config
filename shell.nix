@@ -11,7 +11,7 @@ system:
         
         nvimx.nixd = { # enable lsp to lookup options and pkgs
           nixpkgsName = "nixpkgs";
-          nixosConfKey = if userName != "" then hostName else ""; # nixos config only exists if user is declared
+          nixosConfKey = if userName == "" then hostName else ""; # dont load nixos configs if using home manager
           hmConfKey = if userName != "" then "${userName}@${hostName}" else "";
         };
       };
@@ -19,7 +19,6 @@ system:
       nixvimPkg = inputs.nvimx.makeNixvimWithModule system nixvimModule;
     in pkgs.mkShell {
       packages = [ nixvimPkg ];
-      shellHook = ''exec ${pkgs.fish}/bin/fish'';
     };
 
   # NixOS host shells: dev-hostname
@@ -30,7 +29,7 @@ system:
       })
     inventory.nixosHostNames);
 
-  # Home-manager user shells: dev-hostname@username
+  # Home-manager user shells: dev-username@hostname
   homeShells = lib.listToAttrs (map
     ({ userName, hostName }: {
         name = "dev-${userName}@${hostName}";
@@ -46,7 +45,6 @@ in
         sops
         ssh-to-age
       ];
-      shellHook = ''exec ${pkgs.fish}/bin/fish'';
     };
   }
 )

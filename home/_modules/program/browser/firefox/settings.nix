@@ -10,6 +10,7 @@
   "browser.contentblocking.report.vpn.enabled" = false;
   "browser.contentblocking.report.show_mobile_app" = false;
   "browser.dataFeatureRecommendations.enabled" = false;
+  "browser.tabs.insertAfterCurrent" = true;
   "browser.newtabpage.activity-stream.default.sites" = "";
   "browser.newtabpage.activity-stream.feeds.section.topstories.options" = "{\"hidden\":true}";
   "browser.newtabpage.activity-stream.feeds.section.topstories" = false;

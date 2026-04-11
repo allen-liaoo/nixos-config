@@ -25,7 +25,7 @@
           fish_config theme choose $fish_theme
         end
       '' + lib.optionalString config.programs.yazi.enable ''
-        # Yazi specific init (replaces the need for abbreviation
+        # Yazi specific init (replaces the need for abbreviation)
         # press q to quit with auto cd; press Q to quit without cd
         function y
         	set tmp (mktemp -t "yazi-cwd.XXXXXX")
@@ -65,10 +65,10 @@
       };
     };
   
-    # fish as login shell breaks system, so use bash and launch fish if parent process is fish
+    # fish as login shell breaks system, so use bash and launch fish if parent process is not fish
     # see: https://nixos.wiki/wiki/Fish#Setting_fish_as_your_shell
     programs.bash.enable = true;
-    programs.bash.bashrcExtra = ''
+    programs.bash.initExtra = ''
       if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
       then
         shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
