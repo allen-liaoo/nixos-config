@@ -5,6 +5,7 @@
 
   home.username = aln.ctx.user.name;
   home.homeDirectory = "/home/${aln.ctx.user.name}";
+
   xdg = {
     enable = true;
     cacheHome  = config.home.homeDirectory + "/.cache";

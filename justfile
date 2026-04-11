@@ -53,12 +53,6 @@ fl-check:
     {{nix_config}} \
     nix flake check
 
-# Enter dev shell
-[group("utility")]
-dev:
-    {{nix_config}} \
-    nix develop
-
 # Collect NixOS garbage
 [group("utility")]
 os-gc:

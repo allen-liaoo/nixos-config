@@ -67,22 +67,7 @@
       }) inventory.userHostPairs
     );
 
-    devShells = lib.genAttrs inventory.systems (
-      system: {
-        default = let 
-          pkgs = nixpkgs.legacyPackages.${system};
-        in pkgs.mkShell {
-          packages = with pkgs; [
-            age
-            git
-            just
-            sops
-            ssh-to-age
-          ];
-          shellHook = ''exec ${pkgs.fish}/bin/fish'';
-        };
-      }
-    );
+    devShells = lib.genAttrs inventory.systems (import ./shell.nix { inherit inputs lib inventory; });
   };
 
   nixConfig = {
