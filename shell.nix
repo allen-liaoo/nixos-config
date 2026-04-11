@@ -9,33 +9,11 @@ system:
       nixvimModule = {
         imports = [ inputs.nvimx.nixvimModules.nix ];
         
-        # Per-host/user nixd configuration
-        # Can't get it to work with config in native nixvim
-        lsp.luaConfig.post = let
-          flakeExpr = ''(builtins.getFlake (builtins.toString ./.))'';
-        in ''
-          local lsp = vim.lsp
- 
-          lsp.config("nixd", {
-            settings = {
-              nixd = {
-                nixpkgs = {
-                  expr = "${flakeExpr}.inputs.nixpkgs.legacyPackages.\"${system}\"",
-                },
-                options = {
-                  nixos = {
-                    expr = "${flakeExpr}.nixosConfigurations.${hostName}.options",
-                  },
-                  ${if userName != "" then ''
-                  ["home-manager"] = {
-                    expr = "${flakeExpr}.homeConfigurations.\"${userName}@${hostName}\".options",
-                  },'' else "" }
-                },
-              },
-            },
-          })
-        
-          lsp.enable("nixd")'';
+        nvimx.nixd = { # enable lsp to lookup options and pkgs
+          nixpkgsName = "nixpkgs";
+          nixosConfKey = if userName != "" then hostName else ""; # nixos config only exists if user is declared
+          hmConfKey = if userName != "" then "${userName}@${hostName}" else "";
+        };
       };
 
       nixvimPkg = inputs.nvimx.makeNixvimWithModule system nixvimModule;
@@ -53,7 +31,7 @@ system:
     inventory.nixosHostNames);
 
   # Home-manager user shells: dev-hostname@username
-  homeShells = lib.listToAttrs (map 
+  homeShells = lib.listToAttrs (map
     ({ userName, hostName }: {
         name = "dev-${userName}@${hostName}";
         value = mkDevShell { inherit hostName userName; };
