@@ -17,7 +17,7 @@ in
         userns = ""; # pod sets userns, container shouldn't
         startWithPod = true;
         volumes = [
-          "${volumes.${name}.ref}:/config:rw"
+          "${volumes.${name}.ref}:/config:rw,U"
         ];
         environments = {
           PUID = "0";
