@@ -6,6 +6,11 @@
     settings = {
       PermitRootLogin = "no";
       PasswordAuthentication = false;
+      MaxAuthTries = 3;
+      LoginGraceTime = "5m";
+      AllowAgentForwarding = "no";
+      AllowTcpForwarding = "no";
+      X11Forwarding = false;
     };
 
     # Must generate host ssh key for sops
