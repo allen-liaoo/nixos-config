@@ -16,7 +16,29 @@ in
       # 802-11-wireless = wifi
       # 802-11-wireless-security = wifi-security
       # (nm setting key = .nmconnection key)
+      # NOTE: trailing ":" is important in "list of ..." fields
       profiles = {
+        # home server (DNS)
+        wg_hs_dns = {
+          connection = {
+            id = "wg_hs_dns";
+            type = "wireguard";
+            interface-name = "wg_hs";
+          };
+          wireguard.private-key = "$WG_PRIVKEY";
+          # TODO: Centralize keys and ips
+          "wireguard-peer.CQvf4nOExaVkaiWpsxx0OctRU4N51xRYdKUoKteegQk=" = {
+            endpoint = "74.208.158.11:51820"; 
+            allowed-ips = "10.0.0.1/24;";
+            persistent-keepalive = 25;
+          };
+          ipv4 = {
+            address1 = "10.0.10.1/32";
+            dns = "10.0.0.1;";
+            method = "manual";
+          };
+          ipv6.method = "disabled";
+        };
         # phone
         a16n = {
           connection = {
@@ -78,16 +100,26 @@ in
     };
   };
 
-  sops.secrets = connections
+  sops.secrets = (connections
     |> map (key: {
       "passwd_${key}" = {
         sopsFile = aln.lib.relToRoot "secrets/host/wifi_passwd.yaml";
         inherit key;
       };
     })
-    |> lib.mergeAttrsList;
+    |> lib.mergeAttrsList)
+    // {
+      theseus_wg_privkey = {
+        sopsFile = aln.lib.relToRoot "secrets/host/theseus/common.yaml";
+        key = "wg_privkey";
+      };
+    };
 
-  sops.templates."nm-secrets-env".content = connections 
+  sops.templates."nm-secrets-env".content = (connections 
     |> map (key: "PASSWD_${lib.toUpper key}=${config.sops.placeholder."passwd_${key}"}")
-    |> lib.concatMapStrings (s: s + "\n");
+    |> lib.concatMapStrings (s: s + "\n"))
+    + ''
+      WG_PRIVKEY=${config.sops.placeholder.theseus_wg_privkey}
+    '';
+    
 }
