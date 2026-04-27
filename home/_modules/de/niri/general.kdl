@@ -12,13 +12,6 @@ window-rule {
   geometry-corner-radius 1
   clip-to-geometry true
   open-maximized-to-edges true
-  popups {
-    geometry-corner-radius 6
-    opacity 0.8
-    background-effect {
-        blur true
-    }
-  }
 }
 
 window-rule {
@@ -28,16 +21,6 @@ window-rule {
     xray true
   }
   opacity 0.85
-}
-
-layer-rule {
-  popups {
-    geometry-corner-radius 6
-    opacity 0.8
-    background-effect {
-        blur true
-    }
-  }
 }
 
 layout {
