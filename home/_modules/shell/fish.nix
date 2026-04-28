@@ -8,6 +8,8 @@
       interactiveShellInit = ''
         # disable fish greeting
         set fish_greeting
+        # disable command not found
+        function fish_command_not_found; end
 
         fish_default_key_bindings
         fish_vi_key_bindings
