@@ -1,9 +1,9 @@
-{ inputs, pkgs, ... }:
+{ pkgs-unstable, ... }:
 
 {
   programs.niri = {
     enable = true;
-    package = inputs.niri-git.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    package = pkgs-unstable.niri;
   };
   hardware.graphics.enable = true;
 }
