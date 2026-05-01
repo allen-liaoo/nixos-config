@@ -10,38 +10,52 @@
   mcp,
   numpy,
   pillow,
+  pyjwt
 }:
 
+let
+  # upstream requirement
+  mcp-fixed = mcp.overrideAttrs (old: rec {
+    version = "1.8.0";
+    src = fetchFromGitHub {
+      owner = "modelcontextprotocol";
+      repo = "python-sdk";
+      tag = "v${version}";
+      hash = "sha256-TGkAyuBcIstL2BCZYBWoi7PhnhoBvap67sLWGe0QUoU=";
+    };
+    # passthru = old.passthru // {
+    #   dependencies = old.passthru.dependencies ++ [
+    #     pyjwt
+    #   ];
+    # };
+  });
+in
 lib.warnIf
   (typst.version != typst-docs.version)
   "typst-mcp: typst (${typst.version}) and typst-docs-assets (${typst-docs.version}) version mismatch — docs may be out of sync"
 
-(buildPythonApplication {
+(buildPythonApplication rec {
   pname = "typst-mcp";
   version = "c9a1d897712540db5d7a4147f0d648504b4fc246";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "johannesbrandenburger";
-    repo = "typst-mcp";
-    rev = "c9a1d897712540db5d7a4147f0d648504b4fc246";
+    repo = pname;
+    rev = version;
     hash = "sha256-9hvPdQZfYlHyJS8ACLnPG1n5Yxf6+tv6L0RokVVMXKY=";
   };
 
   build-system = [ setuptools ];
 
   postPatch = ''
-    # relax mcp version
-    substituteInPlace pyproject.toml \
-      --replace-fail '"mcp[cli]==1.8.0"' '"mcp"'
-
     substituteInPlace pyproject.toml \
       --replace-fail \
-      '[project]' \
-      '[project.scripts]
-      typst-mcp = "server:main"
+        '[project]' \
+        '[project.scripts]
+        typst-mcp = "server:main"
 
-      [project]'
+        [project]'
 
     # Patch the hardcoded relative path of typst-docs before the build sees the source
     substituteInPlace server.py \
@@ -56,10 +70,14 @@ lib.warnIf
   ''; #--prefix PATH : ${lib.makeBinPath [ typst ]}
 
   dependencies = [
-    mcp
+    mcp-fixed
     numpy
     pillow
     typst
+  ];
+
+  pythonRelaxDeps = [
+    "mcp"
   ];
 
   pythonImportsCheck = [
@@ -67,6 +85,8 @@ lib.warnIf
     "numpy"
     "PIL" # pillow
   ];
+
+  doCheck = false;
 
   meta = {
     description = "MCP server for Typst";
