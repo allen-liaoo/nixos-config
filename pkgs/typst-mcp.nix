@@ -12,23 +12,6 @@
   pillow
 }:
 
-# let
-#   # upstream requirement
-#   mcp-fixed = mcp.overrideAttrs (old: rec {
-#     version = "1.8.0";
-#     src = fetchFromGitHub {
-#       owner = "modelcontextprotocol";
-#       repo = "python-sdk";
-#       tag = "v${version}";
-#       hash = "sha256-TGkAyuBcIstL2BCZYBWoi7PhnhoBvap67sLWGe0QUoU=";
-#     };
-#     passthru = old.passthru // {
-#       dependencies = old.passthru.dependencies ++ [
-#         pyjwt
-#       ];
-#     };
-#   });
-# in
 lib.warnIf
   (typst.version != typst-docs.version)
   "typst-mcp: typst (${typst.version}) and typst-docs-assets (${typst-docs.version}) version mismatch — docs may be out of sync"
@@ -83,17 +66,11 @@ lib.warnIf
     typst
   ];
 
-  # pythonRelaxDeps = [
-  #   "mcp"
-  # ];
-
   pythonImportsCheck = [
     "mcp"
     "numpy"
     "PIL" # pillow
   ];
-
-  #doCheck = false;
 
   meta = {
     description = "MCP server for Typst";
