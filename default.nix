@@ -1,14 +1,12 @@
 # for the NUR
 { pkgs ? import <nixpkgs> {} }:
 
-pkgs.lib.fix (self: {
-  typst-docs = pkgs.callPackage ./pkgs/typst-docs.nix {
+{
+  typst-mcp = pkgs.python3Packages.callPackage ./pkgs/typst-mcp.nix rec {
     typst = pkgs.typst;
-  };
-
-  typst-mcp = pkgs.python3Packages.callPackage ./pkgs/typst-mcp.nix {
-    typst = pkgs.typst;
-    typst-docs = self.typst-docs;
+    typst-docs = pkgs.callPackage ./pkgs/typst-docs.nix {
+      typst = typst;
+    };
     mcp = pkgs.python3Packages.callPackage ./pkgs/mcp.nix {};
   };
-})
+}

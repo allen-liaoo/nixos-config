@@ -15,11 +15,13 @@
   in
   {
     nixosConfigurations = lib.genAttrs inventory.nixosHostNames (
-      hostName:
-      let host = inventory.hosts.${hostName}; in 
-      lib.nixosSystem {
+      hostName: let 
+        host = inventory.hosts.${hostName};
+        system = host.system;
+      in lib.nixosSystem {
         specialArgs = { 
           inherit inputs lib;
+          pkgs-unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
           aln = mkAln { inherit hostName; };
         };
         system = host.system;
