@@ -1,4 +1,8 @@
-{ config, lib, aln, ... }: {
+{ inputs, lib, aln, ... }: {
+  imports = [
+    inputs.sops-nix.nixosModules.sops
+  ];
+
   sops = let 
     secretsDir = aln.lib.relToRoot "secrets";
   in {

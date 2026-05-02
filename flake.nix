@@ -27,12 +27,7 @@
         system = host.system;
         modules = with inputs; [
           ./host/${hostName}
-
-          dms.nixosModules.greeter
           disko.nixosModules.disko
-          impermanence.nixosModules.impermanence
-          sops-nix.nixosModules.sops
-          quadlet-nix.nixosModules.quadlet
         ];
       }
     );

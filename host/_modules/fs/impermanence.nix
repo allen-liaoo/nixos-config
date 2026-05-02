@@ -1,4 +1,4 @@
-{ lib, aln, ... }:
+{ lib, aln, inputs, ... }:
 
 # CRITICAL ASSUMPTIONS OF THIS MODULE:
 # - Root of btrfs partition (not OS root) is labeled "btrfsroot"
@@ -16,6 +16,10 @@ let
   root_subvol = "@";
 in 
 lib.optionalAttrs (aln.ctx.host.hasTag.impermanent) {
+  imports = [
+    inputs.impermanence.nixosModules.impermanence
+  ];
+
   # below paths shoud only contain data that are under root subvolume
   # NOTE: do not persist both a file and its parent directory
   environment.persistence."/persist" = {

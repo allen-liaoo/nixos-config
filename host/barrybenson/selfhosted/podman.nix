@@ -21,14 +21,4 @@
 
   # need to set ip forwarding for containers to send/receive packets
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
-
-  # quadlet-nix package
-  virtualisation.quadlet = {
-    enable = true;
-    autoEscape = true;
-    autoUpdate = {
-      enable = true;
-      calendar = "Mon *-*-* 00:00:00"; # every week
-    };
-  };
 }
