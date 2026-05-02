@@ -21,52 +21,67 @@
 },
 {
   "type": "os",
-  "key": "󰨡 OS:",
+  "key": "󰨡 OS",
   "keyColor": "#FFC0CB"
 },
 {
   "type": "kernel",
-  "key": "│ Kernel:  ",
+  "key": "│ Kernel  ",
   "keyColor": "#FFC0CB"
 },
 {
-  "type": "shell",
-  "key": "│ Shell:  ",
+  "type": "bios",
+  "key": "│ BIOS  ",
   "keyColor": "#FFC0CB"
 },
 {
-  "type": "terminal",
-  "key": "│ Terminal:  ",
-  "keyColor": "#FFC0CB"
-},
-{
-  "type": "terminalfont",
-  "key": "│ Terminal Font:  ",
-  "keyColor": "#FFC0CB"
-},
-{
-  "type": "lm",
-  "key": "│ DM: 󰌾 ",
-  "keyColor": "#FFC0CB"
-},
-{
-  "type": "de",
-  "key": "│ DE:  ",
-  "keyColor": "#FFC0CB"
-},
-{
-  "type": "wm",
-  "key": "│ WM:  ",
-  "keyColor": "#FFC0CB"
-},
-{
-  "type": "wmtheme",
-  "key": "│ WM Theme: 󰃣 ",
+  "type": "initsystem",
+  "key": "│ Init ⚡︎ ",
   "keyColor": "#FFC0CB"
 },
 {
   "type": "packages",
-  "key": "└ Packages:  ",
+  "key": "│ Packages  ",
+  "keyColor": "#FFC0CB"
+},
+{
+  "type": "shell",
+  "key": "│ Shell  ",
+  "keyColor": "#FFC0CB"
+},
+{
+  "type": "lm",
+  "key": "│ DM 󰌾 ",
+  "keyColor": "#FFC0CB"
+},
+{
+  "type": "de",
+  "key": "│ DE  ",
+  "keyColor": "#FFC0CB"
+},
+{
+  "type": "wm",
+  "key": "│ WM  ",
+  "keyColor": "#FFC0CB"
+},
+{
+  "type": "wmtheme",
+  "key": "│ Theme 󰃣 ",
+  "keyColor": "#FFC0CB"
+},
+{
+  "type": "terminalfont",
+  "key": "│ Font  ",
+  "keyColor": "#FFC0CB"
+},
+{
+  "type": "icons",
+  "key": "│ Icons ⓘ ",
+  "keyColor": "#FFC0CB"
+},
+{
+  "type": "cursor",
+  "key": "└ Cursor ➤ ",
   "keyColor": "#FFC0CB"
 },
 {
@@ -75,42 +90,47 @@
 },
 {
   "type": "host",
-  "key": "󰟀 Host:",
-  "keyColor": "yellow"
-},
-{
-  "type": "bios",
-  "key": "│ BIOS:  ",
-  "keyColor": "yellow"
-},
-{
-  "type": "memory",
-  "key": "│ RAM Memory:  ",
-  "keyColor": "yellow"
-},
-{
-  "type": "swap",
-  "key": "│ Swap: 󰾴 ",
+  "key": "󰟀 Host",
   "keyColor": "yellow"
 },
 {
   "type": "cpu",
-  "key": "│ Processor: 󰍛 ",
+  "key": "│ CPU 󰍛 ",
   "keyColor": "yellow"
 },
 {
   "type": "gpu",
-  "key": "│ Videocard: 󰢮 ",
+  "key": "│ GPU 󰢮 ",
+  "keyColor": "yellow"
+},
+{
+  "type": "memory",
+  "key": "│ RAM  ",
+  "keyColor": "yellow"
+},
+{
+  "type": "swap",
+  "key": "│ Swap 󰾴",
   "keyColor": "yellow"
 },
 {
   "type": "disk",
-  "key": "│ Storage:  ",
+  "key": "│ Storage  ",
   "keyColor": "yellow"
 },
 {
   "type": "battery",
-  "key": "└ Battery: 󰁹 ",
+  "key": "| Battery 󰁹 ",
+  "keyColor": "yellow"
+},
+{
+  "type": "display",
+  "key": "| Display 모",
+  "keyColor": "yellow"
+},
+{
+  "type": "uptime",
+  "key": "└ Uptime  ",
   "keyColor": "yellow"
 },
 {
@@ -118,18 +138,13 @@
   "format": "\u001b[90m├────────────────────── Others Configurations ─────────────────┤"
 },
 {
-  "type": "uptime",
-  "key": " Uptime:",
+  "type": "terminal",
+  "key": "  Terminal",
   "keyColor": "cyan"
 },
 {
-   "type": "datetime",
-   "key": "│ DateTime:  ",
-   "keyColor": "cyan"
-},
-{
-  "type": "locale",
-  "key": "└ Locale: 󰇧 ",
+  "type": "editor",
+  "key": "│ Editor  ",
   "keyColor": "cyan"
 },
 {
