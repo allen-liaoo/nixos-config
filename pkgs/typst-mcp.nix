@@ -9,27 +9,26 @@
 
   mcp,
   numpy,
-  pillow,
-  pyjwt
+  pillow
 }:
 
-let
-  # upstream requirement
-  mcp-fixed = mcp.overrideAttrs (old: rec {
-    version = "1.8.0";
-    src = fetchFromGitHub {
-      owner = "modelcontextprotocol";
-      repo = "python-sdk";
-      tag = "v${version}";
-      hash = "sha256-TGkAyuBcIstL2BCZYBWoi7PhnhoBvap67sLWGe0QUoU=";
-    };
-    # passthru = old.passthru // {
-    #   dependencies = old.passthru.dependencies ++ [
-    #     pyjwt
-    #   ];
-    # };
-  });
-in
+# let
+#   # upstream requirement
+#   mcp-fixed = mcp.overrideAttrs (old: rec {
+#     version = "1.8.0";
+#     src = fetchFromGitHub {
+#       owner = "modelcontextprotocol";
+#       repo = "python-sdk";
+#       tag = "v${version}";
+#       hash = "sha256-TGkAyuBcIstL2BCZYBWoi7PhnhoBvap67sLWGe0QUoU=";
+#     };
+#     passthru = old.passthru // {
+#       dependencies = old.passthru.dependencies ++ [
+#         pyjwt
+#       ];
+#     };
+#   });
+# in
 lib.warnIf
   (typst.version != typst-docs.version)
   "typst-mcp: typst (${typst.version}) and typst-docs-assets (${typst-docs.version}) version mismatch — docs may be out of sync"
@@ -49,6 +48,14 @@ lib.warnIf
   build-system = [ setuptools ];
 
   postPatch = ''
+    # Add entrypoint in src
+    cat >> server.py << 'EOF'
+
+    def main():
+        mcp.run()
+    EOF
+
+    # Add entrypoint in pyproject
     substituteInPlace pyproject.toml \
       --replace-fail \
         '[project]' \
@@ -70,15 +77,15 @@ lib.warnIf
   ''; #--prefix PATH : ${lib.makeBinPath [ typst ]}
 
   dependencies = [
-    mcp-fixed
+    mcp
     numpy
     pillow
     typst
   ];
 
-  pythonRelaxDeps = [
-    "mcp"
-  ];
+  # pythonRelaxDeps = [
+  #   "mcp"
+  # ];
 
   pythonImportsCheck = [
     "mcp"
@@ -86,7 +93,7 @@ lib.warnIf
     "PIL" # pillow
   ];
 
-  doCheck = false;
+  #doCheck = false;
 
   meta = {
     description = "MCP server for Typst";

@@ -9,5 +9,6 @@ pkgs.lib.fix (self: {
   typst-mcp = pkgs.python3Packages.callPackage ./pkgs/typst-mcp.nix {
     typst = pkgs.typst;
     typst-docs = self.typst-docs;
+    mcp = pkgs.python3Packages.callPackage ./pkgs/mcp.nix {};
   };
 })

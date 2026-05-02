@@ -1,6 +1,5 @@
 {
   rustPlatform,
-  fetchFromGitHub,
   lib,
   openssl,
   pkg-config,
