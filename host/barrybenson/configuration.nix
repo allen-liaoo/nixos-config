@@ -4,6 +4,7 @@
   time.timeZone = "America/Chicago";
   i18n.defaultLocale = "en_US.UTF-8";
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.loader.grub = {
     enable = true;
     device = "nodev"; # "nodev" is used for UEFI
