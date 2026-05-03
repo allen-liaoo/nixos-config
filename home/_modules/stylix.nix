@@ -1,6 +1,10 @@
-{ lib, pkgs, aln, ...}:
+{ inputs, lib, pkgs, aln, ...}:
 
 {
+  imports = [
+    inputs.stylix.homeModules.stylix
+  ];
+
   # default specialization: night theme
   stylix = {
     enable = true;

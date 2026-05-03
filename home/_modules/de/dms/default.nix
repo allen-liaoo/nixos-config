@@ -5,7 +5,9 @@ let
   dms-pkg = config.lib.nixGL.wrap inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
 {
-  imports = aln.lib.listDirFiles ./.;
+  imports = aln.lib.listDirFiles ./. ++ [
+    inputs.dms.homeModules.dank-material-shell
+  ];
 
   # waiting for this target; currently in nixpkgs-unstable (not in 25.11)
   #stylix.targets.dank-material-shell.enable = true;

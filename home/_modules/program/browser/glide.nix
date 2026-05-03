@@ -1,6 +1,10 @@
-{ pkgs, lib, ... }@args: # for some unknown reason, need pkgs here
+{ inputs, pkgs, lib, ... }@args: # for some unknown reason, need pkgs here
 
 {
+  imports = [
+    inputs.glide.homeModules.default
+  ];
+
   programs.glide-browser = { enable = true; };
     # (import ./firefox args) //
     # # disable toolbar

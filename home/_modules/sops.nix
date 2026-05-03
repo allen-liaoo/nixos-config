@@ -1,4 +1,8 @@
-{ config, lib, aln, ... }: {
+{ config, inputs, lib, aln, ... }: {
+  imports = [
+    inputs.sops-nix.homeManagerModules.sops
+  ];
+
   sops = {
     # User expects host to decrypt and store its age key for use with sops-nix in home-manager
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";

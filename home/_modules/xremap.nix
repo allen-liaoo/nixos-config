@@ -2,12 +2,16 @@
 # Dont move to system module because system xremap service on Niri is untested
 # SHOULD NOT LAUNCH PROGRAMS with xremap; use WM
 # as program launches as same user as xremap (except xremap as system socket service)
-{ lib, aln, ... }:
+{ inputs, lib, aln, ... }:
 
 let
   shouldEnable = !aln.ctx.host.is.server && (with aln.ctx.user.inGroup; input && wheel);
 in
 {
+  imports = [
+    inputs.xremap.homeManagerModules.default
+  ];
+
   services.xremap = {
     enable = shouldEnable; # not guarding the whole module to prevent warning
     withNiri = true;

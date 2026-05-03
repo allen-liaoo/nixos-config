@@ -9,6 +9,10 @@ let
   rcSha = "sha256-sltBhjniJvRZ6zys1lmKnz9UNfS2AS47uZilV/j6XZY="; # hash of tarball at the rev; to obtain, run flake with rev and dummy sha value
 in
 {
+  imports = [
+    inputs.vicinae.homeManagerModules.default
+  ];
+
   # vicinae is ride or die for niri
   systemd.user.services.vicinae = {
     Unit = {

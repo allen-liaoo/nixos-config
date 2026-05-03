@@ -4,6 +4,8 @@
   outputs = { nixpkgs, nixpkgs-unstable, ... } @ inputs: 
   let 
     lib = nixpkgs.lib;
+    mkPkgsUnstable = system: import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
+
     alnLib = import ./lib { inherit nixpkgs; };
     inventory = import ./inventory { inherit lib alnLib; };
     # my namespace; everything I define will be accessible in "aln" attr of module inputs
@@ -14,20 +16,20 @@
     };
   in
   {
-    nixosConfigurations = lib.genAttrs inventory.nixosHostNames (
-      hostName: let 
+    nixosConfigurations = lib.genAttrs inventory.nixosHostNames (hostName:
+      let 
         host = inventory.hosts.${hostName};
         system = host.system;
       in lib.nixosSystem {
         specialArgs = { 
           inherit inputs lib;
-          pkgs-unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
+          pkgs-unstable = mkPkgsUnstable system;
           aln = mkAln { inherit hostName; };
         };
-        system = host.system;
-        modules = with inputs; [
+        system = system; 
+        modules = [
           ./host/${hostName}
-          disko.nixosModules.disko
+          inputs.disko.nixosModules.disko
         ];
       }
     );
@@ -36,29 +38,17 @@
       map ({ userName, hostName }: {
         name = "${userName}@${hostName}";
         value = let
-            system = inventory.hosts.${hostName}.system or inventory.systems.x86_linux;
-          in inputs.home-manager.lib.homeManagerConfiguration {
-          # legacy packaging (flat) instead of nested (import nixpkgs)
+          system = inventory.hosts.${hostName}.system or inventory.systems.x86_linux;
+        in inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
           extraSpecialArgs = {
-            # pull inputs into args of home submodules
             inherit inputs;
-            pkgs-unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
+            pkgs-unstable = mkPkgsUnstable system;
             pkgs-nur = inputs.nur.legacyPackages.${system};
             aln = mkAln { inherit hostName; inherit userName; };
           };
-          modules = with inputs; [
+          modules = [
             ./home/${userName}
-
-            dms.homeModules.dank-material-shell
-            glide.homeModules.default
-            nix-index-database.homeModules.default
-            quadlet-nix.homeManagerModules.quadlet
-            sops-nix.homeManagerModules.sops
-            stylix.homeModules.stylix
-            vicinae.homeManagerModules.default
-            vscode-server.nixosModules.home
-            xremap.homeManagerModules.default
           ];
         };
       }) inventory.userHostPairs
