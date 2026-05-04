@@ -140,10 +140,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    stylix = {
-      url = "github:nix-community/stylix/release-25.11";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # stylix = {
+    #   url = "github:nix-community/stylix/release-25.11";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     # dont set nixpkgs.follows or cachix cache misses
     vicinae.url = "github:vicinaehq/vicinae";

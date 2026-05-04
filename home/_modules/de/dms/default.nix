@@ -9,9 +9,6 @@ in
     inputs.dms.homeModules.dank-material-shell
   ];
 
-  # waiting for this target; currently in nixpkgs-unstable (not in 25.11)
-  #stylix.targets.dank-material-shell.enable = true;
-
   # dms is ride or die for niri
   systemd.user.services.dms = {
     Unit = {
@@ -36,13 +33,12 @@ in
     enableSystemMonitoring = true; # uses dms's dgop
     dgop.package = inputs.dgop.packages.${pkgs.stdenv.hostPlatform.system}.default; # fix for dgop not in nixpkgs stable
     enableVPN = true;
-    enableDynamicTheming = true; # mutagen ; use stylix
-    enableCalendarEvents = false; # khal - need extra setup
+    enableDynamicTheming = true; # mutagen
+    enableCalendarEvents = false; # khal ; need extra setup
     enableClipboardPaste = false; # wtype ; use vicinae for this
 
     session = {
       showThirdPartyPlugins = true;
-      # TODO: Remove when stylix is updated
       wallpaperPath = aln.lib.relToRoot "assets/wallpaper/roadtrip.jpg";
     };
 
