@@ -5,11 +5,13 @@
     enable = true;
     package = config.lib.nixGL.wrap pkgs.alacritty;
     settings = {
-      general.live_config_reload = true;
+      general = {
+        live_config_reload = true;
+      };
       window = {
         padding = { x = 8; y = 8; };
         decorations = "None";
-        opacity = lib.mkForce 0.85;
+        opacity = lib.mkForce 0.75;
       };
       cursor.style.shape = "Block";
       terminal.osc52 = "OnlyCopy"; # for copying from remote server

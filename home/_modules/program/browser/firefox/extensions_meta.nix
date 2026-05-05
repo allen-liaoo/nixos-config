@@ -21,9 +21,9 @@
     id = "{446900e4-71c2-419f-a6a7-df9c091e268b}";
     name = "bitwarden-password-manager";
   }
-  { # nord theme
-    id = "{48899556-1d2f-4de1-8e60-0746fc84c23e}";
-    name = "nord-milav";
+  {
+    id = "pywalfox@frewacom.org";
+    name = "pywalfox";
   }
 ]
 

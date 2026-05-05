@@ -10,12 +10,12 @@ in
   ];
 
   # dms is ride or die for niri
-  systemd.user.services.dms = {
-    Unit = {
-      After = [ "niri.service" ];
-      BindsTo = [ "niri.service" ];
-    };
-  };
+  # systemd.user.services.dms = {
+  #   Unit = {
+  #     After = [ "niri.service" ];
+  #     BindsTo = [ "niri.service" ];
+  #   };
+  # };
 
   programs.dank-material-shell = {
     enable = true;
@@ -102,4 +102,4 @@ in
   };
 }
 # convert json kv row to nix
-# :%s/"\([a-zA-z]\+\)": \([^,]\+\),/\1 = \2;/
+# :%s/"\([a-zA-z0-9]\+\)": \([^,]\+\),/\1 = \2;/

@@ -5,8 +5,7 @@
   ...
 }:
 
-lib.optionalAttrs aln.ctx.host.is.gui {
-  # cursor
+{
   home.pointerCursor = {
     name = "Vimix-cursors";
     package = pkgs.vimix-cursors;
@@ -15,11 +14,21 @@ lib.optionalAttrs aln.ctx.host.is.gui {
     gtk.enable = true;
   };
 
-  # icon
   gtk = {
+    enable = true;
+    theme = {
+      name = "Adwaita";
+      package = pkgs.gnome-themes-extra;
+    };
     iconTheme = {
       package = pkgs.adwaita-icon-theme;
       name = "Adwaita";
     };
+    # cursorTheme is set by pointerCursor module
+  };
+
+  qt = {
+    enable = true;
+    platformTheme.name = "gtk3";  
   };
 }
