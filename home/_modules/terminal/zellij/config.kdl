@@ -258,7 +258,8 @@ ui {
 // Choose the theme that is specified in the themes section.
 // Default: default
 //
-theme "nightfox"
+theme "matugen"
+//theme "nightfox"
 
 // Choose the base input mode of zellij.
 // Default: normal
