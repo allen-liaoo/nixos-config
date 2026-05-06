@@ -1,5 +1,5 @@
-{ aln, ... }:
+{ alnLib, ... }:
 
 {
-  imports = aln.lib.listDirFiles ./. ++ aln.lib.listSubdirs ./.;
+  imports = alnLib.listDirFiles ./. ++ alnLib.listSubdirs ./.;
 }

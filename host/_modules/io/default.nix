@@ -1,5 +1,5 @@
-{ lib, aln, ... }:
+{ lib, alnLib, ctx, ... }:
 
 {
-  imports = lib.optionals (aln.ctx.host.is.gui) (aln.lib.listDirFiles ./. ++ aln.lib.listSubdirs ./.);
+  imports = lib.optionals (ctx.host.is.gui) (alnLib.listDirFiles ./. ++ alnLib.listSubdirs ./.);
 }

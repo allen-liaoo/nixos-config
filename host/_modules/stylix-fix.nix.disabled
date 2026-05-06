@@ -1,4 +1,4 @@
-{ lib, aln, ... }:
+{ lib, ... }:
 
 {
   # Stylix with gtk needs dconf enabled

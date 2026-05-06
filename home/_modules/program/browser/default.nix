@@ -1,5 +1,5 @@
-{ lib, pkgs, aln, ... }:
+{ alnLib, ... }:
 
 {
-  imports = aln.lib.listDirFiles ./. ++ aln.lib.importExcept (aln.lib.listSubdirs ./.) [ "firefox" ];
+  imports = alnLib.listDirFiles ./. ++ alnLib.importExcept (alnLib.listSubdirs ./.) [ "firefox" ];
 }

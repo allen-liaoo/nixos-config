@@ -1,5 +1,5 @@
 # Status: Config not working
-{ lib, config, pkgs, aln, ... }:
+{ lib, config, pkgs, alnLib, ... }:
 
 let 
   fcitx5-pkg = pkgs.kdePackages.fcitx5-with-addons;
@@ -35,6 +35,6 @@ in
   };
   # Relevant: https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland
 
-  xdg.dataFile."fcitx5/rime/default.custom.yaml".source = config.lib.file.mkOutOfStoreSymlink (aln.lib.outOfStoreRelToRoot config.home.homeDirectory ./default.custom.yaml);
-  xdg.dataFile."fcitx5/rime/bopomofo.custom.yaml".source = config.lib.file.mkOutOfStoreSymlink (aln.lib.outOfStoreRelToRoot config.home.homeDirectory ./bopomofo.custom.yaml);
+  xdg.dataFile."fcitx5/rime/default.custom.yaml".source = config.lib.file.mkOutOfStoreSymlink (alnLib.outOfStoreRelToRoot config.home.homeDirectory ./default.custom.yaml);
+  xdg.dataFile."fcitx5/rime/bopomofo.custom.yaml".source = config.lib.file.mkOutOfStoreSymlink (alnLib.outOfStoreRelToRoot config.home.homeDirectory ./bopomofo.custom.yaml);
 }

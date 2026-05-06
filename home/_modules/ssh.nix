@@ -1,4 +1,4 @@
-{ config, lib, aln, ... }:
+{ config, lib, ctx, ... }:
 
 {
   programs.ssh = {
@@ -7,7 +7,7 @@
     matchBlocks = 
     # Github access for this repository
     # NOTE: use gh_nix_config as git's remote url to avoid key conflicts with other git repositories
-    lib.optionalAttrs (aln.ctx.user.can.deployNixConfig) {
+    lib.optionalAttrs (ctx.user.can.deployNixConfig) {
       "gh_nix_config" = {
         hostname = "github.com";
         identitiesOnly = true;

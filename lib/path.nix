@@ -1,7 +1,6 @@
-{ nixpkgs, ... }:
+{ lib, ... }:
 
 let
-  inherit (nixpkgs) lib;
   rootPath = ../.; # project root path; resolves in nix store
 in rec
 {

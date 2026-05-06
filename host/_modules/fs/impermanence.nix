@@ -1,4 +1,4 @@
-{ lib, aln, inputs, ... }:
+{ lib, inputs, ctx, ... }:
 
 # CRITICAL ASSUMPTIONS OF THIS MODULE:
 # - Root of btrfs partition (not OS root) is labeled "btrfsroot"
@@ -15,7 +15,7 @@ let
   disk_root = "btrfsroot";
   root_subvol = "@";
 in 
-lib.optionalAttrs (aln.ctx.host.hasTag.impermanent) {
+lib.optionalAttrs (ctx.host.hasTag.impermanent) {
   imports = [
     inputs.impermanence.nixosModules.impermanence
   ];
@@ -32,11 +32,11 @@ lib.optionalAttrs (aln.ctx.host.hasTag.impermanent) {
       "/var/lib/systemd/coredump" # crash dumps
       "/var/lib/systemd/timers"
     ] ++ 
-    lib.optionals (aln.ctx.host.is.server) [
+    lib.optionals (ctx.host.is.server) [
       "/var/lib/systemd/network" 
       #"/var/lib/containers" # since this is on separate subvolume, no need to persist it as it wont be wiped
     ] ++
-    lib.optionals (!aln.ctx.host.is.server) [
+    lib.optionals (!ctx.host.is.server) [
       "/var/lib/bluetooth"
       "/etc/NetworkManager/system-connections"
       "/var/lib/cups" # printer
@@ -44,7 +44,7 @@ lib.optionalAttrs (aln.ctx.host.hasTag.impermanent) {
     # For each user NOT using impermanence: persist their home directory
     lib.concatMap (user: lib.optionals true [ #(!user.hasTags [ "impermanent" ]) [
       { directory = "/home/${user.name}"; user = user.name; mode = "0700"; }
-    ]) aln.ctx.host.users;
+    ]) ctx.host.users;
 
     files = [
       "/etc/machine-id"  # stable machine identity
@@ -72,7 +72,7 @@ lib.optionalAttrs (aln.ctx.host.hasTag.impermanent) {
           #];
         #files = [];
       #};
-    #}) aln.ctx.host.users);
+    #}) ctx.host.users);
   };
 
   # Reset root subvolume on boot
@@ -148,4 +148,4 @@ lib.optionalAttrs (aln.ctx.host.hasTag.impermanent) {
   #"age_key_${user.name}" = {
     #path = lib.mkForce "/persist/home/${user.name}/.config/sops/age/keys.txt";
   #};
-#}) aln.ctx.host.users);
+#}) ctx.host.users);

@@ -1,4 +1,4 @@
-{ lib, config, aln, ... }:
+{ lib, config, ctx, ... }:
 {
   programs.starship = {
     enable = true;
@@ -70,7 +70,7 @@
       nix_shell = {
         disabled = false;
         format = "[$symbol]($style) ";
-        symbol = if aln.ctx.host.is.gui
+        symbol = if ctx.host.is.gui
           then "" # nix nerd-font
           else "❄️";
       };

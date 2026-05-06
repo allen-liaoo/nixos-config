@@ -1,7 +1,7 @@
 # thin wrapper around Home-Manager's mkFirefoxModule
 # https://github.com/nix-community/home-manager/blob/master/modules/programs/firefox/mkFirefoxModule.nix
 # All settings are under "default" profile
-{ lib, config, pkgs, pkgs-nur, aln, ... }: # same args as home modules
+{ lib, config, pkgs, pkgs-nur, ... }: # same args as home modules
 
 let 
   extensions = import ./extensions_meta.nix;

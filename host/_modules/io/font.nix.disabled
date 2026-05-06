@@ -1,4 +1,4 @@
-{ lib, pkgs, aln, ... }:
+{ lib, pkgs, ... }:
 
 lib.optionalAttrs false {
   fonts = {

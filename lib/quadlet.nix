@@ -1,9 +1,8 @@
 # Templates for quadlet units
 # see https://seiarotg.github.io/quadlet-nix/home-manager-options.html for options
-{ nixpkgs, ... }:
+{ lib, ... }:
 
 let 
-  inherit (nixpkgs) lib;
   restartDefault = {
     unitConfig = {
       StartLimitIntervalSec = 0;

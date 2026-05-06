@@ -1,3 +1,3 @@
-aln:
+alnLib:
 
-aln.lib.relToRoot "secrets/host/barrybenson/selfhosted"
+alnLib.relToRoot "secrets/host/barrybenson/selfhosted"

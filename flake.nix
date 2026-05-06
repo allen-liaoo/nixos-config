@@ -4,16 +4,11 @@
   outputs = { nixpkgs, nixpkgs-unstable, ... } @ inputs: 
   let 
     lib = nixpkgs.lib;
-    mkPkgsUnstable = system: import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
+    mkPkgs = pkgs: system: import pkgs { inherit system; config.allowUnfree = true; };
 
-    alnLib = import ./lib { inherit nixpkgs; };
+    alnLib = import ./lib { inherit lib; };
     inventory = import ./inventory { inherit lib alnLib; };
-    # my namespace; everything I define will be accessible in "aln" attr of module inputs
-    mkAln = ctx: {
-      inherit inventory;
-      lib = alnLib;
-      ctx = import ./ctx.nix ({ inherit lib inventory; } // ctx);
-    };
+    mkCtx = ctx: import ./ctx.nix ({ inherit lib inventory; } // ctx);
   in
   {
     nixosConfigurations = lib.genAttrs inventory.nixosHostNames (hostName:
@@ -22,9 +17,9 @@
         system = host.system;
       in lib.nixosSystem {
         specialArgs = { 
-          inherit inputs lib;
-          pkgs-unstable = mkPkgsUnstable system;
-          aln = mkAln { inherit hostName; };
+          inherit inputs alnLib inventory;
+          ctx = mkCtx { inherit hostName; };
+          pkgs-unstable = mkPkgs nixpkgs-unstable system;
         };
         system = system; 
         modules = [
@@ -40,12 +35,12 @@
         value = let
           system = inventory.hosts.${hostName}.system or inventory.systems.x86_linux;
         in inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
+          pkgs = mkPkgs nixpkgs system;
           extraSpecialArgs = {
-            inherit inputs;
-            pkgs-unstable = mkPkgsUnstable system;
+            inherit inputs alnLib inventory;
+            ctx = mkCtx { inherit hostName; inherit userName; };
+            pkgs-unstable = mkPkgs nixpkgs-unstable system;
             pkgs-nur = inputs.nur.legacyPackages.${system};
-            aln = mkAln { inherit hostName; inherit userName; };
           };
           modules = [
             ./home/${userName}

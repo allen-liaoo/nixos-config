@@ -1,7 +1,7 @@
-{ config, pkgs, lib, aln, ... }:
+{ alnLib, ... }:
 
 {
-  imports = aln.lib.listDirFiles ./. ++ [
+  imports = alnLib.listDirFiles ./. ++ [
     ../_modules
   ];
 }

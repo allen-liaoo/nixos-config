@@ -1,11 +1,11 @@
-{ lib, config, inputs, pkgs, aln, ... }:
+{ lib, config, inputs, pkgs, alnLib, inventory, ctx, ... }:
 
 let
   # wrap in nixGL to fix OpenGL under nix in non-Nixos systems
   dms-pkg = config.lib.nixGL.wrap inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
 {
-  imports = aln.lib.listDirFiles ./. ++ [
+  imports = alnLib.listDirFiles ./. ++ [
     inputs.dms.homeModules.dank-material-shell
   ];
 
@@ -39,7 +39,7 @@ in
 
     session = {
       showThirdPartyPlugins = true;
-      wallpaperPath = aln.lib.relToRoot "assets/wallpaper/roadtrip.jpg";
+      wallpaperPath = alnLib.relToRoot "assets/wallpaper/roadtrip.jpg";
     };
 
     settings = {
@@ -52,7 +52,7 @@ in
       blurredWallpaperLayer = false;
       blurredWallpaperOnOverview = true;
 
-      enableFprint = aln.ctx.host.equals aln.inventory.hosts.theseus; # TODO: refactor or keep track of this
+      enableFprint = ctx.host.equals inventory.hosts.theseus; # TODO: refactor or keep track of this
       maxFprintTries = 8;
       loginctlLockIntegration = true;
       lockBeforeSuspend = true;

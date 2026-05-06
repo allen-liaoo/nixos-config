@@ -1,4 +1,4 @@
-{ pkgs, lib, config, inputs, aln, ... }:
+{ pkgs, lib, config, inputs, ctx, ... }:
 
 {
   nix = {
@@ -44,7 +44,7 @@
     zip
   ];
 
-  networking.hostName = aln.ctx.host.name;
+  networking.hostName = ctx.host.name;
 
   users.mutableUsers = false;
   security.sudo.extraConfig = ''

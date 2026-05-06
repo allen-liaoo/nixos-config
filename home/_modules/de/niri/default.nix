@@ -1,7 +1,7 @@
-{ lib, pkgs, config, aln, ... }:
+{ lib, pkgs, config, alnLib, ctx, ... }:
 
 let 
-  symlinkTo = f: f |> aln.lib.outOfStoreRelToRoot config.home.homeDirectory |> config.lib.file.mkOutOfStoreSymlink;
+  symlinkTo = f: f |> alnLib.outOfStoreRelToRoot config.home.homeDirectory |> config.lib.file.mkOutOfStoreSymlink;
   alacrittyKdl = pkgs.writeText "alacritty.kdl" ''
     binds {
       Mod+T hotkey-overlay-title="Open a Terminal" {
@@ -85,7 +85,7 @@ in
   '';
 }
 # wrap in nixGL to fix OpenGL under nix in non-Nixos systems
-// (lib.optionalAttrs aln.ctx.host.is.generic-linux { # no need to install on nixos (we do so system wide)
+// (lib.optionalAttrs ctx.host.is.generic-linux { # no need to install on nixos (we do so system wide)
   home.packages = [ (config.lib.nixGL.wrap pkgs.niri) ];
 })
 

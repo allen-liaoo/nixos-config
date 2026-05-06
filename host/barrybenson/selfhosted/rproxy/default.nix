@@ -1,9 +1,9 @@
-{ lib, config, pkgs, aln, ... }:
+{ config, pkgs, alnLib, ... }:
 
 let
   name = "rproxy";
   dataVolumeName = name + "_data";
-  secretsDir = import ../secrets_dir.nix aln;
+  secretsDir = import ../secrets_dir.nix alnLib;
   blogGitUrl = "https://github.com/allen-liaoo/alsblog.git";
   blogCache = "/tmp/alsblog";
   domain = "allenl.me";
@@ -14,7 +14,7 @@ in
   virtualisation.quadlet = let
     inherit (config.virtualisation.quadlet) images volumes;
   in {
-    containers.${name} = aln.lib.mkContainer name {
+    containers.${name} = alnLib.mkContainer name {
       containerConfig = {
         image = images.${name}.ref;
   
@@ -69,11 +69,11 @@ in
       };
     };
 
-    images.${name} = aln.lib.mkImage {
+    images.${name} = alnLib.mkImage {
       imageConfig.image = "ghcr.io/caddy-dns/cloudflare";
     };
 
-    volumes.${dataVolumeName} = aln.lib.mkVolume dataVolumeName {};
+    volumes.${dataVolumeName} = alnLib.mkVolume dataVolumeName {};
   };
 
   sops.secrets.${cloudflare_secret_name} = {

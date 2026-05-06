@@ -1,4 +1,4 @@
-{ aln, ... }:
+{ ... }:
 
 {
   programs.thunderbird = {

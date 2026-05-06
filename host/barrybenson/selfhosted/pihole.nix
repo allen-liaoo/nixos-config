@@ -1,4 +1,4 @@
-{ lib, config, pkgs, aln, ... }:
+{ config, alnLib, ... }:
 
 let
   name = "pihole";
@@ -8,10 +8,10 @@ in
   virtualisation.quadlet = let
     inherit (config.virtualisation.quadlet) images volumes;
   in {
-    images.${name} = aln.lib.mkImage {
+    images.${name} = alnLib.mkImage {
       imageConfig.image = "docker.io/pihole/pihole:latest";
     };
-    containers.${name} = aln.lib.mkContainer name {
+    containers.${name} = alnLib.mkContainer name {
       containerConfig = {
         image = images.${name}.ref;
         publishPorts = [ "53:5053" "53:5053/udp" "30080:8080" ];
@@ -37,7 +37,7 @@ in
         };
       };
     };
-    volumes.${dataVolumeName} = aln.lib.mkVolume dataVolumeName {};
+    volumes.${dataVolumeName} = alnLib.mkVolume dataVolumeName {};
   };
 
   # Disable local DNS stub listener on 127.0.0.53

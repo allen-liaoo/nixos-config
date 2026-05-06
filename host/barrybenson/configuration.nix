@@ -1,4 +1,4 @@
-{ config, lib, pkgs, aln, ... }:
+{ pkgs, inventory, ... }:
 
 {
   time.timeZone = "America/Chicago";
@@ -19,7 +19,7 @@
     # memoryPercent defaults to 50
   };
 
-  users.users.${aln.inventory.users.al.name}.openssh.authorizedKeys.keys = [
-    aln.inventory.users.allenl.data.ssh_pubkey # allenl can remote into al
+  users.users.${inventory.users.al.name}.openssh.authorizedKeys.keys = [
+    inventory.users.allenl.data.ssh_pubkey # allenl can remote into al
   ];
 }

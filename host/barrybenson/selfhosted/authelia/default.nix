@@ -1,4 +1,4 @@
-{ config, lib, aln, pkgs, ... }:
+{ config, lib, alnLib, ... }:
 
 let
   name = "authelia";
@@ -6,7 +6,7 @@ let
   podName = name + "-pod";
   logsVolumeName = name + "_logs";
   usersDatabase = import ./users_database.nix; 
-  secretsDir = import ../secrets_dir.nix aln;
+  secretsDir = import ../secrets_dir.nix alnLib;
   # sops of user hashed passwords
   password_sops_name_from_user = (name: "authelia_users_${name}_password_hashed");
 in
@@ -15,7 +15,7 @@ in
     inherit (config.virtualisation.quadlet) containers images pods volumes;
   in {
     # authelia container
-    containers.${name} = aln.lib.mkContainer name {
+    containers.${name} = alnLib.mkContainer name {
       containerConfig = {
         image = images.${name}.ref;
         pod = pods.${podName}.ref;
@@ -46,7 +46,7 @@ in
     };
 
     # authelia database container
-    containers.${dbName} = aln.lib.mkContainer dbName {
+    containers.${dbName} = alnLib.mkContainer dbName {
       containerConfig = {
         image = images.${dbName}.ref;
         pod = pods.${podName}.ref;
@@ -63,7 +63,7 @@ in
       };
     };
 
-    pods.${podName} = aln.lib.mkPod podName {
+    pods.${podName} = alnLib.mkPod podName {
       podConfig = {
         publishPorts = [ "9080:80" ];
       };
@@ -73,16 +73,16 @@ in
       };
     };
 
-    images.${name} = aln.lib.mkImage {
+    images.${name} = alnLib.mkImage {
       imageConfig.image = "docker.io/authelia/authelia:latest";
     };
 
-    images.${dbName} = aln.lib.mkImage {
+    images.${dbName} = alnLib.mkImage {
       imageConfig.image = "docker.io/library/postgres:18.1";
     };
 
-    volumes.${logsVolumeName} = aln.lib.mkVolume logsVolumeName {};
-    volumes.${dbName} = aln.lib.mkVolume dbName {};
+    volumes.${logsVolumeName} = alnLib.mkVolume logsVolumeName {};
+    volumes.${dbName} = alnLib.mkVolume dbName {};
   };
 
   sops.secrets =

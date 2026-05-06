@@ -1,4 +1,4 @@
-{ config, aln, ... }:
+{ config, alnLib, ... }:
 
 {
   programs.zellij = {
@@ -9,5 +9,5 @@
     #enableZshIntegration = true;
   };
 
-  xdg.configFile."zellij/config.kdl".source = config.lib.file.mkOutOfStoreSymlink (aln.lib.outOfStoreRelToRoot config.home.homeDirectory ./config.kdl);
+  xdg.configFile."zellij/config.kdl".source = config.lib.file.mkOutOfStoreSymlink (alnLib.outOfStoreRelToRoot config.home.homeDirectory ./config.kdl);
 }

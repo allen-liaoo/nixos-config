@@ -1,4 +1,4 @@
-{ config, inputs, lib, aln, ... }: {
+{ config, inputs, lib, alnLib, ctx, ... }: {
   imports = [
     inputs.sops-nix.homeManagerModules.sops
   ];
@@ -8,9 +8,9 @@
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
 
     # Secret for deploying to this repo
-    secrets = lib.optionalAttrs (aln.ctx.user.can.deployNixConfig) {
+    secrets = lib.optionalAttrs (ctx.user.can.deployNixConfig) {
       "nix_config_deploy" = {
-        sopsFile = aln.lib.relToRoot "secrets/user/common.yaml";
+        sopsFile = alnLib.relToRoot "secrets/user/common.yaml";
         mode = "0400";
         path = "${config.home.homeDirectory}" + "/.ssh/nix_config_deploy";
       };

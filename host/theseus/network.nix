@@ -1,4 +1,4 @@
-{ lib, config, aln, ... }:
+{ lib, config, alnLib, inventory, ctx, ... }:
 
 let
   # NM connections/profiles
@@ -20,7 +20,7 @@ in
       profiles = {
         # home server (DNS)
         wg_hs_dns = let 
-          ionobro = aln.inventory.hosts.ionobro.data; 
+          ionobro = inventory.hosts.ionobro.data; 
         in {
           connection = {
             id = "wg_hs_dns";
@@ -34,7 +34,7 @@ in
             allowed-ips = "${ionobro.wg_ip}/24;";
             persistent-keepalive = 25;
           };
-          ipv4 = with aln.ctx.host.data; {
+          ipv4 = with ctx.host.data; {
             address1 = "${wg_ip}/32";
             dns = "${ionobro.wg_ip};"; # trailing ";"!
             method = "manual";
@@ -105,14 +105,14 @@ in
   sops.secrets = (connections
     |> map (key: {
       "passwd_${key}" = {
-        sopsFile = aln.lib.relToRoot "secrets/host/wifi_passwd.yaml";
+        sopsFile = alnLib.relToRoot "secrets/host/wifi_passwd.yaml";
         inherit key;
       };
     })
     |> lib.mergeAttrsList)
     // {
       theseus_wg_privkey = {
-        sopsFile = aln.lib.relToRoot "secrets/host/theseus/common.yaml";
+        sopsFile = alnLib.relToRoot "secrets/host/theseus/common.yaml";
         key = "wg_privkey";
       };
     };

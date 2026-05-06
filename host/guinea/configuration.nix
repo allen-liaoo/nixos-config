@@ -1,4 +1,4 @@
-{ config, lib, pkgs, aln, ... }:
+{ lib, inventory, ... }:
 
 {
   time.timeZone = "America/Chicago";
@@ -47,7 +47,7 @@
   # for debugging purposes
   users.users.root.password = "fgh";
   services.openssh.settings.PermitRootLogin = lib.mkForce "yes";
-  users.users.${aln.inventory.users.pig.name}.openssh.authorizedKeys.keys = [
-    aln.inventory.users.allenl.data.ssh_pubkey
+  users.users.${inventory.users.pig.name}.openssh.authorizedKeys.keys = [
+    inventory.users.allenl.data.ssh_pubkey
   ];
 }

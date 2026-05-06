@@ -2,10 +2,10 @@
 # Dont move to system module because system xremap service on Niri is untested
 # SHOULD NOT LAUNCH PROGRAMS with xremap; use WM
 # as program launches as same user as xremap (except xremap as system socket service)
-{ inputs, lib, aln, ... }:
+{ inputs, lib, inventory, ctx, ... }:
 
 let
-  shouldEnable = !aln.ctx.host.is.server && (with aln.ctx.user.inGroup; input && wheel);
+  shouldEnable = !ctx.host.is.server && (with ctx.user.inGroup; input && wheel);
 in
 {
   imports = [
@@ -37,7 +37,7 @@ in
         };
       }
     ] ++ 
-    lib.optionals (aln.ctx.host.equals aln.inventory.hosts.theseus) [{
+    lib.optionals (ctx.host.equals inventory.hosts.theseus) [{
       name = "Swap alt and ctrl on fw13 keyboard";
       remap = {
         "LEFTALT" = "LEFTCTRL";

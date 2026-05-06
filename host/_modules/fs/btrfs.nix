@@ -1,5 +1,5 @@
 # For btrfs subvolume declarations, see disko.nix
-{ lib, aln, ... }:
+{ lib, ctx, ... }:
 
 # ASSUMES btrfs partition root has label "btrfsroot"
 let
@@ -26,10 +26,10 @@ in
       volume."/mnt/${disk_root}" = {
         snapshot_dir = "@snapshots";
         # TODO: Change to module
-        subvolume = (lib.optionalAttrs aln.ctx.host.is.server {
+        subvolume = (lib.optionalAttrs ctx.host.is.server {
           # servers only need to snapshot containers
           "@containers" = {};
-        }) // (lib.optionalAttrs (!aln.ctx.host.is.server) {
+        }) // (lib.optionalAttrs (!ctx.host.is.server) {
           # nonservers 
           "@" = {};
           "@home" = {};

@@ -1,4 +1,4 @@
-{ lib, pkgs, config, aln, ... }:
+{ lib, pkgs, config, ctx, ... }:
 
 let
   browser = "firefox.desktop";
@@ -68,7 +68,7 @@ in
       ];
       xdgOpenUsePortal = true;
     };
-  } // lib.optionalAttrs (!aln.ctx.host.is.server) {
+  } // lib.optionalAttrs (!ctx.host.is.server) {
     userDirs = {
       enable = true;
       createDirectories = true;

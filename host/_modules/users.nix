@@ -1,4 +1,4 @@
-{ lib, pkgs, config, aln, ... }:
+{ lib, config, ctx, ... }:
 
 {
   # required for sops-nix to use sops-install-secrets-for-users.service instead of an activation script
@@ -13,9 +13,9 @@
       linger = user.hasTag.linger;
       hashedPasswordFile = config.sops.secrets."passwd_${user.name}".path;
     };
-  }) aln.ctx.host.users);
+  }) ctx.host.users);
   users.groups = lib.genAttrs 
-    (map (user: user.name) aln.ctx.host.users)
+    (map (user: user.name) ctx.host.users)
     (name: { });
     
 

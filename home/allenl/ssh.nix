@@ -1,4 +1,4 @@
-{ lib, config, aln, ... }:
+{ lib, config, alnLib, inventory, ... }:
 
 
 let
@@ -13,7 +13,7 @@ in
       hostname = "allenl.me";
       user = "allenliao"; # TODO: Change to al
     };
-    "barrybenson" = with aln.inventory; {
+    "barrybenson" = with inventory; {
       hostname = hosts.barrybenson.data.wg_ip;
       user = users.al.name;
       proxyJump = "ionobro";
@@ -31,7 +31,7 @@ in
 
   sops.secrets = lib.mergeAttrsList (map (key: {
     "ssh_allenl_${key}" = {
-      sopsFile = aln.lib.relToRoot "secrets/user/allenl/ssh.yaml";
+      sopsFile = alnLib.relToRoot "secrets/user/allenl/ssh.yaml";
       mode = "0400";
       path = config.home.homeDirectory + "/.ssh/" + key;
       inherit key;

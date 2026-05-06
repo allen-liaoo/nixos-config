@@ -1,4 +1,4 @@
-{ inputs, lib, pkgs, aln, ...}:
+{ inputs, lib, pkgs, alnLib, ctx, ...}:
 
 {
   imports = [
@@ -12,8 +12,8 @@
     base16Scheme = "${pkgs.base16-schemes}/share/themes/snazzy.yaml";
     polarity = "dark";
 
-  } // lib.optionalAttrs aln.ctx.host.is.gui {
-    image = aln.lib.relToRoot "assets/wallpaper/roadtrip.jpg";
+  } // lib.optionalAttrs ctx.host.is.gui {
+    image = alnLib.relToRoot "assets/wallpaper/roadtrip.jpg";
     imageScalingMode = "fill";
 
     cursor = {
@@ -69,8 +69,8 @@
   #     base16Scheme = lib.mkForce "${pkgs.base16-schemes}/share/themes/tokyo-city-light.yaml";
   #     polarity = lib.mkForce "light";
   
-  #   } // lib.optionalAttrs aln.ctx.host.is.gui {
-  #     image = lib.mkForce (aln.lib.relToRoot "assets/wallpaper/wallpaper-day.jpg");
+  #   } // lib.optionalAttrs ctx.host.is.gui {
+  #     image = lib.mkForce (alnLib.relToRoot "assets/wallpaper/wallpaper-day.jpg");
   #   };
 
   #   home.packages = [

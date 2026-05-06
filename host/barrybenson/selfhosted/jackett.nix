@@ -1,4 +1,4 @@
-{ config, lib, aln, pkgs, ... }:
+{ config, alnLib, ... }:
 
 let
   name = "jackett";
@@ -10,7 +10,7 @@ in
     inherit (config.virtualisation.quadlet) containers images pods volumes;
   in {
     # jackett container
-    containers.${name} = aln.lib.mkContainer name {
+    containers.${name} = alnLib.mkContainer name {
       containerConfig = {
         image = images.${name}.ref;
         pod = pods.${podName}.ref;
@@ -27,7 +27,7 @@ in
     };
 
     # flaresolvarr container
-    containers.${flName} = aln.lib.mkContainer flName {
+    containers.${flName} = alnLib.mkContainer flName {
       containerConfig = {
         image = images.${flName}.ref;
         pod = pods.${podName}.ref;
@@ -36,20 +36,20 @@ in
       };
     };
 
-    pods.${podName} = aln.lib.mkPod podName {
+    pods.${podName} = alnLib.mkPod podName {
       podConfig = {
         publishPorts = [ "20117:9117" ];
       };
     };
 
-    images.${name} = aln.lib.mkImage {
+    images.${name} = alnLib.mkImage {
       imageConfig.image = "docker.io/linuxserver/jackett:latest";
     };
 
-    images.${flName} = aln.lib.mkImage {
+    images.${flName} = alnLib.mkImage {
       imageConfig.image = "docker.io/flaresolverr/flaresolverr:latest";
     };
 
-    volumes.${name} = aln.lib.mkVolume name {};
+    volumes.${name} = alnLib.mkVolume name {};
   };
 }

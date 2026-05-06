@@ -1,10 +1,10 @@
-{ inputs, lib, aln, ... }: {
+{ inputs, lib, alnLib, ctx, ... }: {
   imports = [
     inputs.sops-nix.nixosModules.sops
   ];
 
   sops = let 
-    secretsDir = aln.lib.relToRoot "secrets";
+    secretsDir = alnLib.relToRoot "secrets";
   in {
     useSystemdActivation = true; # required by services that need to be before/after secrets are decrypted (i.e. impermanence)
     # adds "sops-install-secrets.service"
@@ -39,7 +39,7 @@
           mode = "0400";
           neededForUsers = true;
         };
-      }) aln.ctx.host.users);
+      }) ctx.host.users);
   };
 
   # when sops-nix creates the user age key file along with its parent dirs on first boot,
@@ -49,6 +49,6 @@
     "d /home/${user.name}/.config          0755 ${user.name} ${user.name} -"
     "d /home/${user.name}/.config/sops     0700 ${user.name} ${user.name} -"
     "d /home/${user.name}/.config/sops/age 0700 ${user.name} ${user.name} -"
-  ]) aln.ctx.host.users;
+  ]) ctx.host.users;
 
 }

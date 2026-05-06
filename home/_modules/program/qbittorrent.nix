@@ -1,8 +1,7 @@
 {
   pkgs,
   config,
-  lib,
-  aln,
+  alnLib,
   ...
 }:
 
@@ -23,7 +22,7 @@
   '';
 
   sops.secrets.jackett_api_key = {
-    sopsFile = aln.lib.relToRoot "secrets/user/allenl/common.yaml";
+    sopsFile = alnLib.relToRoot "secrets/user/allenl/common.yaml";
     key = "jackett_api_key";
   };
 }

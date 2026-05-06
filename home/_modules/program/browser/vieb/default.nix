@@ -1,9 +1,9 @@
-{ pkgs-nur, config, aln, ... }:
+{ pkgs-nur, config, alnLib, ... }:
 
 let
   symlinkHere = path: 
   path 
-  |> aln.lib.outOfStoreRelToRoot config.home.homeDirectory 
+  |> alnLib.outOfStoreRelToRoot config.home.homeDirectory 
   |> config.lib.file.mkOutOfStoreSymlink;
   theme_path = "Vieb/colors/custom_theme.css";
 in

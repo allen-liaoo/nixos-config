@@ -1,4 +1,4 @@
-{ inputs, pkgs, aln, ... }:
+{ inputs, pkgs, alnLib, ... }:
 
 {
   imports = [
@@ -24,7 +24,7 @@
       #currentThemeName = "blue";
     });
     sessionJson = pkgs.writeText "session.json" (builtins.toJSON {
-      wallpaperPath = aln.lib.relToRoot "assets/wallpaper/roadtrip.jpg";
+      wallpaperPath = alnLib.relToRoot "assets/wallpaper/roadtrip.jpg";
       wallpaperFillMode = "PreserveAspectCrop";
     });
   in [

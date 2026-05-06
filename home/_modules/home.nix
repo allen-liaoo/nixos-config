@@ -1,10 +1,10 @@
-{ lib, pkgs, inputs, config, aln, ... }:
+{ pkgs, config, ctx, ... }:
 
 {
   programs.home-manager.enable = true;
 
-  home.username = aln.ctx.user.name;
-  home.homeDirectory = "/home/${aln.ctx.user.name}";
+  home.username = ctx.user.name;
+  home.homeDirectory = "/home/${ctx.user.name}";
 
   xdg = {
     enable = true;
