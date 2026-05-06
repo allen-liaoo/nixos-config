@@ -45,12 +45,6 @@ Podman containers via [quadlet-nix](https://seiarotg.github.io/quadlet-nix/) (Ro
 - `secrets` and `.sops.yaml` - read by sops-nix for host and user secrets at various sops.nix files throughout home and host directories
 - `shell.nix` - devShells of this repository, notably including distinct Neovim instances and development environments for `home` and `host` dir (activated via direnv).
 
-### `aln` namespace
-To avoid namespace conflicts, everything I want to expose to nix modules live inside of the namespace `aln`.
-- `aln.lib` is `/lib`
-- `aln.inventory` is `/inventory`
-- `aln.ctx` is `ctx.nix`
-
 ### Self-Gating Modules
 Modules in `_modules` are self gating, meaning they determine if they should be enabled or not by looking at the context.
 This is different from how they're usually implemented, where hosts and users conditionally import modules or "presets", and one needs to carefully maintain lists of imports. 
