@@ -17,4 +17,25 @@
       terminal.osc52 = "OnlyCopy"; # for copying from remote server
     };
   };
+
+  aln.niri.configFile."alacritty" = {
+    enable = true;
+    content = ''
+      binds {
+        Mod+T hotkey-overlay-title="Open a Terminal" {
+          spawn "${lib.getExe config.programs.alacritty.package}";
+        }
+      }
+      window-rule { 
+        match app-id=r#"Alacritty"#
+        // Open terminal in single column
+        open-maximized false 
+        open-maximized-to-edges false
+        background-effect {
+          blur true
+          xray true
+        }
+      }
+    '';
+  };
 }

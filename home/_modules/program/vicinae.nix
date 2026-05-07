@@ -122,4 +122,30 @@ in
       };
     };
   };
+
+  aln.niri.configFile."vicinae" = {
+    enable = true;
+    content = ''
+      binds {
+        Mod+X repeat=false { spawn "${lib.getExe config.services.vicinae.package}" "toggle"; }
+      }
+      // launcher
+      layer-rule {
+        match namespace=r#"^vicinae$"#
+        background-effect {
+          blur true
+          xray false
+        }
+      }
+      // vicinae settings
+      window-rule {
+        match app-id="vicinae"
+        background-effect {
+          blur true
+          xray true
+        }
+        geometry-corner-radius 5
+      }
+    '';
+  };
 }

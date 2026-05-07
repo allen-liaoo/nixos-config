@@ -1,4 +1,4 @@
-{ lib, config, options, alnLib, ... }:
+{ lib, config, alnLib, ... }:
 
 let 
   hostKinds = [
@@ -33,7 +33,7 @@ let
     "input"
   ];
   # Type of users
-  userOpts = with lib.types; ({config,...}: {
+  userOpts = with lib.types; ({ ... }: {
     options = {
       name = lib.mkOption {
         type = str;
@@ -50,7 +50,7 @@ let
     };
   });
   # Type of user tied to specific host
-  hostUserOpts = with lib.types; ({config,...}@args: {
+  hostUserOpts = with lib.types; ({ config, ... }@args: {
     options = (userOpts args).options // {
       can = {
         deployNixConfig = lib.mkOption {
@@ -85,7 +85,7 @@ let
 in with lib.types; {
   options = {
     hosts = lib.mkOption {
-      type = attrsOf (submodule ({config,...}: {
+      type = attrsOf (submodule ({ config, ... }: {
         options = {
           name   = lib.mkOption {
             type = str;

@@ -1,3 +1,5 @@
+// DMS related Niri configs
+
 // Open DMS windows as floating by default
 window-rule {
   match app-id=r#"org.quickshell$"#

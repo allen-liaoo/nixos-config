@@ -37,4 +37,15 @@ in
 
   xdg.dataFile."fcitx5/rime/default.custom.yaml".source = config.lib.file.mkOutOfStoreSymlink (alnLib.outOfStoreRelToRoot config.home.homeDirectory ./default.custom.yaml);
   xdg.dataFile."fcitx5/rime/bopomofo.custom.yaml".source = config.lib.file.mkOutOfStoreSymlink (alnLib.outOfStoreRelToRoot config.home.homeDirectory ./bopomofo.custom.yaml);
+
+  aln.niri.configFile."fcitx5" = {
+    enable = false; # with config.i18n.inputMethod; lib.optionalString (enable && (type == "fcitx5"));
+    content = ''
+      binds {
+        Ctrl+Space hotkey-overlay-title="Switch input method" {
+          spawn "${lib.getExe config.i18n.inputMethod.fcitx5.fcitx5-with-addons}" "-t";
+        }
+      }
+    '';
+  };
 }

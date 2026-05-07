@@ -10,12 +10,12 @@ in
   ];
 
   # dms is ride or die for niri
-  # systemd.user.services.dms = {
-  #   Unit = {
-  #     After = [ "niri.service" ];
-  #     BindsTo = [ "niri.service" ];
-  #   };
-  # };
+  systemd.user.services.dms = {
+    Unit = {
+      After = [ "niri.service" ];
+      BindsTo = [ "niri.service" ];
+    };
+  };
 
   programs.dank-material-shell = {
     enable = true;
@@ -99,6 +99,21 @@ in
       systemMonitorX = -1;
       systemMonitorY = -1;
     };
+  };
+
+  aln.niri = {
+    configFile."dms" = {
+      enable = true;
+      content = ''
+        include "${config.lib.file.mkOutOfStoreSymlink (alnLib.outOfStoreRelToRoot config.home.homeDirectory ./dms.kdl)}"
+      '';
+    };
+    # place below in config since the filepath is relative to niri's config.kdl
+    config = ''
+      include "dms/alttab.kdl"
+      include "dms/outputs.kdl" // displays
+      include "dms/wpblur.kdl"  // blurring wallpaper settings
+    '';
   };
 }
 # convert json kv row to nix
