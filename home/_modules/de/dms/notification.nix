@@ -1,8 +1,4 @@
 {
-  ...
-}:
-
-{
   programs.dank-material-shell.settings = {
     notificationRules = [
       {

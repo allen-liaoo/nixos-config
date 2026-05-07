@@ -1,0 +1,24 @@
+{
+  programs.dank-material-shell.settings = {
+    # Cannot figure out how to set position and interval of this widget
+    # Bugged: need to set its instance?
+    systemMonitorEnabled = false;
+    systemMonitorShowHeader = false;
+    systemMonitorLayoutMode = "list";
+    systemMonitorTransparency = 0.8;
+    systemMonitorGraphInterval = 60;
+    systemMonitorShowCpu = true;
+    systemMonitorShowCpuTemp = true;
+    systemMonitorShowGpuTemp = true;
+    systemMonitorShowMemory = true;
+    systemMonitorShowMemoryGraph = true;
+    systemMonitorShowNetwork = true;
+    systemMonitorShowNetworkGraph = true;
+    systemMonitorShowDisk = false;
+    systemMonitorShowTopProcesses = false;
+    systemMonitorDisplayPreferences = [ "all" ];
+    systemMonitorSyncPositionAcrossScreens = true;
+    systemMonitorX = -1;
+    systemMonitorY = -1;
+  };
+}

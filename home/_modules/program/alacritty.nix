@@ -7,6 +7,10 @@
     settings = {
       general = {
         live_config_reload = true;
+        # dms managed matugen theme
+        import = lib.optionals config.programs.dank-material-shell.enable [
+          (config.xdg.configHome + "/alacritty/dank-theme.toml")
+        ];
       };
       window = {
         padding = { x = 8; y = 8; };

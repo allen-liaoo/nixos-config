@@ -50,6 +50,11 @@ in
       ));
 
     settings = {
+      theme = { # see below
+        dark.name = "matugen";
+        light.name = "matugen";
+      };
+
       close_on_focus_loss = true;
       consider_preedit = true;
       pop_to_root_on_close = true;
@@ -147,5 +152,15 @@ in
         geometry-corner-radius 5
       }
     '';
+  };
+
+
+  aln.matugen.template."vicinae" = {
+    enable = true;
+    content = {
+      input_path = inputs.vicinae.outPath + "/extra/matugen.toml";
+      output_path = config.xdg.dataHome + "/vicinae/themes/matugen.toml";
+      post_hook = "${lib.getExe config.services.vicinae.package} theme set matugen";
+    };
   };
 }

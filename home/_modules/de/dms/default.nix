@@ -9,14 +9,6 @@ in
     inputs.dms.homeModules.dank-material-shell
   ];
 
-  # dms is ride or die for niri
-  systemd.user.services.dms = {
-    Unit = {
-      After = [ "niri.service" ];
-      BindsTo = [ "niri.service" ];
-    };
-  };
-
   programs.dank-material-shell = {
     enable = true;
 
@@ -39,19 +31,9 @@ in
 
     session = {
       showThirdPartyPlugins = true;
-      wallpaperPath = alnLib.relToRoot "assets/wallpaper/roadtrip.jpg";
     };
 
     settings = {
-      blurEnabled = true;
-      blurBorderOpacity = 0;
-      popupTransparency = 0.4;
-      currentThemeName = "dynamic";
-      currentThemeCategory = "dynamic";
-      matugenScheme = "scheme-expressive";
-      blurredWallpaperLayer = false;
-      blurredWallpaperOnOverview = true;
-
       enableFprint = ctx.host.equals inventory.hosts.theseus; # TODO: refactor or keep track of this
       maxFprintTries = 8;
       loginctlLockIntegration = true;
@@ -77,27 +59,14 @@ in
 
       niriOverviewOverlayEnabled = false; # disable dms launcher
       appIdSubstitutions = [];
+    };
+  };
 
-      # Cannot figure out how to set position and interval of this widget
-      # Bugged: need to set its instance?
-      systemMonitorEnabled = false;
-      systemMonitorShowHeader = false;
-      systemMonitorLayoutMode = "list";
-      systemMonitorTransparency = 0.8;
-      systemMonitorGraphInterval = 60;
-      systemMonitorShowCpu = true;
-      systemMonitorShowCpuTemp = true;
-      systemMonitorShowGpuTemp = true;
-      systemMonitorShowMemory = true;
-      systemMonitorShowMemoryGraph = true;
-      systemMonitorShowNetwork = true;
-      systemMonitorShowNetworkGraph = true;
-      systemMonitorShowDisk = false;
-      systemMonitorShowTopProcesses = false;
-      systemMonitorDisplayPreferences = [ "all" ];
-      systemMonitorSyncPositionAcrossScreens = true;
-      systemMonitorX = -1;
-      systemMonitorY = -1;
+  # dms is ride or die for niri
+  systemd.user.services.dms = {
+    Unit = {
+      After = [ "niri.service" ];
+      BindsTo = [ "niri.service" ];
     };
   };
 
@@ -113,6 +82,7 @@ in
       include "dms/alttab.kdl"
       include "dms/outputs.kdl" // displays
       include "dms/wpblur.kdl"  // blurring wallpaper settings
+      include "dms/colors.kdl"  // niri colors managed by dms matugen theme
     '';
   };
 }

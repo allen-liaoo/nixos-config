@@ -2,28 +2,30 @@
 
 let 
   symlinkTo = f: f |> alnLib.outOfStoreRelToRoot config.home.homeDirectory |> config.lib.file.mkOutOfStoreSymlink;
+  configFileModule = ({ config, name, ...}: {
+    options = {
+      enable = lib.mkEnableOption name;
+      content = lib.mkOption {
+        type = lib.types.separatedString "\n";
+      };
+      fileDeriv = lib.mkOption {
+        type = lib.types.package;
+        readOnly = true;
+        default = pkgs.writeText "${name}.kdl" config.content;
+      };
+    };
+  });
 in
 {
   options = {
     aln.niri = {
-      configFile = lib.mkOption {
-        type = lib.types.attrsOf (lib.types.submodule ({ config, name, ...}: {
-          options = {
-            enable = lib.mkEnableOption name;
-            content = lib.mkOption {
-              type = lib.types.separatedString "\n";
-            };
-            fileDeriv = lib.mkOption {
-              type = lib.types.package;
-              readOnly = true;
-              default = pkgs.writeText "${name}.kdl" config.content;
-            };
-          };
-        }));
-        default = { };
-      };
       config = lib.mkOption {
         type = lib.types.separatedString "\n";
+      };
+      configFile = lib.mkOption {
+        type = lib.types.attrsOf (lib.types.submodule configFileModule);
+        default = { };
+        description = "attrset of config files to be included in niri configs";
       };
     };
   };

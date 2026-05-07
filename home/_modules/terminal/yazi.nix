@@ -1,4 +1,7 @@
-{ ... }:
+{
+  config,
+  ...
+}:
  
 {
   programs.yazi = {
@@ -30,4 +33,13 @@
     };
   };
   # TODO: for wayland with alacritty, need ueberzugpp installed
+
+  aln.matugen.template."yazi" = {
+    enable = true;
+    content = {
+      input_path = config.aln.matugen.themesPath "yazi-theme.toml";
+      output_path = config.xdg.configHome + "/yazi/theme.toml";
+    };
+    # no support for live reloading yet
+  };
 }
