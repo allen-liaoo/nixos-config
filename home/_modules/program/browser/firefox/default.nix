@@ -1,29 +1,43 @@
-# thin wrapper around Home-Manager's mkFirefoxModule
-# https://github.com/nix-community/home-manager/blob/master/modules/programs/firefox/mkFirefoxModule.nix
-# All settings are under "default" profile
-{ lib, config, pkgs, pkgs-nur, ... }: # same args as home modules
+# does NOT return a module, just an attrset
+
+{ lib, pkgs, pkgs-nur, ... }: # same args as home modules
 
 let 
-  extensions = import ./extensions_meta.nix;
+  extensions = [
+    {
+      name = "darkreader";
+      id = "addon@darkreader.org";
+    }
+    {
+      name = "ublock-origin";
+      id = "uBlock0@raymondhill.net";
+    }
+    {
+      name = "vimium-ff";
+      id = "{d7742d87-e61d-4b78-b8a1-b469842139fa}";
+    }
+    {
+      name = "bitwarden-password-manager";
+      id = "{446900e4-71c2-419f-a6a7-df9c091e268b}";
+    }
+  ];
   recursiveUpdates = lib.foldl lib.recursiveUpdate {};
 in
 {
   enable = true;
-  policies = recursiveUpdates [
-    (import ./policies.nix)
-    {
-      # installs extensions from the mozilla store
-      ExtensionSettings = lib.mergeAttrsList (map (ext: 
-        lib.optionalAttrs (ext ? name && ext.name != "") {
-          ${ext.id} = {
-            install_url       = "https://addons.mozilla.org/firefox/downloads/latest/${ext.name}/latest.xpi";
-            installation_mode = "force_installed";
-            updates_disabled  = true;
-          };
-        })
-        extensions);
-    }
-  ];
+
+  webstoreExtensions = extensions;
+  wavefox = {
+    enable = true;
+    installForProfiles = [ "default" ];
+    prefs = {
+      "Tabs.Shape" = 8;
+      "Tabs.Separators" = 2;
+    };
+  };
+  pywalfox.enable = true;
+
+  policies = import ./policies.nix;
 
   profiles.default = {
     search = import ./search.nix pkgs;
@@ -35,24 +49,8 @@ in
       }
     ];
 
-    extensions = {
-      force = true;
-      # set extension settings
-      settings = lib.mergeAttrsList (map (ext: 
-        lib.optionalAttrs (ext ? settings && ext.settings != { }) {
-          ${ext.id} = ext.settings;
-        }) 
-        extensions);
-      # 3rd party extensions
-      packages = with pkgs-nur.repos.rycee.firefox-addons; [
-        bypass-paywalls-clean
-      ];
-    };
-
-    # Wavegox needs to be installed separately (via home.file) 
-    extraConfig = ''
-      user_pref("WaveFox.Tabs.Shape", 8);
-      user_pref("WaveFox.Tabs.Separators", 2);
-    '';
+    extensions.packages = [
+      pkgs-nur.repos.rycee.firefox-addons.bypass-paywalls-clean # magnolia@12.34
+    ];
   };
 }

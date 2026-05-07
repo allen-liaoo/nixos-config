@@ -1,12 +1,12 @@
 # In .profiles.<name>.settings
 let
-  extns = map
-    (ext: 
-      (builtins.replaceStrings 
-        [ "{" "}" "@" "." ] # replace special chars with underscore
-        [ "_" "_" "_" "_" ]
-        ext.id) + "-browser-action") # i.e. ublock0_raymondhill_net-browser-action
-    (import ./extensions_meta.nix);
+  # extns = map
+  #   (ext: 
+  #     (builtins.replaceStrings 
+  #       [ "{" "}" "@" "." ] # replace special chars with underscore
+  #       [ "_" "_" "_" "_" ]
+  #       ext.id) + "-browser-action") # i.e. ublock0_raymondhill_net-browser-action
+  #   (import ./extensions_meta.nix);
 in
 {
   "browser.uiCustomization.state" = {
@@ -27,9 +27,9 @@ in
         "developer-button"
         "fxa-toolbar-menu-button"
       ];
-      unified-extensions-area = extns ++ [
-        #"firefoxcolor_mozilla_com-browser-action" # implicit but doesn't seem necessary
-      ]; # extension dropdown
+      # unified-extensions-area = extns ++ [
+      #   #"firefoxcolor_mozilla_com-browser-action" # implicit but doesn't seem necessary
+      # ]; # extension dropdown
       toolbar-menubar = [
         "menubar-items"
       ];
@@ -47,7 +47,7 @@ in
       #"developer-button"
       #"screenshot-button"
       #"firefoxcolor_mozilla_com-browser-action"
-    ] ++ extns;
+    ]; # ++ extns;
     DirtyAreaCache = [
       #"unified-extensions-area"
       #"TabsToolbar"

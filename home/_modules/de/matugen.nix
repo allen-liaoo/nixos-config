@@ -51,16 +51,5 @@ in
         |> lib.filterAttrs (_: v: v.enable)
         |> lib.mapAttrs (_: v: v.content));
     };
-
-    # firefox (pywalfox)
-    # pywalfox extension is installed at firefox configs
-    home.packages = [ pkgs.pywalfox-native ];
-    home.activation = {
-      pywalfoxInstall = lib.hm.dag.entryAfter ["writeBoundary"] ''
-        ${lib.getExe pkgs.pywalfox-native} install > /dev/null 2>&1
-      '';
-    };
-    home.file.".cache/wal/colors.json".source = config.lib.file.mkOutOfStoreSymlink (config.home.homeDirectory + "/.cache/wal/dank-pywalfox.json");
-
   };
 }
