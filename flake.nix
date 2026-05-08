@@ -33,14 +33,16 @@
       map ({ userName, hostName }: {
         name = "${userName}@${hostName}";
         value = let
+          pkgs = mkPkgs inputs.nixpkgs system;
           system = inventory.hosts.${hostName}.system or inventory.systems.x86_linux;
         in inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = mkPkgs inputs.nixpkgs system;
+          inherit pkgs; 
           extraSpecialArgs = {
             inherit inputs alnLib inventory;
             ctx = mkCtx { inherit hostName; inherit userName; };
             pkgs-unstable = mkPkgs inputs.nixpkgs-unstable system;
             pkgs-nur = inputs.nur.legacyPackages.${system};
+            pkgs-aln = import ./packages.nix { inherit pkgs; };
           };
           modules = [
             ./home/${userName}
@@ -139,11 +141,6 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # stylix = {
-    #   url = "github:nix-community/stylix/release-25.11";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
 
     # dont set nixpkgs.follows or cachix cache misses
     vicinae.url = "github:vicinaehq/vicinae";

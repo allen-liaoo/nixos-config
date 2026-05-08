@@ -1,4 +1,3 @@
-# for the NUR
 { pkgs ? import <nixpkgs> {} }:
 
 {
