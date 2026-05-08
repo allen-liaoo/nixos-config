@@ -10,7 +10,7 @@ My NixOS and Home-Manager Configs
 | Editor | [Neovim](https://neovim.io)[⌃](https://github.com/allen-liaoo/nvimx), [Vim](https://www.vim.org)[⌃](/home/_modules/terminal/vim.nix) |
 | WM | [Niri](https://niri-wm.github.io/niri/)[⌃](/home/_modules/de/niri) |
 | Desktop Shell | [DankMaterialShell](https://danklinux.com/)[⌃](/home/_modules/de/dms) |
-| Theming | [Stylix](https://nix-community.github.io/stylix/)[⌃](/home/_modules/stylix.nix) |
+| Theming | [Matugen](https://iniox.github.io/#matugen)[⌃](/home/_modules/de/matugen.nix) ~~[Stylix](https://nix-community.github.io/stylix/)[⌃](/home/_modules/stylix.nix)~~ |
 | Terminal | [Alacritty](https://alacritty.org/)[⌃](/home/_modules/program/alacritty.nix) |
 | Launcher | [Vicinae](https://www.vicinae.com/)[⌃](/home/_modules/program/vicinae.nix) |
 | Browser | [Firefox](https://www.firefox.com)[⌃](/home/_modules/program/browser/firefox) |
@@ -26,6 +26,7 @@ Podman containers via [quadlet-nix](https://seiarotg.github.io/quadlet-nix/) (Ro
 | Music Stats | Multi-scrobbler, Koito (TODO) |
 | Torrent Indexer | [Jackett](https://github.com/Jackett/Jackett)[⌃](/host/barrybenson/selfhosted/jackett.nix) |
 | RSS Aggregator | FreshRSS (TODO) |
+| Nix Binary Cache | TODO |
 
 ### Nix-Specific
 - Secrets management via [sops-nix](https://github.com/Mic92/sops-nix) [⌃](host/_modules/sops.nix),[⌃](home/_modules/sops.nix).
