@@ -79,8 +79,6 @@ lib.warnIf
     '';
     homepage = "https://github.com/johannesbrandenburger/typst-mcp";
     license = lib.licenses.mit;
-    #maintainers = with lib.maintainers; [ ];
     mainProgram = "typst-mcp";
-    platforms = lib.platforms.unix;
   };
 })

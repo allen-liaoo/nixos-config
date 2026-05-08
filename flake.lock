@@ -634,7 +634,6 @@
         "vicinae": "vicinae",
         "vicinae-extensions": "vicinae-extensions",
         "vscode-server": "vscode-server",
-        "wavefox": "wavefox",
         "xremap": "xremap"
       }
     },
@@ -847,22 +846,6 @@
       "original": {
         "owner": "nix-community",
         "repo": "nixos-vscode-server",
-        "type": "github"
-      }
-    },
-    "wavefox": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1776197860,
-        "narHash": "sha256-cFrKG9VGDda9sFcAu/6zvpsd82TUOWTTEZVoaCLt1gg=",
-        "owner": "QNetITQ",
-        "repo": "WaveFox",
-        "rev": "b8215997cda42bd2173da322dae644d7741b1caa",
-        "type": "github"
-      },
-      "original": {
-        "owner": "QNetITQ",
-        "repo": "WaveFox",
         "type": "github"
       }
     },

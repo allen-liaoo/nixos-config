@@ -152,11 +152,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    wavefox = {
-      url = "github:QNetITQ/WaveFox";
-      flake = false;
-    };
-
     xremap.url = "github:xremap/nix-flake";
   };
 }

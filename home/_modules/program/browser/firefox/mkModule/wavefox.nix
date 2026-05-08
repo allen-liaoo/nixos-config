@@ -6,7 +6,7 @@
 {
   lib,
   config,
-  inputs,
+  pkgs-aln,
   ...
 }:
 
@@ -15,6 +15,11 @@ let
   wavefoxModule = { config, ... }: {
     options.wavefox = {
       enable = lib.mkEnableOption "wavefox";
+      package = lib.mkPackageOption pkgs-aln "wavefox" {
+        extraDescription = ''
+          The "chrome" folder of wavefox must be the root of the derivation, and must contain "userChrome.css" and "userContent.css" files.
+        '';
+      };
       config = lib.mkOption {
         type = with lib.types; attrsOf (either str int);
         default = { };
@@ -27,6 +32,12 @@ let
       extraConfig = config.wavefox.config
         |> lib.mapAttrsToList (n: v: ''user_pref("WaveFox.${n}", ${toString v});'')
         |> lib.concatStrings;
+      userChrome = lib.mkIf config.wavefox.enable ''
+        @import "wavefox/userChrome.css"
+      '';
+      userContent = lib.mkIf config.wavefox.enable ''
+        @import "wavefox/userContent.css"
+      '';
     };
   };
 in
@@ -40,12 +51,11 @@ in
   config = {
     home.file = cfg.profiles
       |> lib.filterAttrs (_: v: v.wavefox.enable)
-      |> lib.mapAttrsToList (n: v: "${cfg.profilesPath}/${n}/chrome")
-      |> (l: lib.genAttrs l (p: {
-        source = inputs.wavefox.outPath + "/chrome";
-      }));
+      |> lib.mapAttrs' (n: v: {
+         name = "${cfg.profilesPath}/${n}/chrome/wavefox";
+         value = {
+          source = v.wavefox.package;
+        };
+      });
   };
-
-  # TODO: add import to wavefox instead of writing chrome dir
-  # TODO: package wavefox
 }

@@ -8,4 +8,5 @@
     };
     mcp = pkgs.python3Packages.callPackage ./pkgs/mcp.nix {};
   };
+  wavefox = pkgs.callPackage ./pkgs/wavefox.nix {};
 }
