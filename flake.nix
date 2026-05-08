@@ -1,9 +1,9 @@
 {
   description = "NixOS Multi-Host & Multi-User Configuration";
 
-  outputs = { nixpkgs, nixpkgs-unstable, ... } @ inputs: 
+  outputs = inputs: 
   let 
-    lib = nixpkgs.lib;
+    lib = inputs.nixpkgs.lib;
     mkPkgs = pkgs: system: import pkgs { inherit system; config.allowUnfree = true; };
 
     alnLib = import ./lib { inherit lib; };
@@ -19,7 +19,7 @@
         specialArgs = { 
           inherit inputs alnLib inventory;
           ctx = mkCtx { inherit hostName; };
-          pkgs-unstable = mkPkgs nixpkgs-unstable system;
+          pkgs-unstable = mkPkgs inputs.nixpkgs-unstable system;
         };
         system = system; 
         modules = [
@@ -35,11 +35,11 @@
         value = let
           system = inventory.hosts.${hostName}.system or inventory.systems.x86_linux;
         in inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = mkPkgs nixpkgs system;
+          pkgs = mkPkgs inputs.nixpkgs system;
           extraSpecialArgs = {
             inherit inputs alnLib inventory;
             ctx = mkCtx { inherit hostName; inherit userName; };
-            pkgs-unstable = mkPkgs nixpkgs-unstable system;
+            pkgs-unstable = mkPkgs inputs.nixpkgs-unstable system;
             pkgs-nur = inputs.nur.legacyPackages.${system};
           };
           modules = [
