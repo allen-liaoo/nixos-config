@@ -1,10 +1,18 @@
-{ lib, pkgs, inputs, config, ... }:
+{
+  lib,
+  pkgs,
+  inputs,
+  config,
+  ...
+}:
 
 let
-  nvimxPkg = with inputs.nvimx; makeNixvimWithModule (pkgs.stdenv.hostPlatform.system) {
-    nvimx.treesitter.enableAllGrammars = true;
-    nvimx.shells.enable = true;
-  };
+  nvimxPkg =
+    with inputs.nvimx;
+    makeNixvimWithModule (pkgs.stdenv.hostPlatform.system) {
+      nvimx.treesitter.enableAllGrammars = true;
+      nvimx.shells.enable = true;
+    };
 in
 {
   home.packages = [
@@ -14,7 +22,7 @@ in
   programs.fish.shellAliases = {
     "v" = lib.mkForce "nvim";
     "vi" = lib.mkForce "nvim";
-    "vim" = lib.mkForce "nvim"; 
+    "vim" = lib.mkForce "nvim";
   };
 
   home.sessionVariables = {

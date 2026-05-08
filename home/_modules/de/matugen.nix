@@ -18,15 +18,18 @@ let
       };
     };
   };
-  templateModule = ({ name, ... }: {
-    options = {
-      enable = lib.mkEnableOption name;
-      content = lib.mkOption {
-        type = lib.types.submodule contentModule;
+  templateModule = (
+    { name, ... }:
+    {
+      options = {
+        enable = lib.mkEnableOption name;
+        content = lib.mkOption {
+          type = lib.types.submodule contentModule;
+        };
       };
-    };
-  });
-  tomlFormat = pkgs.formats.toml {};
+    }
+  );
+  tomlFormat = pkgs.formats.toml { };
 in
 {
   options = {
@@ -46,10 +49,10 @@ in
 
   config = {
     xdg.configFile."matugen/config.toml".source = tomlFormat.generate "config.toml" {
-      config = {};
-      templates = (config.aln.matugen.template
-        |> lib.filterAttrs (_: v: v.enable)
-        |> lib.mapAttrs (_: v: v.content));
+      config = { };
+      templates = (
+        config.aln.matugen.template |> lib.filterAttrs (_: v: v.enable) |> lib.mapAttrs (_: v: v.content)
+      );
     };
   };
 }

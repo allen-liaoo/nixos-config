@@ -1,7 +1,7 @@
 {
   fetchFromGitHub,
   stdenv,
-  lib
+  lib,
 }:
 
 stdenv.mkDerivation (finalAttrs: {

@@ -1,6 +1,6 @@
- { pkgs, ... }:
+{ pkgs, ... }:
 
- {
+{
   home.packages = with pkgs; [
     bitwarden-desktop
     loupe # image viewer
@@ -9,4 +9,4 @@
     spotify
     zotero
   ];
- }
+}

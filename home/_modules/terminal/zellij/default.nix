@@ -12,7 +12,9 @@ in
     #enableZshIntegration = true;
   };
 
-  xdg.configFile.${configKdl}.source = config.lib.file.mkOutOfStoreSymlink (alnLib.outOfStoreRelToRoot config.home.homeDirectory ./config.kdl);
+  xdg.configFile.${configKdl}.source = config.lib.file.mkOutOfStoreSymlink (
+    alnLib.outOfStoreRelToRoot config.home.homeDirectory ./config.kdl
+  );
 
   aln.matugen.template."zellij" = {
     enable = config.programs.zellij.enable;

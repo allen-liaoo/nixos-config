@@ -3,8 +3,11 @@
 {
   imports = [
     inputs.glide.homeModules.default
-    (import ./firefox/mkModule { 
-      modulePath = [ "programs" "glide-browser" ];
+    (import ./firefox/mkModule {
+      modulePath = [
+        "programs"
+        "glide-browser"
+      ];
     })
   ];
 
@@ -13,7 +16,7 @@
     {
       pywalfox.enable = false;
       # disable toolbar
-      profiles.default.settings."browser.uiCustomization.state" = {};
+      profiles.default.settings."browser.uiCustomization.state" = { };
     }
   ];
 }

@@ -4,14 +4,16 @@
 # ASSUMES btrfs partition root has label "btrfsroot"
 let
   disk_root = "btrfsroot";
-in 
+in
 {
   # mount btrfs partition for btrbk
   fileSystems."/mnt/${disk_root}" = {
     device = "/dev/disk/by-label/${disk_root}"; # stable across reboots/renames
     fsType = "btrfs";
-    options = [ 
-      "subvol=/" "noatime" "compress=zstd"
+    options = [
+      "subvol=/"
+      "noatime"
+      "compress=zstd"
       "nofail" # dont block boot if this fails
     ];
   };
@@ -26,14 +28,16 @@ in
       volume."/mnt/${disk_root}" = {
         snapshot_dir = "@snapshots";
         # TODO: Change to module
-        subvolume = (lib.optionalAttrs ctx.host.is.server {
-          # servers only need to snapshot containers
-          "@containers" = {};
-        }) // (lib.optionalAttrs (!ctx.host.is.server) {
-          # nonservers 
-          "@" = {};
-          "@home" = {};
-        });
+        subvolume =
+          (lib.optionalAttrs ctx.host.is.server {
+            # servers only need to snapshot containers
+            "@containers" = { };
+          })
+          // (lib.optionalAttrs (!ctx.host.is.server) {
+            # nonservers
+            "@" = { };
+            "@home" = { };
+          });
       };
     };
   };

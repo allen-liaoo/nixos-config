@@ -1,4 +1,12 @@
-{ config, inputs, lib, alnLib, ctx, ... }: {
+{
+  config,
+  inputs,
+  lib,
+  alnLib,
+  ctx,
+  ...
+}:
+{
   imports = [
     inputs.sops-nix.homeManagerModules.sops
   ];

@@ -1,10 +1,15 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
   config = {
     programs.fish = {
       enable = true;
       generateCompletions = true;
-      
+
       interactiveShellInit = ''
         # disable fish greeting
         set fish_greeting
@@ -21,12 +26,13 @@
           echo cd (string repeat -n (math (string length -- $argv[1]) - 1) ../)
         end
         abbr --add dotdot --regex '^\.\.+$' --function multicd
- 
+
         # choose theme based on environment variable
         function apply-my-theme --on-variable=fish_theme
           fish_config theme choose $fish_theme
         end
-      '' + lib.optionalString config.programs.yazi.enable ''
+      ''
+      + lib.optionalString config.programs.yazi.enable ''
         # Yazi specific init (replaces the need for abbreviation)
         # press q to quit with auto cd; press Q to quit without cd
         function y
@@ -38,16 +44,17 @@
         	rm -f -- "$tmp"
         end
       '';
-  
+
       shellAbbrs = {
         c = "cd";
         ll = "ls -lAh";
-	      
+
         # programs that are only pkgs or should be systemwide
         js = "just";
         v = "vim";
 
-      } // lib.optionalAttrs config.programs.git.enable {
+      }
+      // lib.optionalAttrs config.programs.git.enable {
         g = "git";
         gs = "git status";
         ga = "git add";
@@ -62,11 +69,12 @@
         gm = "git merge";
         gl = "git log";
 
-      } // lib.optionalAttrs config.programs.zellij.enable {
+      }
+      // lib.optionalAttrs config.programs.zellij.enable {
         zj = "zellij";
       };
     };
-  
+
     # fish as login shell breaks system, so use bash and launch fish if parent process is not fish
     # see: https://nixos.wiki/wiki/Fish#Setting_fish_as_your_shell
     programs.bash.enable = true;

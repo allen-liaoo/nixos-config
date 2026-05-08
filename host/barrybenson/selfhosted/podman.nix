@@ -5,7 +5,7 @@
     isSystemUser = true;
     group = "containers";
   };
-  users.groups.containers = {};
+  users.groups.containers = { };
 
   # container subuid/subgid mapping
   # have to set subuid and subgid directly in file as userborn does not support subuid/asubgid options (see users.nix)

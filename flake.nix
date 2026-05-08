@@ -1,58 +1,74 @@
 {
   description = "NixOS Multi-Host & Multi-User Configuration";
 
-  outputs = inputs: 
-  let 
-    lib = inputs.nixpkgs.lib;
-    mkPkgs = pkgs: system: import pkgs { inherit system; config.allowUnfree = true; };
-
-    alnLib = import ./lib { inherit lib; };
-    inventory = import ./inventory { inherit lib alnLib; };
-    mkCtx = ctx: import ./ctx.nix ({ inherit lib inventory; } // ctx);
-  in
-  {
-    nixosConfigurations = lib.genAttrs inventory.nixosHostNames (hostName:
-      let 
-        host = inventory.hosts.${hostName};
-        system = host.system;
-      in lib.nixosSystem {
-        specialArgs = { 
-          inherit inputs alnLib inventory;
-          ctx = mkCtx { inherit hostName; };
-          pkgs-unstable = mkPkgs inputs.nixpkgs-unstable system;
+  outputs =
+    inputs:
+    let
+      lib = inputs.nixpkgs.lib;
+      mkPkgs =
+        pkgs: system:
+        import pkgs {
+          inherit system;
+          config.allowUnfree = true;
         };
-        system = system; 
-        modules = [
-          ./host/${hostName}
-          inputs.disko.nixosModules.disko
-        ];
-      }
-    );
 
-    homeConfigurations = lib.listToAttrs (
-      map ({ userName, hostName }: {
-        name = "${userName}@${hostName}";
-        value = let
-          pkgs = mkPkgs inputs.nixpkgs system;
-          system = inventory.hosts.${hostName}.system or inventory.systems.x86_linux;
-        in inputs.home-manager.lib.homeManagerConfiguration {
-          inherit pkgs; 
-          extraSpecialArgs = {
+      alnLib = import ./lib { inherit lib; };
+      inventory = import ./inventory { inherit lib alnLib; };
+      mkCtx = ctx: import ./ctx.nix ({ inherit lib inventory; } // ctx);
+    in
+    {
+      nixosConfigurations = lib.genAttrs inventory.nixosHostNames (
+        hostName:
+        let
+          host = inventory.hosts.${hostName};
+          system = host.system;
+        in
+        lib.nixosSystem {
+          specialArgs = {
             inherit inputs alnLib inventory;
-            ctx = mkCtx { inherit hostName; inherit userName; };
+            ctx = mkCtx { inherit hostName; };
             pkgs-unstable = mkPkgs inputs.nixpkgs-unstable system;
-            pkgs-nur = inputs.nur.legacyPackages.${system};
-            pkgs-aln = import ./packages.nix { inherit pkgs; };
           };
+          system = system;
           modules = [
-            ./home/${userName}
+            ./host/${hostName}
+            inputs.disko.nixosModules.disko
           ];
-        };
-      }) inventory.userHostPairs
-    );
+        }
+      );
 
-    devShells = lib.genAttrs inventory.systems (import ./shell.nix { inherit inputs lib inventory; });
-  };
+      homeConfigurations = lib.listToAttrs (
+        map (
+          { userName, hostName }:
+          {
+            name = "${userName}@${hostName}";
+            value =
+              let
+                pkgs = mkPkgs inputs.nixpkgs system;
+                system = inventory.hosts.${hostName}.system or inventory.systems.x86_linux;
+              in
+              inputs.home-manager.lib.homeManagerConfiguration {
+                inherit pkgs;
+                extraSpecialArgs = {
+                  inherit inputs alnLib inventory;
+                  ctx = mkCtx {
+                    inherit hostName;
+                    inherit userName;
+                  };
+                  pkgs-unstable = mkPkgs inputs.nixpkgs-unstable system;
+                  pkgs-nur = inputs.nur.legacyPackages.${system};
+                  pkgs-aln = import ./packages.nix { inherit pkgs; };
+                };
+                modules = [
+                  ./home/${userName}
+                ];
+              };
+          }
+        ) inventory.userHostPairs
+      );
+
+      devShells = lib.genAttrs inventory.systems (import ./shell.nix { inherit inputs lib inventory; });
+    };
 
   nixConfig = {
     extra-substituters = [ "https://vicinae.cachix.org" ];
@@ -66,7 +82,8 @@
       inputs.quickshell.follows = "quickshell";
     };
 
-    dgop = { # for dms' system monitor
+    dgop = {
+      # for dms' system monitor
       url = "github:AvengeMedia/dgop";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };

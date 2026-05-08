@@ -11,7 +11,7 @@
 }:
 
 let
-  cfg = lib.attrByPath modulePath {} config;
+  cfg = lib.attrByPath modulePath { } config;
 in
 {
   options = lib.setAttrByPath modulePath {
@@ -29,17 +29,19 @@ in
   };
 
   config = lib.setAttrByPath modulePath {
-    policies.ExtensionSettings = 
-      (cfg.webstore.addons
-      |> map (e:{
+    policies.ExtensionSettings =
+      (
+        cfg.webstore.addons
+        |> map (e: {
           ${e.id} = {
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/${e.name}/latest.xpi";
             installation_mode = e.installation_mode;
             updates_disabled = true;
           };
         })
-      |> lib.mergeAttrsList) // 
-      {
+        |> lib.mergeAttrsList
+      )
+      // {
         "*".installation_mode = lib.mkIf cfg.webstore.blockInstall "blocked";
       };
   };

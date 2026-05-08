@@ -1,8 +1,8 @@
 # In .profiles.<name>.settings
 let
   # extns = map
-  #   (ext: 
-  #     (builtins.replaceStrings 
+  #   (ext:
+  #     (builtins.replaceStrings
   #       [ "{" "}" "@" "." ] # replace special chars with underscore
   #       [ "_" "_" "_" "_" ]
   #       ext.id) + "-browser-action") # i.e. ublock0_raymondhill_net-browser-action
@@ -38,7 +38,7 @@ in
         "new-tab-button"
         "alltabs-button"
       ];
-      vertical-tabs = [];
+      vertical-tabs = [ ];
       PersonalToolbar = [
         "personal-bookmarks"
       ];

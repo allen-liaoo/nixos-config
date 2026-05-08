@@ -10,7 +10,8 @@
     qbittorrent
   ];
 
-  xdg.dataFile."qBittorrent/nova3/engines/jackett.json".source = config.lib.file.mkOutOfStoreSymlink config.sops.templates.qbit_jackett_settings.path;
+  xdg.dataFile."qBittorrent/nova3/engines/jackett.json".source =
+    config.lib.file.mkOutOfStoreSymlink config.sops.templates.qbit_jackett_settings.path;
 
   sops.templates.qbit_jackett_settings.content = ''
     {

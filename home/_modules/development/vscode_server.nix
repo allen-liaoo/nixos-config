@@ -1,6 +1,5 @@
 { inputs, ... }:
 
-
 # add this in homeConfigurations
 # vscode-server.nixosModules.home
 {

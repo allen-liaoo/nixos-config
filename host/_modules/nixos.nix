@@ -1,4 +1,11 @@
-{ pkgs, lib, config, inputs, ctx, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ctx,
+  ...
+}:
 
 {
   nix = {
@@ -9,7 +16,10 @@
         "pipe-operators"
       ];
       auto-optimise-store = true;
-      trusted-users = [ "root" "@wheel" ];
+      trusted-users = [
+        "root"
+        "@wheel"
+      ];
     };
     gc = {
       automatic = lib.mkDefault true;
@@ -24,16 +34,16 @@
 
   environment.systemPackages = with pkgs; [
     curl
-    dig             # in: dnsutils or bind 
+    dig # in: dnsutils or bind
     git
     home-manager
-    iproute2        # ip, ss
-    iputils         # ping, tracepath
+    iproute2 # ip, ss
+    iputils # ping, tracepath
     just
     lsof
     nmap
     pciutils
-    procps          # ps, top
+    procps # ps, top
     tcpdump
     traceroute
     vim

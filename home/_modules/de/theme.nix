@@ -24,6 +24,6 @@
 
   qt = {
     enable = true;
-    platformTheme.name = "gtk3";  
+    platformTheme.name = "gtk3";
   };
 }

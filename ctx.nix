@@ -2,7 +2,7 @@
   lib,
   inventory,
   hostName,
-  userName ? ""
+  userName ? "",
 }:
 
 rec {

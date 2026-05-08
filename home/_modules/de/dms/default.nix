@@ -1,4 +1,13 @@
-{ lib, config, inputs, pkgs, alnLib, inventory, ctx, ... }:
+{
+  lib,
+  config,
+  inputs,
+  pkgs,
+  alnLib,
+  inventory,
+  ctx,
+  ...
+}:
 
 let
   # wrap in nixGL to fix OpenGL under nix in non-Nixos systems
@@ -58,7 +67,7 @@ in
       displayNameMode = "model"; # recognize monitors by model rather than name
 
       niriOverviewOverlayEnabled = false; # disable dms launcher
-      appIdSubstitutions = [];
+      appIdSubstitutions = [ ];
     };
   };
 

@@ -17,7 +17,7 @@
       autoUpdateNotification = false;
       useQuickCss = true;
       enabledThemes = lib.optionals config.programs.dank-material-shell.enable [
-       "dank-discord.css" # dms managed matugen theme
+        "dank-discord.css" # dms managed matugen theme
       ];
     };
   };

@@ -10,7 +10,10 @@
   };
 
   # Make network interfaces use predictable names (e.g. eth0, wlan0) instead of the default (e.g. enp1s0)
-  boot.kernelParams = [ "net.ifnames=0" "biosdevname=0" ];
+  boot.kernelParams = [
+    "net.ifnames=0"
+    "biosdevname=0"
+  ];
 
   # LUKS devices
   boot.initrd.luks.devices = {
@@ -37,7 +40,10 @@
       matchConfig.Name = "eth0";
       address = [ "192.168.122.100/24" ];
       gateway = [ "192.168.122.1" ];
-      dns = [ "8.8.8.8" "1.1.1.1" ];
+      dns = [
+        "8.8.8.8"
+        "1.1.1.1"
+      ];
       linkConfig.RequiredForOnline = "routable";
     };
   };

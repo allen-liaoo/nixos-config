@@ -1,15 +1,22 @@
 # metadata of hosts and users
-{ lib, config, alnLib, ... }:
+{
+  lib,
+  config,
+  alnLib,
+  ...
+}:
 
-let 
+let
   users = {
-    allenl = { # full privileges
+    allenl = {
+      # full privileges
       name = "allenl";
       data = {
         ssh_pubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPevSDBLs3jQWYE8sq2Dx6S2qQ4VzpKn5RvS1zXkGfiW wcliaw610@gmail.com";
       };
     };
-    al = { # restricted
+    al = {
+      # restricted
       name = "al";
     };
     # vm user
@@ -28,11 +35,17 @@ in
       system = "x86_64-linux";
       gpu = "amd";
       tags = [ "impermanent" ];
-      users = with users; [ 
-        (al // {
-          groups = [ "wheel" "input" ];
-          can.deployNixConfig = true;
-        })
+      users = with users; [
+        (
+          al
+          // {
+            groups = [
+              "wheel"
+              "input"
+            ];
+            can.deployNixConfig = true;
+          }
+        )
       ];
       data = {
         wg_ip = "10.0.0.2";
@@ -48,10 +61,16 @@ in
       gpu = "amd";
       tags = [ "gui" ];
       users = with users; [
-        (allenl // {
-          groups = [ "wheel" "input" ];
-          can.deployNixConfig = true;
-        })
+        (
+          allenl
+          // {
+            groups = [
+              "wheel"
+              "input"
+            ];
+            can.deployNixConfig = true;
+          }
+        )
       ];
       data = {
         wg_ip = "10.0.10.1";
@@ -81,10 +100,16 @@ in
       gpu = "amd";
       tags = [ "gui" ];
       users = with users; [
-        (pig // {
-          groups = [ "wheel" "input" ];
-          can.deployNixConfig = true;
-        })
+        (
+          pig
+          // {
+            groups = [
+              "wheel"
+              "input"
+            ];
+            can.deployNixConfig = true;
+          }
+        )
       ];
     };
   };

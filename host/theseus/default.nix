@@ -1,7 +1,10 @@
 { alnLib, inputs, ... }:
 
 {
-  imports = alnLib.listDirFiles ./. ++ alnLib.listSubdirs ./. ++ [
-    ../_modules
-  ];
+  imports =
+    alnLib.listDirFiles ./.
+    ++ alnLib.listSubdirs ./.
+    ++ [
+      ../_modules
+    ];
 }

@@ -2,7 +2,13 @@
 # Dont move to system module because system xremap service on Niri is untested
 # SHOULD NOT LAUNCH PROGRAMS with xremap; use WM
 # as program launches as same user as xremap (except xremap as system socket service)
-{ inputs, lib, inventory, ctx, ... }:
+{
+  inputs,
+  lib,
+  inventory,
+  ctx,
+  ...
+}:
 
 let
   shouldEnable = !ctx.host.is.server && (with ctx.user.inGroup; input && wheel);
@@ -36,22 +42,25 @@ in
           alone_timeout_millis = 200; # if held for this ms or longer, then treat as held
         };
       }
-    ] ++ 
-    lib.optionals (ctx.host.equals inventory.hosts.theseus) [{
-      name = "Swap alt and ctrl on fw13 keyboard";
-      remap = {
-        "LEFTALT" = "LEFTCTRL";
-        "LEFTCTRL" = "LEFTALT";
-        "RIGHTALT" = "RIGHTCTRL";
-        "RIGHTCTRL" = "RIGHTALT";
-      };
-      device.only = "AT Translated Set 2 keyboard";
-    }];
+    ]
+    ++ lib.optionals (ctx.host.equals inventory.hosts.theseus) [
+      {
+        name = "Swap alt and ctrl on fw13 keyboard";
+        remap = {
+          "LEFTALT" = "LEFTCTRL";
+          "LEFTCTRL" = "LEFTALT";
+          "RIGHTALT" = "RIGHTCTRL";
+          "RIGHTCTRL" = "RIGHTALT";
+        };
+        device.only = "AT Translated Set 2 keyboard";
+      }
+    ];
 
-    config.keymap = [{
-      name = "Shift+capslock as capslock";
-      remap."SHIFT-CAPSLOCK" = "CAPSLOCK";
-    }];
+    config.keymap = [
+      {
+        name = "Shift+capslock as capslock";
+        remap."SHIFT-CAPSLOCK" = "CAPSLOCK";
+      }
+    ];
   };
 }
-

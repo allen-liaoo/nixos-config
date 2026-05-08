@@ -1,4 +1,9 @@
-{ lib, inputs, ctx, ... }:
+{
+  lib,
+  inputs,
+  ctx,
+  ...
+}:
 
 # CRITICAL ASSUMPTIONS OF THIS MODULE:
 # - Root of btrfs partition (not OS root) is labeled "btrfsroot"
@@ -14,7 +19,7 @@
 let
   disk_root = "btrfsroot";
   root_subvol = "@";
-in 
+in
 lib.optionalAttrs (ctx.host.hasTag.impermanent) {
   imports = [
     inputs.impermanence.nixosModules.impermanence
@@ -31,23 +36,32 @@ lib.optionalAttrs (ctx.host.hasTag.impermanent) {
       "/var/log" # system logs
       "/var/lib/systemd/coredump" # crash dumps
       "/var/lib/systemd/timers"
-    ] ++ 
-    lib.optionals (ctx.host.is.server) [
-      "/var/lib/systemd/network" 
+    ]
+    ++ lib.optionals (ctx.host.is.server) [
+      "/var/lib/systemd/network"
       #"/var/lib/containers" # since this is on separate subvolume, no need to persist it as it wont be wiped
-    ] ++
-    lib.optionals (!ctx.host.is.server) [
+    ]
+    ++ lib.optionals (!ctx.host.is.server) [
       "/var/lib/bluetooth"
       "/etc/NetworkManager/system-connections"
       "/var/lib/cups" # printer
-    ] ++
-    # For each user NOT using impermanence: persist their home directory
-    lib.concatMap (user: lib.optionals true [ #(!user.hasTags [ "impermanent" ]) [
-      { directory = "/home/${user.name}"; user = user.name; mode = "0700"; }
-    ]) ctx.host.users;
+    ]
+    ++
+      # For each user NOT using impermanence: persist their home directory
+      lib.concatMap (
+        user:
+        lib.optionals true [
+          # (!user.hasTags [ "impermanent" ]) [
+          {
+            directory = "/home/${user.name}";
+            user = user.name;
+            mode = "0700";
+          }
+        ]
+      ) ctx.host.users;
 
     files = [
-      "/etc/machine-id"  # stable machine identity
+      "/etc/machine-id" # stable machine identity
 
       # these are the only files necessary to persist on initial install,
       # the rest of the configs can be generated from the config with these keys
@@ -56,22 +70,22 @@ lib.optionalAttrs (ctx.host.hasTag.impermanent) {
     ];
 
     # For each user using impermanence: persist specific directories
-    # TODO: Not working!! Can't get home-manager state to persist for some reason, 
+    # TODO: Not working!! Can't get home-manager state to persist for some reason,
     # and it's not trivial to widen or narrow persistence
     # also may need systemd service to auto activate home manager; not desirable
     #users = lib.mergeAttrsList (map (user: {
-      #${user.name} = lib.optionalAttrs (user.hasTags [ "impermanent" ]) {
-        #directories = [
-            #{ directory = ".ssh"; mode = "0700"; }
-            #{ directory = ".config/sops"; mode = "0700"; }
-            #"nix-config"
+    #${user.name} = lib.optionalAttrs (user.hasTags [ "impermanent" ]) {
+    #directories = [
+    #{ directory = ".ssh"; mode = "0700"; }
+    #{ directory = ".config/sops"; mode = "0700"; }
+    #"nix-config"
 
-            ## Supposedly these saves home manger state
-            #".local/state/nix"
-            #".local/state/home-manager"
-          #];
-        #files = [];
-      #};
+    ## Supposedly these saves home manger state
+    #".local/state/nix"
+    #".local/state/home-manager"
+    #];
+    #files = [];
+    #};
     #}) ctx.host.users);
   };
 
@@ -87,16 +101,16 @@ lib.optionalAttrs (ctx.host.hasTag.impermanent) {
       wantedBy = [ "initrd.target" ]; # technically unnecessary as this is after sysroot.mount
       before = [
         "sysroot.mount" # before /sysroot is mounted so we can wipe
-        
+
         # IMPORTANT to make impermanence work with sops-nix without forcing it to read secrets/keys from /persist
-        "sops-install-secrets.service" 
+        "sops-install-secrets.service"
         "sops-install-secrets-for-users.service" # need services.userborn.enable = true (see users.nix)
       ];
       # need btrfs partition to be mounted
       after = [
         "dev-disk-by\\x2dlabel-${disk_root}.device"
         #"systemd-cryptsetup@end.service" # luks
-      ]; 
+      ];
       requires = [ "dev-disk-by\\x2dlabel-${disk_root}.device" ];
       unitConfig.DefaultDependencies = "no";
       serviceConfig.Type = "oneshot";
@@ -104,25 +118,25 @@ lib.optionalAttrs (ctx.host.hasTag.impermanent) {
         # Mount the raw btrfs top-level somewhere temporary
         mkdir /btrfs_tmp
         mount /dev/disk/by-label/${disk_root} /btrfs_tmp
-    
+
         # If a previous root subvolume exists, archive it with a timestamp
         if [[ -e /btrfs_tmp/${root_subvol} ]]; then
           mkdir -p /btrfs_tmp/old_roots
           timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/${root_subvol})" "+%Y-%m-%-d_%H:%M:%S")
           mv /btrfs_tmp/${root_subvol} "/btrfs_tmp/old_roots/$timestamp"
         fi
-    
+
         # Delete archived roots older than 14 days
         for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +14); do
           btrfs subvolume delete --recursive "$i"
         done
-    
+
         # Create a fresh empty root subvolume for this boot
         btrfs subvolume create /btrfs_tmp/${root_subvol}
         umount /btrfs_tmp
         # Now NixOS mounts this fresh /root subvolume as /
       '';
-     };
+    };
   };
 
   # Need to mark all btrfs subvolumes who are source or target of persistence bind mounts as neededForBoot
@@ -136,16 +150,16 @@ lib.optionalAttrs (ctx.host.hasTag.impermanent) {
 # when sops-nix tries to read the host key, it is still stored in the persist volume
 # so we need to point it to the new location
 #sops.age.sshKeyPaths = [
-  #"/persist/etc/ssh/ssh_host_ed25519_key" 
+#"/persist/etc/ssh/ssh_host_ed25519_key"
 #];
-# However: We don't need to add /persist path to ssh's hostKeys generation (sshd.nix) 
+# However: We don't need to add /persist path to ssh's hostKeys generation (sshd.nix)
 # because initial install takes care of generating the host keys in persist volume
 # subsequent generation in /etc will be wiped and replaced by the one in persist on each boot
 
 # user age keys was decrypted then wiped if stored in home dir, I think?
 # so we explicitly point to persist location, then have impermanence mount the age key
 #sops.secrets = lib.mergeAttrsList (map (user: {
-  #"age_key_${user.name}" = {
-    #path = lib.mkForce "/persist/home/${user.name}/.config/sops/age/keys.txt";
-  #};
+#"age_key_${user.name}" = {
+#path = lib.mkForce "/persist/home/${user.name}/.config/sops/age/keys.txt";
+#};
 #}) ctx.host.users);

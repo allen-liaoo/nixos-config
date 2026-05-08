@@ -1,4 +1,10 @@
-{ lib, inputs, pkgs, config, ... }:
+{
+  lib,
+  inputs,
+  pkgs,
+  config,
+  ...
+}:
 
 let
   # Raycast Extensions github
@@ -31,26 +37,33 @@ in
       };
     };
 
-    extensions = with inputs.vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system}; [
-      nix
-      player-pilot
-      ssh
-      #systemd # not supported currently
-    ] ++ 
-    # raycast extensions
-    ([
-      "unicode-symbols"
-    ] |>
-      map (ext: 
-        inputs.vicinae.packages.${pkgs.stdenv.hostPlatform.system}.mkRayCastExtension {
-          name = ext;
-          rev = rcRev;
-          sha256 = rcSha;
-        }
-      ));
+    extensions =
+      with inputs.vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system};
+      [
+        nix
+        player-pilot
+        ssh
+        #systemd # not supported currently
+      ]
+      ++
+        # raycast extensions
+        (
+          [
+            "unicode-symbols"
+          ]
+          |> map (
+            ext:
+            inputs.vicinae.packages.${pkgs.stdenv.hostPlatform.system}.mkRayCastExtension {
+              name = ext;
+              rev = rcRev;
+              sha256 = rcSha;
+            }
+          )
+        );
 
     settings = {
-      theme = { # see below
+      theme = {
+        # see below
         dark.name = "matugen";
         light.name = "matugen";
       };
@@ -63,18 +76,18 @@ in
 
       launcher_window = {
         opacity = 0.4;
-        client_side_decorations.enabled = true; #false;
+        client_side_decorations.enabled = true; # false;
       };
 
       font.normal.size = 11;
-  
+
       favorites = [
         "clipboard:history"
         "files:search"
         "core:search-emojis"
         "@mmazzarolo/unicode-symbols:index"
       ];
-  
+
       providers = {
         "@mmazzarolo/unicode-symbols".entrypoints.index.alias = "u";
         applications = {
@@ -105,7 +118,10 @@ in
             open-config-file.enabled = false;
             open-default-config.enabled = false;
             report-bug.enabled = true;
-            search-emojis = { enabled = true; alias = "e"; };
+            search-emojis = {
+              enabled = true;
+              alias = "e";
+            };
             sponsor.enabled = false;
           };
         };
@@ -116,10 +132,22 @@ in
         };
         manage-shortcuts.entrypoints.create.enabled = false;
         power.entrypoints = {
-          lock = { enabled = true; alias = "l"; };
-          suspend = { enabled = true; alias = "s"; };
-          power-off = { enabled = true; alias = "p"; };
-          reboot = { enabled = true; alias = "r"; };
+          lock = {
+            enabled = true;
+            alias = "l";
+          };
+          suspend = {
+            enabled = true;
+            alias = "s";
+          };
+          power-off = {
+            enabled = true;
+            alias = "p";
+          };
+          reboot = {
+            enabled = true;
+            alias = "r";
+          };
           hibernate.enabled = false;
           sleep.enabled = false;
           soft-reboot.enabled = false;
@@ -153,7 +181,6 @@ in
       }
     '';
   };
-
 
   aln.matugen.template."vicinae" = {
     enable = true;

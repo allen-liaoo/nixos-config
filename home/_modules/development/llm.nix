@@ -1,4 +1,11 @@
-{ lib, pkgs, pkgs-aln, pkgs-unstable, ctx, ...}: 
+{
+  lib,
+  pkgs,
+  pkgs-aln,
+  pkgs-unstable,
+  ctx,
+  ...
+}:
 
 lib.mkIf (!ctx.host.is.server) {
   programs.opencode = {
@@ -11,7 +18,7 @@ lib.mkIf (!ctx.host.is.server) {
         bash = {
           "*" = "ask";
           "rm *" = "deny";
-          "grep *" ="allow";
+          "grep *" = "allow";
         };
         grep = "allow";
         glob = "allow";

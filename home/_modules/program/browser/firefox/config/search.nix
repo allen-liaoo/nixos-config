@@ -1,7 +1,10 @@
 {
   default = "ddg";
   force = true;
-  order = [ "ddg" "mynixos" ];
+  order = [
+    "ddg"
+    "mynixos"
+  ];
   engines = {
     "google".metaData.hidden = true;
     "amazondotcom-us".metaData.hidden = true;

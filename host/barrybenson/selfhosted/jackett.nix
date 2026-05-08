@@ -6,50 +6,57 @@ let
   podName = name + "-pod";
 in
 {
-  virtualisation.quadlet = let
-    inherit (config.virtualisation.quadlet) containers images pods volumes;
-  in {
-    # jackett container
-    containers.${name} = alnLib.mkContainer name {
-      containerConfig = {
-        image = images.${name}.ref;
-        pod = pods.${podName}.ref;
-        userns = ""; # pod sets userns, container shouldn't
-        startWithPod = true;
-        volumes = [
-          "${volumes.${name}.ref}:/config:rw,U"
-        ];
-        environments = {
-          PUID = "0";
-          PGID = "0";
+  virtualisation.quadlet =
+    let
+      inherit (config.virtualisation.quadlet)
+        containers
+        images
+        pods
+        volumes
+        ;
+    in
+    {
+      # jackett container
+      containers.${name} = alnLib.mkContainer name {
+        containerConfig = {
+          image = images.${name}.ref;
+          pod = pods.${podName}.ref;
+          userns = ""; # pod sets userns, container shouldn't
+          startWithPod = true;
+          volumes = [
+            "${volumes.${name}.ref}:/config:rw,U"
+          ];
+          environments = {
+            PUID = "0";
+            PGID = "0";
+          };
         };
       };
-    };
 
-    # flaresolvarr container
-    containers.${flName} = alnLib.mkContainer flName {
-      containerConfig = {
-        image = images.${flName}.ref;
-        pod = pods.${podName}.ref;
-        userns = ""; # pod sets userns
-        startWithPod = true;
+      # flaresolvarr container
+      containers.${flName} = alnLib.mkContainer flName {
+        containerConfig = {
+          image = images.${flName}.ref;
+          pod = pods.${podName}.ref;
+          userns = ""; # pod sets userns
+          startWithPod = true;
+        };
       };
-    };
 
-    pods.${podName} = alnLib.mkPod podName {
-      podConfig = {
-        publishPorts = [ "20117:9117" ];
+      pods.${podName} = alnLib.mkPod podName {
+        podConfig = {
+          publishPorts = [ "20117:9117" ];
+        };
       };
-    };
 
-    images.${name} = alnLib.mkImage {
-      imageConfig.image = "docker.io/linuxserver/jackett:latest";
-    };
+      images.${name} = alnLib.mkImage {
+        imageConfig.image = "docker.io/linuxserver/jackett:latest";
+      };
 
-    images.${flName} = alnLib.mkImage {
-      imageConfig.image = "docker.io/flaresolverr/flaresolverr:latest";
-    };
+      images.${flName} = alnLib.mkImage {
+        imageConfig.image = "docker.io/flaresolverr/flaresolverr:latest";
+      };
 
-    volumes.${name} = alnLib.mkVolume name {};
-  };
+      volumes.${name} = alnLib.mkVolume name { };
+    };
 }

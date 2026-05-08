@@ -2,8 +2,8 @@
 
 { lib, pkgs-nur }:
 
-let 
-  recursiveUpdates = lib.foldl lib.recursiveUpdate {};
+let
+  recursiveUpdates = lib.foldl lib.recursiveUpdate { };
 in
 {
   enable = true;

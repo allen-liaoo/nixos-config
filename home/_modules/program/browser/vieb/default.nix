@@ -1,10 +1,14 @@
-{ pkgs-nur, config, alnLib, ... }:
+{
+  pkgs-nur,
+  config,
+  alnLib,
+  ...
+}:
 
 let
-  symlinkHere = path: 
-  path 
-  |> alnLib.outOfStoreRelToRoot config.home.homeDirectory 
-  |> config.lib.file.mkOutOfStoreSymlink;
+  symlinkHere =
+    path:
+    path |> alnLib.outOfStoreRelToRoot config.home.homeDirectory |> config.lib.file.mkOutOfStoreSymlink;
   theme_path = "Vieb/colors/custom_theme.css";
 in
 {
@@ -19,4 +23,3 @@ in
   xdg.configFile."Vieb/mainrc".source = symlinkHere ./mainrc;
   xdg.configFile.${theme_path}.source = symlinkHere ./theme.css;
 }
-

@@ -2,33 +2,38 @@
 
 let
   rootPath = ../.; # project root path; resolves in nix store
-in rec
-{
+in
+rec {
   # use path relative to the root of this project
   # note that this will resolve to be a path within /nix/store
   # to refer to a path outside of /nix/store, use outOfStoreRelToRoot
   relToRoot = lib.path.append rootPath;
 
   # List all files in a directory, excluding "default.nix". Non-recurive
-  listDirFiles = (dir:
+  listDirFiles = (
+    dir:
     let
       files = builtins.readDir dir;
-      nixFiles = builtins.filter
-        (name: name != "default.nix" && builtins.match ".*\\.nix" name != null)
-        (builtins.attrNames files);
-    in map (name: dir + "/${name}") nixFiles);
+      nixFiles = builtins.filter (name: name != "default.nix" && builtins.match ".*\\.nix" name != null) (
+        builtins.attrNames files
+      );
+    in
+    map (name: dir + "/${name}") nixFiles
+  );
 
   # List all immediate subdirectory of current directory
-  listSubdirs = (dir:
+  listSubdirs = (
+    dir:
     let
       entries = builtins.readDir dir;
-      subdirs = builtins.filter
-        (name: entries.${name} == "directory")
-        (builtins.attrNames entries);
-    in map (name: dir + "/${name}") subdirs);
+      subdirs = builtins.filter (name: entries.${name} == "directory") (builtins.attrNames entries);
+    in
+    map (name: dir + "/${name}") subdirs
+  );
 
   # filters importsList by removing occurences of blackList
-  importExcept = importsList: blackList:
+  importExcept =
+    importsList: blackList:
     builtins.filter (f: !(builtins.any (b: lib.hasSuffix b f) blackList)) importsList;
 
   ## HOME MANAGER EXCLUSIVE ##
@@ -48,11 +53,13 @@ in rec
   #   outOfStoreRelToRoot config.home.HomeDirectory ./config.kdl
   # returns /home/hm_user/nix-config/modules/xyz/config.kdl
   # Note that ./config.kdl is a relative path that resolves in /nix/store, which is fine
-  outOfStoreRelToRoot = (homeDir: relPath:
-    let 
-      flakePath = toString rootPath; 
+  outOfStoreRelToRoot = (
+    homeDir: relPath:
+    let
+      flakePath = toString rootPath;
       relPathStr = toString relPath;
     in
-      assert lib.hasPrefix flakePath relPathStr;
-      homeDir + NIX_CONFIG_REL_HOME + (lib.removePrefix flakePath relPathStr)); 
+    assert lib.hasPrefix flakePath relPathStr;
+    homeDir + NIX_CONFIG_REL_HOME + (lib.removePrefix flakePath relPathStr)
+  );
 }

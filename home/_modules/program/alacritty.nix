@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   programs.alacritty = {
@@ -13,7 +18,10 @@
         ];
       };
       window = {
-        padding = { x = 8; y = 8; };
+        padding = {
+          x = 8;
+          y = 8;
+        };
         decorations = "None";
         opacity = lib.mkForce 0.75;
       };

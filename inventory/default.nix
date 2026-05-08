@@ -2,5 +2,8 @@
 
 (lib.evalModules {
   specialArgs = args;
-  modules = [ ./schema.nix ./data.nix ];
+  modules = [
+    ./schema.nix
+    ./data.nix
+  ];
 }).config

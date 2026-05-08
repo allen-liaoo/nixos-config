@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   disko.devices = {
@@ -30,22 +35,32 @@
 
               content = {
                 type = "btrfs";
-                extraArgs = [ 
+                extraArgs = [
                   "-f" # force overwrite
-                  "-L" "btrfsroot" # btrfs partition label used by impermanence and btrbk
+                  "-L"
+                  "btrfsroot" # btrfs partition label used by impermanence and btrbk
                 ];
                 subvolumes = {
                   "@" = {
                     mountpoint = "/";
-                    mountOptions = [ "compress=zstd" "noatime" ]; 
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
+                    ];
                   };
                   "@home" = {
                     mountpoint = "/home";
-                    mountOptions = [ "compress=zstd" "noatime" ]; 
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
+                    ];
                   };
                   "@nix" = {
                     mountpoint = "/nix";
-                    mountOptions = [ "compress=zstd" "noatime" ];
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
+                    ];
                   };
                   # "@persist" = {
                   #   mountpoint = "/persist";
@@ -57,7 +72,10 @@
                   # };
                   "@snapshots" = {
                     mountpoint = "/.snapshots";
-                    mountOptions = [ "compress=zstd" "noatime" ];
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
+                    ];
                   };
                 };
               };

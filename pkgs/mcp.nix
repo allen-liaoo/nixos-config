@@ -13,7 +13,7 @@
   python-multipart,
   sse-starlette,
   starlette,
-  uvicorn
+  uvicorn,
 }:
 
 buildPythonPackage rec {
@@ -26,7 +26,10 @@ buildPythonPackage rec {
     hash = "sha256-Jj37cAVAtybAk/DD4EP2at7Qcw0LUfBOsKPrkAVf5Js=";
   };
 
-  build-system = [ setuptools hatchling ];
+  build-system = [
+    setuptools
+    hatchling
+  ];
 
   dependencies = [
     uv-dynamic-versioning

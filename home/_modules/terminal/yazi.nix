@@ -2,14 +2,14 @@
   config,
   ...
 }:
- 
+
 {
   programs.yazi = {
     enable = true;
     enableBashIntegration = true;
     enableFishIntegration = true;
     enableZshIntegration = true;
-    
+
     # TODO: Consider linking toml files
     # to share config across hosts/homes? what about conditional opens?
     settings = {
@@ -22,13 +22,13 @@
 
       # TODO: opener and open rules based on gui/headless
       #open.prepend_rules = [
-        #{ mime = "text/plain"; use = "text"; }
-        #{ name = "*"; use = "default_open"; }
+      #{ mime = "text/plain"; use = "text"; }
+      #{ name = "*"; use = "default_open"; }
       #];
-      
+
       #opener = {
-        #text = [{ run = "$EDITOR %s"; block = true; }];
-        # default_open = [{ run = "xdg-open \"$@\""; orphan = true; }];
+      #text = [{ run = "$EDITOR %s"; block = true; }];
+      # default_open = [{ run = "xdg-open \"$@\""; orphan = true; }];
       #};
     };
   };

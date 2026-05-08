@@ -12,7 +12,7 @@
   "browser.dataFeatureRecommendations.enabled" = false;
   "browser.display.use_system_colors" = false; # use pywalfox
   "browser.tabs.insertAfterCurrent" = true;
-  "browser.theme.content-theme" = 0;  # 0 = auto (follow system), 1 = light, 2 = dark
+  "browser.theme.content-theme" = 0; # 0 = auto (follow system), 1 = light, 2 = dark
   "browser.newtabpage.activity-stream.default.sites" = "";
   "browser.newtabpage.activity-stream.feeds.section.topstories.options" = "{\"hidden\":true}";
   "browser.newtabpage.activity-stream.feeds.section.topstories" = false;

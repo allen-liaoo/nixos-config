@@ -1,8 +1,18 @@
-{ lib, config, alnLib, inventory, ctx, ... }:
+{
+  lib,
+  config,
+  alnLib,
+  inventory,
+  ctx,
+  ...
+}:
 
 let
   # NM connections/profiles
-  connections = [ "hotspot_a16n" "wifi_eduroam" ];
+  connections = [
+    "hotspot_a16n"
+    "wifi_eduroam"
+  ];
 in
 {
   networking.networkmanager = {
@@ -19,28 +29,30 @@ in
       # NOTE: trailing ":" is important in "list of ..." fields
       profiles = {
         # home server (DNS)
-        wg_hs_dns = let 
-          ionobro = inventory.hosts.ionobro.data; 
-        in {
-          connection = {
-            id = "wg_hs_dns";
-            type = "wireguard";
-            interface-name = "wg_hs";
+        wg_hs_dns =
+          let
+            ionobro = inventory.hosts.ionobro.data;
+          in
+          {
+            connection = {
+              id = "wg_hs_dns";
+              type = "wireguard";
+              interface-name = "wg_hs";
+            };
+            wireguard.private-key = "$WG_PRIVKEY";
+            # TODO: Centralize keys and ips
+            "wireguard-peer.${ionobro.wg_pubkey}" = {
+              endpoint = "${ionobro.ip}:${ionobro.wg_port}";
+              allowed-ips = "${ionobro.wg_ip}/24;";
+              persistent-keepalive = 25;
+            };
+            ipv4 = with ctx.host.data; {
+              address1 = "${wg_ip}/32";
+              dns = "${ionobro.wg_ip};"; # trailing ";"!
+              method = "manual";
+            };
+            ipv6.method = "disabled";
           };
-          wireguard.private-key = "$WG_PRIVKEY";
-          # TODO: Centralize keys and ips
-          "wireguard-peer.${ionobro.wg_pubkey}" = {
-            endpoint = "${ionobro.ip}:${ionobro.wg_port}"; 
-            allowed-ips = "${ionobro.wg_ip}/24;";
-            persistent-keepalive = 25;
-          };
-          ipv4 = with ctx.host.data; {
-            address1 = "${wg_ip}/32";
-            dns = "${ionobro.wg_ip};"; # trailing ";"!
-            method = "manual";
-          };
-          ipv6.method = "disabled";
-        };
         # phone
         a16n = {
           connection = {
@@ -80,7 +92,7 @@ in
             eap = "peap;"; # trailing ; is important!!
             identity = "liao0144@umn.edu";
             password = "$PASSWD_WIFI_EDUROAM";
-            phase2-auth="mschapv2";
+            phase2-auth = "mschapv2";
           };
           ipv4.method = "auto";
           ipv6 = {
@@ -102,14 +114,17 @@ in
     };
   };
 
-  sops.secrets = (connections
-    |> map (key: {
-      "passwd_${key}" = {
-        sopsFile = alnLib.relToRoot "secrets/host/wifi_passwd.yaml";
-        inherit key;
-      };
-    })
-    |> lib.mergeAttrsList)
+  sops.secrets =
+    (
+      connections
+      |> map (key: {
+        "passwd_${key}" = {
+          sopsFile = alnLib.relToRoot "secrets/host/wifi_passwd.yaml";
+          inherit key;
+        };
+      })
+      |> lib.mergeAttrsList
+    )
     // {
       theseus_wg_privkey = {
         sopsFile = alnLib.relToRoot "secrets/host/theseus/common.yaml";
@@ -117,11 +132,14 @@ in
       };
     };
 
-  sops.templates."nm-secrets-env".content = (connections 
-    |> map (key: "PASSWD_${lib.toUpper key}=${config.sops.placeholder."passwd_${key}"}")
-    |> lib.concatMapStrings (s: s + "\n"))
+  sops.templates."nm-secrets-env".content =
+    (
+      connections
+      |> map (key: "PASSWD_${lib.toUpper key}=${config.sops.placeholder."passwd_${key}"}")
+      |> lib.concatMapStrings (s: s + "\n")
+    )
     + ''
       WG_PRIVKEY=${config.sops.placeholder.theseus_wg_privkey}
     '';
-    
+
 }

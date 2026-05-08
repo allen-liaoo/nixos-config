@@ -1,4 +1,11 @@
-{ config, pkgs, alnLib, inventory, ctx, ... }:
+{
+  config,
+  pkgs,
+  alnLib,
+  inventory,
+  ctx,
+  ...
+}:
 
 let
   eth_intf = "enp1s0";
@@ -16,7 +23,12 @@ in
       matchConfig.Name = "${eth_intf}";
       DHCP = "ipv4";
       linkConfig.RequiredForOnline = "routable";
-      dns = [ "1.1.1.1" "1.0.0.1" "8.8.8.8" "8.8.4.4" ];
+      dns = [
+        "1.1.1.1"
+        "1.0.0.1"
+        "8.8.8.8"
+        "8.8.4.4"
+      ];
     };
   };
 
@@ -30,7 +42,8 @@ in
     checkRuleset = true;
     #flushRuleset = true; # do not flush, or podman's fw get flushed
   };
-  networking.nftables.tables.global = { # table for global firewall no matter the interface
+  networking.nftables.tables.global = {
+    # table for global firewall no matter the interface
     family = "inet";
     content = ''
       chain input {
@@ -100,30 +113,36 @@ in
     wireguardConfig = {
       PrivateKeyFile = config.sops.secrets.wg_privkey.path;
       RouteTable = "off"; # dont configure route for outgoing packets destined for AllowedIPs
-      # Don't configure FirewallMark (which marks out outgoing packets) 
+      # Don't configure FirewallMark (which marks out outgoing packets)
     };
-    wireguardPeers = with inventory.hosts.ionobro.data; [{
-      # vps
-      PublicKey = wg_pubkey;
-      Endpoint = "${ip}:${wg_port}";
-      AllowedIPs = [ "0.0.0.0/0" ]; # this wouldve route everything through tunnel if RouteTable is not off
-      PersistentKeepalive = 25;
-    }];
+    wireguardPeers = with inventory.hosts.ionobro.data; [
+      {
+        # vps
+        PublicKey = wg_pubkey;
+        Endpoint = "${ip}:${wg_port}";
+        AllowedIPs = [ "0.0.0.0/0" ]; # this wouldve route everything through tunnel if RouteTable is not off
+        PersistentKeepalive = 25;
+      }
+    ];
   };
   # Wireguard network routing
   systemd.network.networks."20-${wg_intf}" = {
     matchConfig.Name = "${wg_intf}";
     address = [ "${ctx.host.data.wg_ip}/24" ]; # this server's wg ip
-    routingPolicyRules = [{
-      FirewallMark = wg_mark; # for any packet marked
-      Table = wg_table; # use this table
-      Priority = 100; # low priority = high number
-    }];
-    routes = [{
-      Table = wg_table; # route traffic of this table
-      Destination = "0.0.0.0/0"; # default route for any traffic
-      Gateway = inventory.hosts.ionobro.data.wg_ip; # go to vps ip
-    }];
+    routingPolicyRules = [
+      {
+        FirewallMark = wg_mark; # for any packet marked
+        Table = wg_table; # use this table
+        Priority = 100; # low priority = high number
+      }
+    ];
+    routes = [
+      {
+        Table = wg_table; # route traffic of this table
+        Destination = "0.0.0.0/0"; # default route for any traffic
+        Gateway = inventory.hosts.ionobro.data.wg_ip; # go to vps ip
+      }
+    ];
   };
   environment.systemPackages = with pkgs; [ wireguard-tools ];
 

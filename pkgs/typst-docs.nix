@@ -3,7 +3,7 @@
   lib,
   openssl,
   pkg-config,
-  typst
+  typst,
 }:
 
 rustPlatform.buildRustPackage {

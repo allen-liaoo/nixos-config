@@ -4,7 +4,7 @@
   programs.vim = {
     enable = true;
     defaultEditor = true;
-  
+
     settings = {
       number = true;
       tabstop = 2;
@@ -14,15 +14,15 @@
     };
 
     plugins = with pkgs.vimPlugins; [
-      commentary          # gcc to comment line, or gc + motion
+      commentary # gcc to comment line, or gc + motion
       indentLine
-      surround            # motion + s + char, i.e. cs( = change surrounding to (
-      lightline-vim       # status line
-      vim-cool            # disable search highlight after search
-      vim-signify         # git diff on the left
-      vim-peekaboo        # show contents of registers when pressing "
+      surround # motion + s + char, i.e. cs( = change surrounding to (
+      lightline-vim # status line
+      vim-cool # disable search highlight after search
+      vim-signify # git diff on the left
+      vim-peekaboo # show contents of registers when pressing "
     ];
-  
+
     extraConfig = ''
       set autoindent
       set backupcopy=yes
@@ -30,7 +30,7 @@
       set showcmd
       set softtabstop=2
       syntax on
-  
+
       nnoremap <Esc> :noh<CR>
 
       " hide lineno for mouse selection during visual mode

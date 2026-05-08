@@ -2,7 +2,7 @@
 {
   programs.git = {
     enable = true;
-    settings= {
+    settings = {
       push.autoSetupRemote = true;
     };
     attributes = [
@@ -14,4 +14,3 @@
     ];
   };
 }
-
