@@ -1,7 +1,5 @@
 {
   pkgs,
-  lib,
-  aln,
   ...
 }:
 
@@ -16,14 +14,11 @@
 
   gtk = {
     enable = true;
-    theme = {
-      name = "Adwaita";
-      package = pkgs.gnome-themes-extra;
-    };
     iconTheme = {
       package = pkgs.adwaita-icon-theme;
       name = "Adwaita";
     };
+    # theme is managed by dms
     # cursorTheme is set by pointerCursor module
   };
 

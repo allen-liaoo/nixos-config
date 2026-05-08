@@ -1,8 +1,18 @@
 {
+  pkgs,
+  ...
+}:
+
+{
+  home.packages = [
+    pkgs.adw-gtk3 # for theming gtk
+  ];
+
   programs.dank-material-shell.settings = {
     blurEnabled = true;
     blurBorderOpacity = 0;
     popupTransparency = 0.4;
+    syncModeWithPortal = true;
     currentThemeName = "dynamic";
     currentThemeCategory = "dynamic";
     matugenScheme = "scheme-expressive";

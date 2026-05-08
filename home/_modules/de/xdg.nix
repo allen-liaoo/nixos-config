@@ -57,10 +57,9 @@ in
     portal =  {
       enable = true;
       config.niri = {
-        default = [ "gnome" "gtk" ];
-        "org.freedesktop.impl.portal.Secret" = [
-          "gnome-keyring"
-        ];
+        default = [ "gnome" "gtk" ];  
+        "org.freedesktop.impl.portal.Settings" = [ "gnome" ];
+        "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
       };
       extraPortals = with pkgs; [
         xdg-desktop-portal-gnome
