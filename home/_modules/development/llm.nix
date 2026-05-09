@@ -2,7 +2,6 @@
   lib,
   pkgs,
   pkgs-aln,
-  pkgs-unstable,
   ctx,
   ...
 }:
@@ -26,10 +25,6 @@ lib.mkIf (!ctx.host.is.server) {
       };
     };
   };
-
-  home.packages = with pkgs-unstable; [
-    github-copilot-cli
-  ];
 
   programs.mcp = {
     enable = true;
