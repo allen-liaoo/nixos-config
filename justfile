@@ -1,5 +1,6 @@
 current_hostname := `hostname -s`
 current_user := `whoami`
+repo_name := read(justfile_directory() / "REPO_NAME")
 nix_config := "NIX_CONFIG=\"extra-experimental-features = nix-command flakes pipe-operators\"" # setting this as merely a flag does not work; need the config to persist on child processes
 host_key_path := env_var_or_default("HOST_KEY_PATH", "/etc/ssh/ssh_host_ed25519_key")
 nix_query_param := "?submodules=1"
@@ -25,12 +26,6 @@ hm-switch user=current_user host=current_hostname:
     {{nix_config}} \
     home-manager switch --flake {{dir}}{{nix_query_param}}#{{user}}@{{host}}
 
-# Update flake inputs
-[group("update")]
-fl-update:
-    {{nix_config}} \
-    nix flake update
-
 # Re-encrypt sops secrets with new age keys
 [group("update")]
 sops-rekey:
@@ -41,17 +36,6 @@ sops-rekey:
 nix +cmd:
     {{nix_config}} \
     nix {{cmd}}
-
-# Check the flake's metadata
-[group("utility")]
-fl-meta:
-    nix flake metadata .
-
-# Check the flake for errors
-[group("utility")]
-fl-check: 
-    {{nix_config}} \
-    nix flake check
 
 # Collect NixOS garbage
 [group("utility")]
@@ -119,5 +103,5 @@ os-install host impermanent:
 # Switch current repository remote url (Only run after home-manager setup)
 [group("initial")]
 repo-switch-ssh:
-    git --git-dir {{dir}}/.git remote set-url origin git@gh_nix_config:allen-liaoo/nix-config.git
+    git --git-dir {{dir}}/.git remote set-url origin "git@gh_nix_config:allen-liaoo/{{repo_name}}.git"
 # Note: See hm module ssh.nix for host name gh_nix_config

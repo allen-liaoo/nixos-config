@@ -9,7 +9,7 @@ rec {
   # to refer to a path outside of /nix/store, use outOfStoreRelToRoot
   relToRoot = lib.path.append rootPath;
 
-  # List all files in a directory, excluding "default.nix". Non-recurive
+  # List all regular nix files in a directory, excluding "default.nix"; non-recurive
   listDirFiles = (
     dir:
     let
@@ -21,7 +21,7 @@ rec {
     map (name: dir + "/${name}") nixFiles
   );
 
-  # List all immediate subdirectory of current directory
+  # List all immediate subdirectories of a directory
   listSubdirs = (
     dir:
     let
@@ -42,7 +42,7 @@ rec {
   # DO NOT USE DIRECTLY
   # We require that ALL INSTANCES OF THIS REPO ON NIXOS/NON-NIXOS MACHINES TO BE STORED IN THE BELOW PATH (one per user who manages hm/os on NixOS machines)
   # See outOfStoreRelToRoot for explanation
-  NIX_CONFIG_REL_HOME = "/nix-config";
+  NIX_CONFIG_REL_HOME = builtins.readFile (relToRoot "REPO_NAME");
 
   # Returns the actual, out of store, path relative to the root of the repository
   # ONLY USE WITHIN HM
@@ -60,6 +60,6 @@ rec {
       relPathStr = toString relPath;
     in
     assert lib.hasPrefix flakePath relPathStr;
-    homeDir + NIX_CONFIG_REL_HOME + (lib.removePrefix flakePath relPathStr)
+    homeDir + "/" + NIX_CONFIG_REL_HOME + (lib.removePrefix flakePath relPathStr)
   );
 }
