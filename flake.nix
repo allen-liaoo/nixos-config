@@ -158,11 +158,6 @@
 
     vicinae-extensions.url = "github:vicinaehq/extensions";
 
-    vscode-server = {
-      url = "github:nix-community/nixos-vscode-server";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     xremap.url = "github:xremap/nix-flake";
   };
 }
