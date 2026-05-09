@@ -54,23 +54,25 @@
         v = "vim";
 
       }
-      // lib.optionalAttrs config.programs.git.enable {
-        g = "git";
-        gs = "git status";
-        ga = "git add";
-        gb = "git branch";
+      // lib.mkIf config.programs.git.enable {
+        g   = "git";
+        gs  = "git status";
+        ga  = "git add";
+        gb  = "git branch";
         gch = "git checkout";
-        gc = "git commit -m";
-        gd = "git diff";
-        gf = "git fetch";
-        gp = "git push";
+        gc  = "git commit -m";
+        gd  = "git diff";
+        gf  = "git fetch";
+        gp  = "git push";
         gpl = "git pull";
         grb = "git rebase";
-        gm = "git merge";
-        gl = "git log";
-
+        gm  = "git merge";
+        gl  = "git log";
       }
-      // lib.optionalAttrs config.programs.zellij.enable {
+      // lib.mkIf config.programs.lazygit.enable {
+        lg = "lazygit";
+      }
+      // lib.mkIf config.programs.zellij.enable {
         zj = "zellij";
       };
     };

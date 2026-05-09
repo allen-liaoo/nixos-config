@@ -1,11 +1,4 @@
 # metadata of hosts and users
-{
-  lib,
-  config,
-  alnLib,
-  ...
-}:
-
 let
   users = {
     allenl = {
