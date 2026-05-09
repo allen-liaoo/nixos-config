@@ -82,12 +82,6 @@
       inputs.quickshell.follows = "quickshell";
     };
 
-    dgop = {
-      # for dms' system monitor
-      url = "github:AvengeMedia/dgop";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";

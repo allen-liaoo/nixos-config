@@ -1,8 +1,8 @@
 {
-  lib,
   config,
   inputs,
   pkgs,
+  pkgs-unstable,
   alnLib,
   inventory,
   ctx,
@@ -31,15 +31,17 @@ in
     # managePluginSettings = true;
     # plugins = { };
 
-    enableSystemMonitoring = true; # uses dms's dgop
-    dgop.package = inputs.dgop.packages.${pkgs.stdenv.hostPlatform.system}.default; # fix for dgop not in nixpkgs stable
     enableVPN = true;
+    enableSystemMonitoring = true; # uses dms's dgop
+    dgop.package = pkgs-unstable.dgop;
     enableDynamicTheming = true; # mutagen
+    enableAudioWavelength = true;
     enableCalendarEvents = false; # khal ; need extra setup
     enableClipboardPaste = false; # wtype ; use vicinae for this
 
     session = {
       showThirdPartyPlugins = true;
+      wallpaperPath = alnLib.relToRoot "assets/wallpaper/the-wind-rises.jpg";
     };
 
     settings = {

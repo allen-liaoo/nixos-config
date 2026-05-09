@@ -34,6 +34,9 @@ binds {
   XF86AudioMedia {
     spawn "dms" "ipc" "call" "settings" "focusOrToggle";
   }
+  Mod+Slash {
+    spawn "dms" "ipc" "call" "settings" "focusOrToggle";
+  }
 
   // Player
   XF86AudioPlay allow-when-locked=true {

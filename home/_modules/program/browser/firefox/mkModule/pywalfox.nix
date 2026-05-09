@@ -49,7 +49,7 @@ in
         pywalfoxInstall = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
           ${lib.getExe cfg.pywalfox.package} install \
             --manifest-path ${vendor}/native-messaging-hosts \
-            --profile-path  ${cfg.profilesPath}
+            --profile-path  ${cfg.profilesPath} \
             > /dev/null 2>&1
           # pywalfox does not yet support following system preferred theme: https://github.com/Frewacom/pywalfox/issues/149
           # in the meantime, set dark theme

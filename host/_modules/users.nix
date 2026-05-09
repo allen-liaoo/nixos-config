@@ -23,6 +23,9 @@
   );
   users.groups = lib.genAttrs (map (user: user.name) ctx.host.users) (name: { });
 
+  # account service
+  services.accounts-daemon.enable = !ctx.host.is.server;
+
   # enable sudoers to use some commands without sudo
   security.sudo = {
     enable = true;

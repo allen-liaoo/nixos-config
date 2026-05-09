@@ -15,7 +15,7 @@
     syncModeWithPortal = true;
     currentThemeName = "dynamic";
     currentThemeCategory = "dynamic";
-    matugenScheme = "scheme-expressive";
+    matugenScheme = "scheme-tonal-spot";
     blurredWallpaperLayer = false;
     blurredWallpaperOnOverview = true;
 

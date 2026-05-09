@@ -1,5 +1,6 @@
 {
   pkgs,
+  alnLib,
   ...
 }:
 
@@ -26,4 +27,7 @@
     enable = true;
     platformTheme.name = "gtk3";
   };
+
+  # user profile picture (used by DMS and detected by accounts service if enabled on system)
+  home.file.".face".source = alnLib.relToRoot "assets/me.jpeg";
 }
