@@ -85,7 +85,10 @@ in
         client_side_decorations.enabled = true; # false;
       };
 
-      font.normal.size = 11;
+      font.normal = {
+        size = 11;
+        family = builtins.head config.fonts.fontconfig.defaultFonts.sansSerif;
+      };
 
       favorites = [
         "clipboard:history"
@@ -101,7 +104,7 @@ in
         # nix plugin
         "@knoopx/vicinae-extension-nix-0".entrypoints = {
           "packages".alias = "np"; # nixpkgs
-          "options".alias = "nx"; # nixos modules
+          "options".alias = "no"; # nixos modules
           "home-manager-options".alias = "hm"; # hm modules
         };
 
@@ -117,7 +120,7 @@ in
         clipboard = {
           preferences = {
             monitoring = true;
-            encryption = true; # TODO: keychain?
+            encryption = true;
             eraseOnStartup = true;
             ignorePasswords = true;
           };

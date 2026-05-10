@@ -11,6 +11,7 @@
   programs.dank-material-shell.settings = {
     clockDateFormat = "ddd MMM d"; # weekday month date
     use24HourClock = false;
+    padHours12Hour = true;
     showSeconds = false;
     useFahrenheit = false;
 

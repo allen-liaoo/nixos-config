@@ -9,19 +9,18 @@
     eza
     fd
     fzf
+    gtrash
     ripgrep
     just
-    trashy
   ];
 
   programs.fish = {
     shellAliases = {
-      "cat" = "bat --paging=never";
+      cat = "bat --paging=never";
     };
     shellAbbrs = {
-      "js" = "just";
-      "tr" = "trash"; # equiv to trash put
-      "trl" = "trash list";
+      js = "just";
+      tr = "gtrash put";
     };
   };
 }

@@ -60,6 +60,12 @@ in
       clipboardSettings.disabled = true;
       displayNameMode = "model"; # recognize monitors by model rather than name
 
+      weatherEnabled = true;
+      useAutoLocation = true;
+      
+      # popoutAnimationSpeed = 4; # custom
+      # popoutCustomAnimationDuration = 50;
+
       niriOverviewOverlayEnabled = false; # disable dms launcher
       appIdSubstitutions = [ ];
     };
