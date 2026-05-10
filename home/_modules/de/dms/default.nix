@@ -16,20 +16,17 @@ in
 {
   imports = alnLib.listDirFiles ./. ++ [
     inputs.dms.homeModules.dank-material-shell
+    inputs.dms-plugin-registry.modules.default
   ];
 
   programs.dank-material-shell = {
     enable = true;
-
     package = dms-pkg; # wait for this option to be changed in nixos stable
 
     systemd = {
       enable = true;
       restartIfChanged = true;
     };
-
-    # managePluginSettings = true;
-    # plugins = { };
 
     enableVPN = true;
     enableSystemMonitoring = true; # uses dms's dgop
@@ -38,11 +35,6 @@ in
     enableAudioWavelength = true;
     enableCalendarEvents = false; # khal ; need extra setup
     enableClipboardPaste = false; # wtype ; use vicinae for this
-
-    session = {
-      showThirdPartyPlugins = true;
-      wallpaperPath = alnLib.relToRoot "assets/wallpaper/the-wind-rises.jpg";
-    };
 
     settings = {
       enableFprint = ctx.host.equals inventory.hosts.theseus; # TODO: refactor or keep track of this
@@ -71,6 +63,22 @@ in
       niriOverviewOverlayEnabled = false; # disable dms launcher
       appIdSubstitutions = [ ];
     };
+
+    session = {
+      showThirdPartyPlugins = true;
+      wallpaperPath = alnLib.relToRoot "assets/wallpaper/the-wind-rises.jpg";
+    };
+
+    plugins = {
+      dankBatteryAlerts.enable = true;
+      ddcBrightness.enable = ctx.user.inGroup.i2c;
+    };
+
+    # niri = {
+    #   enableSpawn = false;
+    #   enableKeybinds = false;
+    #   includes.enable = false;
+    # };
   };
 
   # dms is ride or die for niri

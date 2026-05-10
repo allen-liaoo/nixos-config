@@ -59,6 +59,7 @@ in
           // {
             groups = [
               "wheel"
+              "i2c"
               "input"
             ];
             can.deployNixConfig = true;

@@ -112,6 +112,7 @@
           { id = "systemTray"; }
           { id = "privacyIndicator"; }
           # { id = "keyboard_layout_name"; keyboardLayoutNameCompactMode = true; }
+          { id = "ddcBrightness"; } # plugin
           { id = "battery"; }
           {
             id = "controlCenterButton";

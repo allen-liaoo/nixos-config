@@ -35,6 +35,7 @@ let
   ];
   groups = [
     "wheel"
+    "i2c"
     "input"
   ];
   # Type of users
