@@ -8,7 +8,6 @@
   home.pointerCursor = {
     name = "Vimix-cursors";
     package = pkgs.vimix-cursors;
-    size = 14;
     x11.enable = true;
     gtk.enable = true;
   };
