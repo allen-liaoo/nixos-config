@@ -112,16 +112,19 @@ in
         //
           #audioMimes "" // #TODO
           textMimes textEditor
-        //
-          #codeMimes "" // #TODO
+        // codeMimes textEditor // #TODO
           {
-            "text/html" = browser;
             "application/pdf" = docViewer;
             "x-scheme-handler/mailto" = "thunderbird.desktop";
             "x-scheme-handler/magnet" = "qbittorrent.desktop";
             "x-scheme-handler/spotify" = "spotify.desktop";
             "x-scheme-handler/discord" = "vesktop.desktop";
           };
+    };
+
+    terminal-exec = {
+      enable = true;
+      settings.default = [ "Alacritty.desktop" ];
     };
 
     portal = {
