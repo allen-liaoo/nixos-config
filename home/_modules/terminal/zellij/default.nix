@@ -12,6 +12,10 @@ in
     #enableZshIntegration = true;
   };
 
+  programs.fish.shellAbbrs = {
+    zj = "zellij";
+  };
+
   xdg.configFile.${configKdl}.source = config.lib.file.mkOutOfStoreSymlink (
     alnLib.outOfStoreRelToRoot config.home.homeDirectory ./config.kdl
   );

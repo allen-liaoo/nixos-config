@@ -31,49 +31,12 @@
         function apply-my-theme --on-variable=fish_theme
           fish_config theme choose $fish_theme
         end
-      ''
-      + lib.optionalString config.programs.yazi.enable ''
-        # Yazi specific init (replaces the need for abbreviation)
-        # press q to quit with auto cd; press Q to quit without cd
-        function y
-        	set tmp (mktemp -t "yazi-cwd.XXXXXX")
-        	yazi $argv --cwd-file="$tmp"
-        	if read -z cwd < "$tmp"; and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
-        		builtin cd -- "$cwd"
-        	end
-        	rm -f -- "$tmp"
-        end
       '';
 
       shellAbbrs = {
         c = "cd";
         ll = "ls -lAh";
-
-        # programs that are only pkgs or should be systemwide
-        js = "just";
-        v = "vim";
-
-      }
-      // lib.mkIf config.programs.git.enable {
-        g   = "git";
-        gs  = "git status";
-        ga  = "git add";
-        gb  = "git branch";
-        gch = "git checkout";
-        gc  = "git commit -m";
-        gd  = "git diff";
-        gf  = "git fetch";
-        gp  = "git push";
-        gpl = "git pull";
-        grb = "git rebase";
-        gm  = "git merge";
-        gl  = "git log";
-      }
-      // lib.mkIf config.programs.lazygit.enable {
-        lg = "lazygit";
-      }
-      // lib.mkIf config.programs.zellij.enable {
-        zj = "zellij";
+        js = "just"; # REMOVE
       };
     };
 

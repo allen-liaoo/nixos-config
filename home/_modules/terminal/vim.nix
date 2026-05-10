@@ -55,4 +55,8 @@
 
     '';
   };
+
+  programs.fish.shellAbbrs = {
+    v = "vim";
+  };
 }

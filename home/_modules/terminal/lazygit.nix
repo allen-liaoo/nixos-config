@@ -5,4 +5,8 @@
       tabWidth = 2;
     };
   };
+
+  programs.fish.shellAbbrs = {
+    lg = "lazygit";
+  };
 }
