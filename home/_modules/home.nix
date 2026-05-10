@@ -1,5 +1,4 @@
 {
-  pkgs,
   config,
   ctx,
   ...
@@ -7,6 +6,17 @@
 
 {
   programs.home-manager.enable = true;
+
+  services.home-manager = {
+    # expire hm generations daily, for generations older than 7 days
+    # but let nix.gc handle cleanup
+    autoExpire = {
+      enable = true;
+      frequency = "daily";
+      timestamp = "-7 days";   
+      store.cleanup = false;
+    };
+  };
 
   home.username = ctx.user.name;
   home.homeDirectory = "/home/${ctx.user.name}";
@@ -18,25 +28,6 @@
     dataHome = config.home.homeDirectory + "/.local/share";
     stateHome = config.home.homeDirectory + "/.local/state";
   };
-
-  nix = {
-    package = pkgs.nix;
-    settings = {
-      experimental-features = [
-        "flakes"
-        "nix-command"
-        "pipe-operators"
-      ];
-    };
-    gc = {
-      automatic = true;
-      dates = "daily";
-      options = "--delete-older-than 7d";
-      persistent = true;
-    };
-  };
-
-  nixpkgs.config.allowUnfree = true;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

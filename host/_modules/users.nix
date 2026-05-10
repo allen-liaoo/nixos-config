@@ -10,6 +10,7 @@
   # which is used for ordering services (i.e. with impermanence)
   services.userborn.enable = true;
 
+  users.mutableUsers = false;
   users.users = lib.mergeAttrsList (
     map (user: {
       ${user.name} = {

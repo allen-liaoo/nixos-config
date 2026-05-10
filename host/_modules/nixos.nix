@@ -1,37 +1,11 @@
 {
   pkgs,
-  lib,
-  config,
-  inputs,
   ctx,
   ...
 }:
 
 {
-  nix = {
-    settings = {
-      experimental-features = [
-        "flakes"
-        "nix-command"
-        "pipe-operators"
-      ];
-      auto-optimise-store = true;
-      trusted-users = [
-        "root"
-        "@wheel"
-      ];
-    };
-    gc = {
-      automatic = lib.mkDefault true;
-      options = lib.mkDefault "--delete-older-than 7d";
-      dates = lib.mkDefault "weekly";
-      persistent = true;
-    };
-    # Below snippets make channels use flake inputs
-    registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
-    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
-  };
-  nixpkgs.config.allowUnfree = true;
+  networking.hostName = ctx.host.name;
 
   environment.systemPackages = with pkgs; [
     curl
@@ -54,9 +28,6 @@
     zip
   ];
 
-  networking.hostName = ctx.host.name;
-
-  users.mutableUsers = false;
   security.sudo.extraConfig = ''
     Defaults pwfeedback # typed password visible as asterisks
     Defaults lecture = never # dont display warning
