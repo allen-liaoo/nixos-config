@@ -12,14 +12,14 @@ dir := justfile_directory()
 default:
     @just --list
 
-# Rebuild the NixOS config
+# Switch a NixOS config
 [group("update")]
 os-switch host=current_hostname:
     @echo "Running for host: {{host}}"
     sudo {{nix_config}} \
     nixos-rebuild switch --flake {{dir}}{{nix_query_param}}#{{host}} --accept-flake-config
 
-# Rebuild a Home Manager config
+# Switch a Home Manager config
 [group("update")]
 hm-switch user=current_user host=current_hostname:
     @echo "Running for user: {{user}}"
@@ -37,6 +37,19 @@ nix +cmd:
     {{nix_config}} \
     nix {{cmd}}
 
+# Build a NixOS config
+[group("update")]
+os-build host=current_hostname:
+    @echo "Running for host: {{host}}"
+    sudo {{nix_config}} \
+    nix build {{dir}}{{nix_query_param}}#nixosConfigurations.{{host}}.config.system.build.toplevel --accept-flake-config
+
+# Build a Home Manager config
+[group("update")]
+hm-build user=current_user host=current_hostname:
+    @echo "Running for user: {{user}}"
+    {{nix_config}} \
+    nix build {{dir}}{{nix_query_param}}#homeConfigurations.{{user}}@{{host}}.activationPackage --accept-flake-config
 # Collect NixOS garbage
 [group("utility")]
 os-gc:
