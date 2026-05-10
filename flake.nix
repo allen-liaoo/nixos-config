@@ -44,7 +44,7 @@
             name = "${userName}@${hostName}";
             value =
               let
-                pkgs = mkPkgs inputs.nixpkgs system;
+                pkgs = inputs.nixpkgs.legacyPackages.${system}; # configure in modules
                 system = inventory.hosts.${hostName}.system or inventory.systems.x86_linux;
               in
               inputs.home-manager.lib.homeManagerConfiguration {
