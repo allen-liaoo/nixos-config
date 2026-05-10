@@ -21,7 +21,13 @@
       };
     }) ctx.host.users
   );
-  users.groups = lib.genAttrs (map (user: user.name) ctx.host.users) (name: { });
+
+  users.groups = 
+    let
+      userGroups = lib.genAttrs (map (user: user.name) ctx.host.users) (_: { });
+      extraGroups = lib.genAttrs (lib.unique (lib.flatten (map (user: user.groups) ctx.host.users))) (_: { });
+    in
+    lib.recursiveUpdate userGroups extraGroups;
 
   # account service
   services.accounts-daemon.enable = !ctx.host.is.server;
