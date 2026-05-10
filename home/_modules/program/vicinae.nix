@@ -54,7 +54,7 @@ in
             }
             {
               name = "unicode-symbols";
-              sha = "sha256-sltBhjniJvRZ6zys1lmKnz9UNfS2AS47uZilV/j6XZY=";
+              sha = "sha256-JYwlyRGqbJflalPVFdpQTFSoma2owcc0wYYmzBPicgE=";
             }
           ]
           |> map (

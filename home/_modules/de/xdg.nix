@@ -147,4 +147,9 @@ in
       createDirectories = true;
     };
   };
+
+  services.gnome-keyring = {
+    enable = true;
+    components = [ "secrets" ];
+  };
 }
