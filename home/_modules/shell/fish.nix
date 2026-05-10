@@ -36,7 +36,6 @@
       shellAbbrs = {
         c = "cd";
         ll = "ls -lAh";
-        js = "just"; # REMOVE
       };
     };
 

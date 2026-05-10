@@ -39,7 +39,6 @@
     home-manager
     iproute2 # ip, ss
     iputils # ping, tracepath
-    just
     lsof
     nmap
     pciutils
