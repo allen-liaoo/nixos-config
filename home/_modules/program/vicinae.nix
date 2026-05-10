@@ -7,12 +7,11 @@
 }:
 
 let
-  # Raycast Extensions github
+  # Raycast Extensions
   # https://github.com/raycast/extensions
-  # Note: Do not move to flake input, as we want sparse checkout
+  # Do not move to flake input, as we want sparse checkout
   # See: https://github.com/vicinaehq/vicinae/blob/main/nix/mkRayCastExtension.nix
-  rcRev = "3ec994afcd05b2b6258b3b71ab8b19d6b6f1e0e4"; # commit hash
-  rcSha = "sha256-sltBhjniJvRZ6zys1lmKnz9UNfS2AS47uZilV/j6XZY="; # hash of tarball at the rev; to obtain, run flake with rev and dummy sha value
+  rcRev = "e1f89bc508756fe5d287571b3d4bae38e309d339";
 in
 {
   imports = [
@@ -49,14 +48,21 @@ in
         # raycast extensions
         (
           [
-            "unicode-symbols"
+            {
+              name = "gif-search";
+              sha = "sha256-aWIYh6tQbdZxT04TRVEc/HmgJUXFl0eMFpIZpCaIQ4U=";
+            }
+            {
+              name = "unicode-symbols";
+              sha = "sha256-sltBhjniJvRZ6zys1lmKnz9UNfS2AS47uZilV/j6XZY=";
+            }
           ]
           |> map (
-            ext:
+          { name, sha }:
             inputs.vicinae.packages.${pkgs.stdenv.hostPlatform.system}.mkRayCastExtension {
-              name = ext;
+              inherit name;
               rev = rcRev;
-              sha256 = rcSha;
+              sha256 = sha;
             }
           )
         );
@@ -86,10 +92,19 @@ in
         "files:search"
         "core:search-emojis"
         "@mmazzarolo/unicode-symbols:index"
+        "@josephschmitt/gif-search:search"
       ];
 
       providers = {
         "@mmazzarolo/unicode-symbols".entrypoints.index.alias = "u";
+
+        # nix plugin
+        "@knoopx/vicinae-extension-nix-0".entrypoints = {
+          "packages".alias = "np"; # nixpkgs
+          "options".alias = "nx"; # nixos modules
+          "home-manager-options".alias = "hm"; # hm modules
+        };
+
         applications = {
           preferences = {
             defaultAction = "launch";
@@ -98,6 +113,7 @@ in
             firefox.alias = "b";
           };
         };
+        
         clipboard = {
           preferences = {
             monitoring = true;
@@ -107,6 +123,7 @@ in
           };
           entrypoints.history.alias = "c";
         };
+
         core = {
           entrypoints = {
             about.enabled = false;
@@ -126,15 +143,22 @@ in
           };
         };
         developer.enabled = false;
+
         files = {
           preferences.watecherPaths = config.home.homeDirectory + "/Downloads";
           entrypoints.search.alias = "f";
         };
+
         manage-shortcuts.entrypoints.create.enabled = false;
+
         power.entrypoints = {
           lock = {
             enabled = true;
             alias = "l";
+          };
+          logout = {
+            enabled = true;
+            alias = "lo";
           };
           suspend = {
             enabled = true;
