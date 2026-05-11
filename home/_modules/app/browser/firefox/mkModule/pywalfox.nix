@@ -53,7 +53,7 @@ in
             > /dev/null 2>&1
           # pywalfox does not yet support following system preferred theme: https://github.com/Frewacom/pywalfox/issues/149
           # in the meantime, set dark theme
-          ${lib.getExe cfg.pywalfox.package} dark > /dev/null 2>&1
+          ${lib.getExe cfg.pywalfox.package} dark
         '';
       };
 

@@ -1,22 +1,28 @@
-{ inputs, lib, ... }@args: # for some unknown reason, need pkgs here
+{
+  inputs,
+  lib,
+  ...
+}:
 
+let
+  modulePath = [
+    "programs"
+    "glide-browser"
+  ];
+in
 {
   imports = [
     inputs.glide.homeModules.default
-    (import ./firefox/mkModule {
-      modulePath = [
-        "programs"
-        "glide-browser"
-      ];
+    (import ./firefox/mkModule { inherit modulePath; })
+    (import ./firefox/config {
+      inherit modulePath;
+      profile = "default";
     })
   ];
 
-  programs.glide-browser = lib.mkMerge [
-    (import ./firefox/config { inherit (args) lib pkgs-nur; })
-    {
-      pywalfox.enable = false;
-      # disable toolbar
-      profiles.default.settings."browser.uiCustomization.state" = { };
-    }
-  ];
+  programs.glide-browser = {
+    pywalfox.enable = false;
+    # disable toolbar
+    profiles.default.settings."browser.uiCustomization.state" = { };
+  };
 }

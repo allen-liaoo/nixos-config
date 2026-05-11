@@ -3,9 +3,13 @@
   pkgs,
   config,
   ...
-}@args:
+}:
 
 let
+  modulePath = [
+    "programs"
+    "firefox"
+  ];
   # TODO: remove once in unstable
   pywalfox-native =
     (import (pkgs.fetchFromGitHub {
@@ -17,28 +21,24 @@ let
 in
 {
   imports = [
-    (import ./firefox/mkModule {
-      modulePath = [
-        "programs"
-        "firefox"
-      ];
+    (import ./firefox/mkModule { inherit modulePath; })
+    (import ./firefox/config {
+      inherit modulePath;
+      profile = "default";
     })
   ];
 
-  programs.firefox = lib.mkMerge [
-    (import ./firefox/config { inherit (args) lib pkgs-nur; })
-    {
-      pywalfox = {
+  programs.firefox = {
+    pywalfox = {
+      enable = true;
+      package = pywalfox-native;
+    };
+    profiles.default = {
+      wavefox = {
         enable = true;
-        package = pywalfox-native;
       };
-      profiles.default = {
-        wavefox = {
-          enable = true;
-        };
-      };
-    }
-  ];
+    };
+  };
 
   programs.dank-material-shell.settings = {
     matugenTemplateFirefox = true;

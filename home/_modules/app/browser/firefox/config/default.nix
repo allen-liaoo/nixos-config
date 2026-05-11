@@ -1,31 +1,33 @@
-# does NOT return a module, just an attrset
+{ modulePath, profile }@args:
 
-{ lib, pkgs-nur }:
-
-let
-  recursiveUpdates = lib.foldl lib.recursiveUpdate { };
-in
 {
+  lib,
+  pkgs-nur,
+  ...
+}:
+
+{
+  imports = [
+    (import ./policies.nix args)
+    (import ./search.nix args)
+    (import ./settings.nix args)
+    (import ./toolbar.nix args)
+  ];
+}
+// lib.setAttrByPath modulePath {
   enable = true;
 
-  policies = import ./policies.nix;
+  profiles.${profile} = {
+    settings = {
+      "extensions.autoDisableScopes" = 0; # auto enable 3rd party extensions
+    };
 
-  profiles.default = {
     wavefox = {
       config = {
         "Tabs.Shape" = 8;
         "Tabs.Separators" = 2;
       };
     };
-
-    search = import ./search.nix;
-    settings = recursiveUpdates [
-      (import ./settings.nix)
-      (import ./toolbar.nix)
-      {
-        "extensions.autoDisableScopes" = 0; # auto enable 3rd party extensions
-      }
-    ];
 
     extensions.packages = with pkgs-nur.repos.rycee.firefox-addons; [
       bitwarden
