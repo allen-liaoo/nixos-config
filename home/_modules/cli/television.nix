@@ -44,7 +44,7 @@ in
     enable = true;
     enableTelevisionIntegration = true;
     settings = {
-      indexes = ["nixpkgs" "nixos" "home-manager" "nur" "noogle"];
+      indexes = ["nixpkgs" "nixos" "home-manager" "nur"];
     };
   };
 }

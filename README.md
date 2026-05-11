@@ -85,7 +85,7 @@ Both share these centralized configs:
   - `pywalfox.nix`- for setting up [pywalfox](https://github.com/Frewacom/pywalfox) (colors and system theming) native messaging host and extension
   - `wavefox.nix` - for setting up [WaveFox](https://github.com/QNetITQ/WaveFox) (ui styling)
 
-In particular, the custom modules are meant to be merged with firefox-based browser modules such as `programs.firefox`, `programs.librewolf`, etc.
+The shared configs and custom modules are meant to be merged with firefox-based browser modules such as `programs.firefox`, `programs.librewolf`, etc.
 
 ### Networking
 - `ionobro` is my VPS which connects clients to my homeserver, `barrybenson`, via wireguard. It forwards packets to `barrybenson` without source nat. 
