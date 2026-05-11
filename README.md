@@ -11,9 +11,9 @@ My NixOS and Home-Manager Configs
 | WM | [Niri](https://niri-wm.github.io/niri/)[⌃](/home/_modules/de/niri) |
 | Desktop Shell | [DankMaterialShell](https://danklinux.com/)[⌃](/home/_modules/de/dms) |
 | Theming | [Matugen](https://iniox.github.io/#matugen)[⌃](/home/_modules/de/matugen.nix) |
-| Terminal | [Alacritty](https://alacritty.org/)[⌃](/home/_modules/program/alacritty.nix) |
-| Launcher | [Vicinae](https://www.vicinae.com/)[⌃](/home/_modules/program/vicinae.nix) |
-| Browser | [Firefox](https://www.firefox.com)[⌃](/home/_modules/program/browser/firefox) |
+| Terminal | [Alacritty](https://alacritty.org/)[⌃](/home/_modules/app/alacritty.nix) |
+| Launcher | [Vicinae](https://www.vicinae.com/)[⌃](/home/_modules/app/vicinae.nix) |
+| Browser | [Firefox](https://www.firefox.com)[⌃](/home/_modules/app/browser/firefox) |
 
 ### Self-Hosted
 Podman containers via [quadlet-nix](https://seiarotg.github.io/quadlet-nix/) (Rootful, `userns=auto`)[⌃](host/barrybenson/selfhosted).
@@ -77,8 +77,18 @@ This allows symlinking out of store files to work correctly, and sidesteps file 
   The user's home manager config then uses the age key to decrypt secrets.
 - Each user should have access to the secret `nix_config_deploy` which is used to push to this repository. Additionally, each authorized user should have this secret under `~/.ssh` as well.
 
+### Firefox-based Browsers
+My firefox (HM) module configs can be applied to any firefox-based browser, such as `floorp`, `librewolf`, or even `glide` (from external flake). 
+For examples, see [firefox.nix](home/_modules/app/browser/firefox.nix) and [glide.nix](home/_modules/app/browser/glide.nix).
+Both share these centralized configs: 
+- [firefox/config](home/_modules/app/browser/firefox/config) - Shared policies, settings, extensions, and my custom module configs
+- [firefox/mkModule](home/_modules/app/browser/firefox/config) - My custom modules, which includes:
+  - `pywalfox.nix`- for setting up [pywalfox](https://github.com/Frewacom/pywalfox) (colors and system theming) native messaging host and extension
+  - `wavefox.nix` - for setting up [wavefox](https://github.com/QNetITQ/WaveFox) (ui styling)
+In particular, my custom modules is meant to be merged with firefox-based browser modules such as `programs.firefox`, `programs.librewolf`, etc.
+This is achieved by providing the module path (i.e. `["program" "firefox"]` at the use site, and `firefox/mkModule` returns a module constructed based on the module path.
+
 ### Networking
-`barrybenson` hosts services and lives behind CGNAT. It connects via a wireguard tunnel to `ionobro`, who forwards packets destined to the right port to `barrybenson` without source nat. 
-Then `barrybenson` replies through tunnel. On the `barrybenson` side, its outgoing traffic goes through wireguard if it is a response from some incoming traffic from the tunnel, otherwise it goes through the normal internet. 
-This is achieved via nftables for policy based routing of Wireguard[⌃](/host/barrybenson/network.nix).
+- `ionobro` is my VPS which connects clients to my homeserver, `barrybenson`, via wireguard. It forwards packets destined to the right port to `barrybenson` without source nat. 
+- `barrybenson` hosts services and lives behind CGNAT. Its outgoing traffic goes through wireguard if it is a response from some incoming traffic from the tunnel, otherwise it goes through the normal internet. This is achieved via nftables for policy based routing of Wireguard[⌃](/host/barrybenson/network.nix).
 
