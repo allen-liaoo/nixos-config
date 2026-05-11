@@ -10,5 +10,4 @@
     };
     mcp = pkgs.python3Packages.callPackage ./pkgs/typst-mcp/mcp.nix { };
   };
-  wavefox = pkgs.callPackage ./pkgs/wavefox.nix { };
 }
