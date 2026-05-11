@@ -40,7 +40,10 @@ in
     }
   ];
 
-  home.packages = [ pywalfox-native ];
+  programs.dank-material-shell.settings = {
+    matugenTemplateFirefox = true;
+    matugenTemplatePywalfox = true;
+  };
 
   # setup DMS managed matugen theme
   home.file.".cache/wal/colors.json".source = config.lib.file.mkOutOfStoreSymlink (

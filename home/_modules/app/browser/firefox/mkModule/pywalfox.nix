@@ -59,7 +59,6 @@ in
 
     }
     //
-
       # install extension thru webstore
       lib.setAttrByPath modulePath {
         webstore.addons = lib.mkIf installThruWebstore [

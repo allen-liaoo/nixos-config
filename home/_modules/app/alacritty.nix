@@ -30,6 +30,8 @@
     };
   };
 
+  programs.dank-material-shell.settings.matugenTemplateAlacritty = true;
+
   aln.niri.configFile."alacritty" = {
     enable = true;
     content = ''

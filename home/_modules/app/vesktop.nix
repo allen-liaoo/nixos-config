@@ -21,4 +21,5 @@
       ];
     };
   };
+  programs.dank-material-shell.settings.matugenTemplateVesktop = true;
 }
