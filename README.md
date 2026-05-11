@@ -84,9 +84,10 @@ Both share these centralized configs:
 - [firefox/config](home/_modules/app/browser/firefox/config) - Shared policies, settings, extensions, and my custom module configs
 - [firefox/mkModule](home/_modules/app/browser/firefox/config) - My custom modules, which includes:
   - `pywalfox.nix`- for setting up [pywalfox](https://github.com/Frewacom/pywalfox) (colors and system theming) native messaging host and extension
-  - `wavefox.nix` - for setting up [wavefox](https://github.com/QNetITQ/WaveFox) (ui styling)
-In particular, my custom modules is meant to be merged with firefox-based browser modules such as `programs.firefox`, `programs.librewolf`, etc.
-This is achieved by providing the module path (i.e. `["program" "firefox"]` at the use site, and `firefox/mkModule` returns a module constructed based on the module path.
+  - `wavefox.nix` - for setting up [WaveFox](https://github.com/QNetITQ/WaveFox) (ui styling)
+
+In particular, the custom modules are meant to be merged with firefox-based browser modules such as `programs.firefox`, `programs.librewolf`, etc.
+This is achieved by providing the module path (i.e. `["programs" "firefox"]` to `firefox/mkModule`, which constructs the module based on the module path. Note that certain option declarations are only legal because submodules are [extensible option types](https://nixos.org/manual/nixos/stable/#sec-option-declarations-eot).
 
 ### Networking
 - `ionobro` is my VPS which connects clients to my homeserver, `barrybenson`, via wireguard. It forwards packets destined to the right port to `barrybenson` without source nat. 
