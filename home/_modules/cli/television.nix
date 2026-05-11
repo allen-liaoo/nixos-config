@@ -35,8 +35,9 @@ in
 
   programs.fish.shellAbbrs = {
     "tvc" = "tv channels";
-    "tvt" = "tv text";
     "tvj" = "tv journal";
+    "tvn" = "tv nix-search-tv";
+    "tvt" = "tv text";
   };
 
   programs.nix-search-tv = {

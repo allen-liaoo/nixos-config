@@ -61,13 +61,13 @@ This allows symlinking out of store files to work correctly, and sidesteps file 
 |---|---|---|----|---|
 |theseus|Framework Laptop 13 (Ryzen AI 5 340)|laptop|My daily driver. NixOS + LUKS + everything in dots.|✅|
 |barrybenson|Beelink Mini PC (Ryzen 7 5700U)|server|Headless homeserver with impermanence. Containers setup in progress.|✅|
-|louisxvi|Macbook Air M1|laptop|Broke the screen so now it's "headless". Plan to run Asahi with NixOS. Currently retired.|-|
+<!-- |louisxvi|Macbook Air M1|laptop|Broke the screen so now it's "headless". Plan to run Asahi with NixOS. Currently retired.|-| -->
 |ionobro|IONOS VPS (1G RAM, 10G Storage)|server|Acts as the router/firewall for barrybenson who is behind CGNAT. I need a minimal NixOS install to run wireguard + nftables.|📝|
 |guinea|QEMU/KVM|VM|Used to build this config. Need to configure declaratively on theseus.|✅|
 
-✅ - Setup completed 
-🚧 - In progress
-📝 - Planning
+✅ Setup completed | 
+🚧 In progress | 
+📝 Planning
 
 ## Details
 
@@ -75,21 +75,19 @@ This allows symlinking out of store files to work correctly, and sidesteps file 
 - Each NixOS host generates a ssh host key on initial install, which is used to derive the host age key (on boot). The age key is then used to decrypt host secrets. 
 - For each user of a NixOS host, the host decrypts the user's password for its own setup, and the user's age key to a location that the home-manager sops expects (`~/.config/sops/age/key.txt`).
   The user's home manager config then uses the age key to decrypt secrets.
-- Each user should have access to the secret `nix_config_deploy` which is used to push to this repository. Additionally, each authorized user should have this secret under `~/.ssh` as well.
 
 ### Firefox-based Browsers
 My firefox (HM) module configs can be applied to any firefox-based browser, such as `floorp`, `librewolf`, or even `glide` (from external flake). 
 For examples, see [firefox.nix](home/_modules/app/browser/firefox.nix) and [glide.nix](home/_modules/app/browser/glide.nix).
 Both share these centralized configs: 
 - [firefox/config](home/_modules/app/browser/firefox/config) - Shared policies, settings, extensions, and my custom module configs
-- [firefox/mkModule](home/_modules/app/browser/firefox/config) - My custom modules, which includes:
+- [firefox/mkModule](home/_modules/app/browser/firefox/mkModule) - My custom modules, which includes:
   - `pywalfox.nix`- for setting up [pywalfox](https://github.com/Frewacom/pywalfox) (colors and system theming) native messaging host and extension
   - `wavefox.nix` - for setting up [WaveFox](https://github.com/QNetITQ/WaveFox) (ui styling)
 
 In particular, the custom modules are meant to be merged with firefox-based browser modules such as `programs.firefox`, `programs.librewolf`, etc.
-This is achieved by providing the module path (i.e. `["programs" "firefox"]` to `firefox/mkModule`, which constructs the module based on the module path. Note that certain option declarations are only legal because submodules are [extensible option types](https://nixos.org/manual/nixos/stable/#sec-option-declarations-eot).
 
 ### Networking
-- `ionobro` is my VPS which connects clients to my homeserver, `barrybenson`, via wireguard. It forwards packets destined to the right port to `barrybenson` without source nat. 
-- `barrybenson` hosts services and lives behind CGNAT. Its outgoing traffic goes through wireguard if it is a response from some incoming traffic from the tunnel, otherwise it goes through the normal internet. This is achieved via nftables for policy based routing of Wireguard[⌃](/host/barrybenson/network.nix).
+- `ionobro` is my VPS which connects clients to my homeserver, `barrybenson`, via wireguard. It forwards packets to `barrybenson` without source nat. 
+- `barrybenson` hosts services and lives behind CGNAT. Its outgoing traffic goes through wireguard if it is a response from some incoming traffic from the tunnel, otherwise it goes through the normal internet. This is achieved via nftables policy-based routing[⌃](/host/barrybenson/network.nix).
 
