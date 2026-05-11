@@ -40,9 +40,8 @@ Podman containers via [quadlet-nix](https://seiarotg.github.io/quadlet-nix/) (Ro
 - `home` - Home manager configurations
   - `_modules` - nix modules for standalone home-manager configs 
   - `<username>` - configs for the user, including host-specific user configs
-- `lib`- my library functions
-- `inventory` - metadata about users, hosts, and valid pairings
-- `ctx.nix` - supplies current eval context to NixOS/Home modules (i.e. current host and user info from inventory)
+- `lib`- library functions
+- `inventory`, `ctx.nix` - metadata about users, hosts, and valid pairings, supplied as `ctx`
 - `secrets` and `.sops.yaml` - read by sops-nix for host and user secrets at various sops.nix files throughout home and host directories
 - `shell.nix` - devShells of this repository, notably including distinct Neovim instances and development environments for `home` and `host` dir (activated via direnv).
 
@@ -61,9 +60,10 @@ This allows symlinking out of store files to work correctly, and sidesteps file 
 |---|---|---|----|---|
 |theseus|Framework Laptop 13 (Ryzen AI 5 340)|laptop|My daily driver. NixOS + LUKS + everything in dots.|✅|
 |barrybenson|Beelink Mini PC (Ryzen 7 5700U)|server|Headless homeserver with impermanence. Containers setup in progress.|✅|
-<!-- |louisxvi|Macbook Air M1|laptop|Broke the screen so now it's "headless". Plan to run Asahi with NixOS. Currently retired.|-| -->
 |ionobro|IONOS VPS (1G RAM, 10G Storage)|server|Acts as the router/firewall for barrybenson who is behind CGNAT. I need a minimal NixOS install to run wireguard + nftables.|📝|
 |guinea|QEMU/KVM|VM|Used to build this config. Need to configure declaratively on theseus.|✅|
+
+<!-- |louisxvi|Macbook Air M1|laptop|Broke the screen so now it's "headless". Plan to run Asahi with NixOS. Currently retired.|-| -->
 
 ✅ Setup completed | 
 🚧 In progress | 

@@ -5,6 +5,11 @@
     inputs:
     let
       lib = inputs.nixpkgs.lib;
+      forEachSystem = lib.genAttrs [
+        "x86_64-linux"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
       mkPkgs =
         pkgs: system:
         import pkgs {
@@ -67,7 +72,11 @@
         ) inventory.userHostPairs
       );
 
-      devShells = lib.genAttrs inventory.systems (import ./shell.nix { inherit inputs lib inventory; });
+      packages = forEachSystem (system: import ./packages.nix {
+        pkgs = mkPkgs inputs.nixpkgs system;
+      });
+
+      devShells = forEachSystem (system: import ./shell.nix { inherit inputs lib inventory; } system);
     };
 
   nixConfig = {

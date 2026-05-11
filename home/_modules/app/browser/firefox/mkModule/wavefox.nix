@@ -5,23 +5,27 @@
 
 {
   lib,
+  pkgs,
   config,
-  pkgs-aln,
   ...
 }:
 
 let
   cfg = lib.attrByPath modulePath { } config;
+  wavefox = pkgs.fetchFromGitHub {
+    owner = "QNetITQ";
+    repo = "WaveFox";
+    rev = "v1.9.150";
+    hash = "sha256-cFrKG9VGDda9sFcAu/6zvpsd82TUOWTTEZVoaCLt1gg=";
+    sparseCheckout = [
+      "/chrome"
+    ];
+  };
   wavefoxModule =
     { config, ... }:
     {
       options.wavefox = {
         enable = lib.mkEnableOption "wavefox";
-        package = lib.mkPackageOption pkgs-aln "wavefox" {
-          extraDescription = ''
-            The "chrome" folder of wavefox must be the root of the derivation, and must contain "userChrome.css" and "userContent.css" files.
-          '';
-        };
         config = lib.mkOption {
           type = with lib.types; attrsOf (either str int);
           default = { };
@@ -60,7 +64,7 @@ in
         n: v: {
           name = "${cfg.profilesPath}/${n}/chrome/wavefox";
           value = {
-            source = v.wavefox.package;
+            source = "${wavefox}/chrome";
           };
         }
       );
