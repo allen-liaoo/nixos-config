@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  ctx,
   inputs,
   ...
 }:
@@ -47,7 +48,7 @@ in
     };
   };
 
-  config = {
+  config = lib.mkIf ctx.host.is.gui {
     xdg.configFile."matugen/config.toml".source = tomlFormat.generate "config.toml" {
       config = { };
       templates = (
