@@ -1,11 +1,11 @@
 {
   inputs,
-  aln,
+  alnLib,
   ...
 }:
 
 {
-  imports = aln.listDirFiles ./. ++ aln.listSubDirs ./. ++ [
+  imports = alnLib.importExcept (alnLib.listDirFiles ./.) [ "players.nix"] ++ alnLib.listSubdirs ./. ++ [
     inputs.nix-minecraft.nixosModules.minecraft-servers
   ];
 
@@ -19,3 +19,4 @@
     openFirewall = false;
   };
 }
+# For declaring mods, see scripts/modrinth_prefetch.sh
