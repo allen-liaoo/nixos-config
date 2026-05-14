@@ -11,18 +11,18 @@
       enableReload = true;
       serverProperties = {
         server-port = 25565;
-        white-list = true;
+        white-list = false;
         enable-rcon = true;
         difficulty = 3;
       };
 
       package = pkgs.neoforgeServers.neoforge-1_21_1-21_1_228; # 229
 
-      whitelist = import ../players.nix;
+      #whitelist = import ../players.nix;
 
       symlinks = {
         mods = pkgs.linkFarmFromDrvs "mods" (
-          builtins.attrValues (import ./mods.nix pkgs.fetchurl)
+          map pkgs.fetchurl builtins.attrValues (import ./mods.nix)
         );
       };
     };
