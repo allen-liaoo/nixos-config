@@ -5,8 +5,8 @@
     bitwarden-desktop
     loupe # image viewer
     nautilus # file browser
+    prismlauncher # TODO: has module in unstable
     signal-desktop
-    spotify
     zotero
   ];
 }
