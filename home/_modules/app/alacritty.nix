@@ -26,7 +26,7 @@
         opacity = lib.mkForce 0.75;
       };
       cursor.style.shape = "Block";
-      terminal.osc52 = "OnlyCopy"; # for copying from remote server
+      terminal.osc52 = "CopyPaste";
     };
   };
 
