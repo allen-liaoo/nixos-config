@@ -12,6 +12,8 @@ And modifying into a proper json array of objs.
 For curseforge, go to the relevant file page, the url should end in .../{id}
 The download URL should have the format:
 https://edge.forgecdn.net/files/<first4_id>/<rest_id>/<filename>.jar
+Or,
+https://mediafilez.forgecdn.net/files/<first4_id>/<rest_id>/<filename>.jar
 END_COMMENT
 
 function print_mod_nix() {

@@ -16,23 +16,15 @@
         difficulty = 3;
       };
 
-      package = pkgs.neoforgeServers.neoforge-1_21_1-21_1_229;
+      package = pkgs.neoforgeServers.neoforge-1_21_1-21_1_228; # 229
 
       whitelist = import ../players.nix;
 
       symlinks = {
-        mods = pkgs.linkFarmDromDrvs "mods" (
+        mods = pkgs.linkFarmFromDrvs "mods" (
           builtins.attrValues (import ./mods.nix pkgs.fetchurl)
         );
       };
     };
   };
 }
-
-/*
-  {
-    "url": "{url}",
-    "version": "{version}",
-    "filename: "{filename}"
-  },
-*/

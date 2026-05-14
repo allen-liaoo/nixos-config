@@ -138,18 +138,18 @@ fetchurl:
   # curseforge
   geckolib = fetchurl {
     url = "https://mediafilez.forgecdn.net/files/7707/149/geckolib-neoforge-1.21.1-4.8.4.jar";
-    sha512 = "";
+    sha512 = "sha512-NA2WFJoExXwJSF9bHGnn+Ow7aCI8YY44t9hMWPQoDcuj0OlIC4/HlzXZ71/X2l/I8wgdV1v0u80sRLbc8h2YwA==";
   };
   twilight-forest = fetchurl {
     url = "https://mediafilez.forgecdn.net/files/7797/302/twilightforest-1.21.1-4.8.3345-universal.jar";
-    sha512 = "";
+    sha512 = "sha512-Nx3XB5sXQJE2MyffcO1kyE6ONvyrSbTDO7y+OWUPa8zBLT4UgYzfu6pRmpmfZKCpLAPsmB9VoxWwRNx8tcJ+9A==";
   };
   twilight-forest-final-boss = fetchurl {
-    url = "https://mediafilez.forgecdn.net/files/7273/092/twilight_forest_final_boss-2.1.0+4.7.3196+1.21.1.jar";
-    sha512 = "";
+    url = "https://edge.forgecdn.net/files/7273/092/twilight_forest_final_boss-2.1.0+4.7.3196+1.21.1.jar";
+    sha512 = "sha512-z7hdDKN31j8IewDj2KoRHYLYnGAR96JMhzMhVG6EOOnqXGFgsQGCt9QJAkdgdIwKeU3F4M+Cw0o8e+/Hxgu1FA==";
   };
   umbral-skies = fetchurl {
     url = "https://mediafilez.forgecdn.net/files/7379/191/umbral_skies-1.21.1-1.6.1.jar";
-    sha512 = "";
+    sha512 = "sha512-R4qi1EYmlzJttUupOYor/iHRN+U69+db3VoN8TfaXCJ+Xmov69n1lQ7R9AjtrS95A1YiVLS07nXZ8ui8wfLtoQ==";
   };
 }
