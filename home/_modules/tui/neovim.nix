@@ -16,6 +16,7 @@ in
 {
   home.packages = [
     nvimxPkg
+    pkgs.wl-clipboard
   ];
 
   programs.fish.shellAliases = {
