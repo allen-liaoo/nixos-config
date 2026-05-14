@@ -11,7 +11,6 @@ let
   docViewer = "sioyek.desktop";
   vidViewer = "mpv.desktop";
   imgViewer = "org.gnome.Loupe.desktop";
-  fileExplorer = "org.gnome.Nautilus.desktop";
   textEditor = "nvim.desktop";
 
   mimeTypes =
