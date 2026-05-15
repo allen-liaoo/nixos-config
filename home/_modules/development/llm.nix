@@ -6,7 +6,7 @@
   ...
 }:
 
-lib.mkIf (!ctx.host.is.server) {
+{
   programs.opencode = {
     enable = true;
     enableMcpIntegration = true;
