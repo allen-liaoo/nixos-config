@@ -53,6 +53,7 @@ in
         ip protocol icmp limit rate 10/second accept
         ip6 nexthdr icmpv6 limit rate 10/second accept
         tcp dport 22 accept # ssh
+        tcp dport 25565 accept # minecraft
       }
     '';
   };
@@ -103,6 +104,11 @@ in
         # mark meta of packet outgoing from podman if conn marked (note: doing this in output will be useless in bridge mode)
         iifname "${podman_intf}" ct mark ${toString wg_mark} meta mark set ${toString wg_mark}
       }
+      chain output {
+        type route hook output priority -150; policy accept;
+        # Mark outgoing packets that are part of a marked connection
+        meta mark set ct mark
+      }
     '';
   };
   systemd.network.netdevs."20-${wg_intf}" = {
@@ -127,7 +133,7 @@ in
   };
   # Wireguard network routing
   systemd.network.networks."20-${wg_intf}" = {
-    matchConfig.Name = "${wg_intf}";
+    matchConfig.Name = wg_intf;
     address = [ "${ctx.host.data.wg_ip}/24" ]; # this server's wg ip
     routingPolicyRules = [
       {
