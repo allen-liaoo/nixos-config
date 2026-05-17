@@ -360,6 +360,27 @@
         "type": "github"
       }
     },
+    "nix-packages": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "wrappers": "wrappers"
+      },
+      "locked": {
+        "lastModified": 1778992585,
+        "narHash": "sha256-j+lU/IuIRAgZ53zid5wc53iJNVytgfJ+dXK9vKZjmPQ=",
+        "owner": "allen-liaoo",
+        "repo": "nix-packages",
+        "rev": "9dab9e01e114c7eaa839b925f992c1dc2a72be32",
+        "type": "github"
+      },
+      "original": {
+        "owner": "allen-liaoo",
+        "repo": "nix-packages",
+        "type": "github"
+      }
+    },
     "nix-your-shell": {
       "inputs": {
         "advisory-db": "advisory-db",
@@ -642,6 +663,7 @@
         "matugen-themes": "matugen-themes",
         "nix-index-database": "nix-index-database",
         "nix-minecraft": "nix-minecraft",
+        "nix-packages": "nix-packages",
         "nix-your-shell": "nix-your-shell",
         "nixgl": "nixgl",
         "nixos-hardware": "nixos-hardware",
@@ -898,6 +920,27 @@
       "original": {
         "owner": "pogyomo",
         "repo": "winresize.nvim",
+        "type": "github"
+      }
+    },
+    "wrappers": {
+      "inputs": {
+        "nixpkgs": [
+          "nix-packages",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1778952794,
+        "narHash": "sha256-TQjjHaGnwkuNwGZjR2SWl3t7OK/0nM5PsX/v7a8WQG0=",
+        "owner": "allen-liaoo",
+        "repo": "nix-wrapper-modules",
+        "rev": "ae502f23152914e12559dd9961fd8767a47d0075",
+        "type": "github"
+      },
+      "original": {
+        "owner": "allen-liaoo",
+        "repo": "nix-wrapper-modules",
         "type": "github"
       }
     },

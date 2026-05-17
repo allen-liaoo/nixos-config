@@ -144,6 +144,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # my packages
+    nix-packages = { 
+      url = "github:allen-liaoo/nix-packages";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-your-shell = {
       url = "github:MercuryTechnologies/nix-your-shell";
       inputs.nixpkgs.follows = "nixpkgs";

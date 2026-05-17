@@ -1,5 +1,6 @@
 {
   pkgs,
+  inputs,
   ...
 }:
 
@@ -11,6 +12,8 @@
     gtrash
     ripgrep
     just
+
+    inputs.nix-packages.legacyPackages.${pkgs.stdenv.hostPlatform.system}.television
   ];
 
   programs.fish = {
@@ -20,6 +23,10 @@
     shellAbbrs = {
       js = "just";
       tr = "gtrash put";
+      tvc = "tv channels";
+      tvj = "tv journal";
+      tvn = "tv nix-search-tv";
+      tvt = "tv text";
     };
   };
 }
